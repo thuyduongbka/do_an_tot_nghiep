@@ -3,6 +3,7 @@ import json
 from ..items import ScholarshipItem
 import re
 from datetime import datetime
+from ..utils_custom import getSchool
 
 
 class SqlNguonHocBongSpider(scrapy.Spider):
@@ -36,7 +37,8 @@ class SqlNguonHocBongSpider(scrapy.Spider):
                 "major": post.xpath("./div/div[3]/small/a/text()").getall(),
                 "level": post.xpath("./div/div[2]/small/a/text()").getall(),
                 "time": post.xpath("./div/div[4]/small/time/text()").get(),
-                "url": urlPost
+                "urlImage": post.xpath("./a/img/@src").get(),
+                "url": urlPost,
             }
             yield scrapy.Request(url=urlPost, callback=self.getDetailScholarship)    #add content
 
@@ -55,8 +57,11 @@ class SqlNguonHocBongSpider(scrapy.Spider):
 
         time = self.getTime(scholarship["time"])
 
+        school = self.getSchool(response)
+
         item = ScholarshipItem()
         item["name"] = name
+        item["school"] = school
         item["country"] = country
         item["major"] = scholarship["major"]
         item["level"] = scholarship["level"]
@@ -64,6 +69,8 @@ class SqlNguonHocBongSpider(scrapy.Spider):
         item["time"] = datetime.strptime(time, '%d/%m/%Y').date()
         item["url"] = response.url.encode("utf-8")
         item["web"] = 3
+        item["newMajor"] = False
+        item["urlImage"] = scholarship["urlImage"]
         return item
 
     def getMoney(self,txt):
@@ -102,3 +109,7 @@ class SqlNguonHocBongSpider(scrapy.Spider):
             year = str(int(time[2]) + 3)
             time = "/".join([day, month, year])
         return time
+    def getSchool(self, response):
+        return getSchool(response)
+
+

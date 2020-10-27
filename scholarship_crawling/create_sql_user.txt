@@ -1,0 +1,17 @@
+CREATE TABLE student(
+    id INT(6) AUTO_INCREMENT PRIMARY KEY,
+    email varchar(50) UNIQUE, password varchar(200),
+    name varchar(100),
+    gender varchar(50),
+    level varchar(100),
+    country varchar(100),
+    birthday varchar(100),
+    graduation_date varchar(100),
+    created_time TIMESTAMP,
+    updated_time TIMESTAMP
+)
+CREATE TABLE student(
+    id INT(6) AUTO_INCREMENT PRIMARY KEY,
+    email varchar(50) UNIQUE,
+    password varchar(200)
+)

@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/scholarship_db
+    username: root
+    password:
+    hikari:
+      maximum-pool-size: 5
+  jpa:
+    show-sql : true
+server:
+  servlet:
+    session:
+      timeout: 1d
+  port: 8085

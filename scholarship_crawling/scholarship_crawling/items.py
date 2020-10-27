@@ -10,6 +10,7 @@ import scrapy
 
 class ScholarshipItem(scrapy.Item):
     name = scrapy.Field()
+    school = scrapy.Field()
     country = scrapy.Field()
     major = scrapy.Field()
     level = scrapy.Field()
@@ -17,5 +18,7 @@ class ScholarshipItem(scrapy.Item):
     request = scrapy.Field()
     money = scrapy.Field()
     url = scrapy.Field()
+    urlImage = scrapy.Field()
     web = scrapy.Field()
+    newMajor = scrapy.Field()
     pass
