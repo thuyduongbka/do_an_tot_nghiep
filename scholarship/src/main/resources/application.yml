@@ -8,8 +8,30 @@ spring:
       maximum-pool-size: 5
   jpa:
     show-sql : true
+  servlet:
+    multipart:
+      max-file-size: 1000MB
+      max-request-size: 1000MB
+  jackson:
+    date-format: yyyy/MM/dd HH:mm
+    mvc:
+      favicon:
+        enabled: true
 server:
   servlet:
     session:
       timeout: 1d
   port: 8085
+
+application:
+  enable-security: true # please be careful to use this value
+  enable-exception-save: true
+
+
+# task
+cron-job:
+  daily-update-data:
+    time: 0 0 7 * * ? # 7h00AM
+  update-payment-information:
+    time: 0 0 0 1 * ? # 0h00AM at the first date of every month
+    test: 0 19 * * * ?
