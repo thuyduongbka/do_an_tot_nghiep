@@ -7,7 +7,7 @@ spring:
     hikari:
       maximum-pool-size: 5
   jpa:
-    show-sql : true
+    show-sql : false
   servlet:
     multipart:
       max-file-size: 1000MB
@@ -26,6 +26,7 @@ server:
 application:
   enable-security: true # please be careful to use this value
   enable-exception-save: true
+  crawler-domain: http://localhost:8000/
 
 
 # task
