@@ -1,7 +1,9 @@
 package datn.service;
 
 import datn.base.BaseService;
+import datn.custom.domain.Account;
 import datn.custom.domain.Admin;
+import datn.entity.user.AccountEntity;
 import datn.entity.user.AdminEntity;
 import datn.repository.AdminRepository;
 import org.slf4j.Logger;
@@ -9,6 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.Date;
 
 @Service
 public class AdminService extends BaseService<AdminEntity, AdminRepository> {
@@ -19,7 +24,6 @@ public class AdminService extends BaseService<AdminEntity, AdminRepository> {
     
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
-    
     
     public Admin findByAccountId(Long accountId) {
         Admin admin = new Admin();
@@ -42,6 +46,29 @@ public class AdminService extends BaseService<AdminEntity, AdminRepository> {
         domain.setUsername(entity.getAccountEntity().getUsername());
         
         return domain;
+    }
+    
+    @Transactional
+    public AdminEntity saveAdmin(String email){
+        AccountEntity accountEntity = new AccountEntity(email);
+        accountEntity = accountService.save(accountEntity);
+        AdminEntity admin = new AdminEntity();
+        admin.setAccountEntity(accountEntity);
+        admin = save(admin);
+        return admin;
+    }
+    @Transactional
+    public AdminEntity updateAdmin(Account account){
+        AccountEntity accountEntity = accountService.findById(account.getId());
+        accountEntity.setUsername(account.getUsername());
+        accountEntity.setActive(account.isActive());
+        accountEntity.setUpdatedTime(new Date());
+        if (!account.getPassword().equals("")) {
+            accountEntity.setPassword(passwordEncoder.encode(account.getPassword()));
+        }
+        accountEntity = accountService.update(accountEntity);
+        AdminEntity admin = repository.findByAccountEntity(accountEntity);
+        return admin;
     }
     
 }

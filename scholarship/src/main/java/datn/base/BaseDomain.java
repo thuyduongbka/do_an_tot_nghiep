@@ -9,7 +9,6 @@ public class BaseDomain {
     /**
      * Don't return actual id
      */
-    @JsonIgnore
     protected Long id;
 
     protected UUID code;

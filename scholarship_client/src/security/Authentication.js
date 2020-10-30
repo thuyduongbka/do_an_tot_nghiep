@@ -22,7 +22,6 @@ function removeToken() {
 }
 
 function setCurrentUser(currentUser) {
-  debugger
   currentUser.defaultMall = "";
   userInMemory = JSON.parse(JSON.stringify(currentUser));
   localStorage.setItem(currentUserKey, JSON.stringify(currentUser));
@@ -55,7 +54,9 @@ function getUserRoles() {
   let currentUser = JSON.parse(localStorage.getItem(currentUserKey));
   let roles = [];
   if (currentUser) {
-    currentUser.roles.forEach(role => roles.push(role.roleName));
+    currentUser.authorities.forEach(function (role) {
+      roles.push(role.authority);
+    });
   }
   return roles;
 }

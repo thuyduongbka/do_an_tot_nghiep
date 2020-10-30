@@ -201,5 +201,8 @@ public abstract class BaseService<E extends BaseEntity, R extends BaseRepository
     public Page<E> findAll(Pageable page, boolean isDeleted) {
         return repository.findByIsDeleted(page, isDeleted);
     }
-
+    
+    public List<E> findAll() {
+        return repository.findAll();
+    }
 }

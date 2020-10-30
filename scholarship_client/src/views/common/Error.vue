@@ -6,7 +6,7 @@
                ref="errorForm">
 
         <el-form-item v-if="error403">
-          <img style="width: 100px; height: 100px;" src="../../assets/images/error.png"
+          <img style="width: 100px; height: 100px;" src="@/assets/error.png"
                alt="">
           <h2 style="font-size: 4em !important;">403</h2>
           <p style="font-size: 1.5em !important;">You are not authorized to access this page.</p>
@@ -14,7 +14,7 @@
         </el-form-item>
 
         <el-form-item v-if="error404">
-          <img style="width: 100px; height: 100px;" src="../../assets/images/error.png"
+          <img style="width: 100px; height: 100px;" src="@/assets/error.png"
                alt="">
           <h2 style="font-size: 4em !important;">404</h2>
           <p style="font-size: 1.5em !important;">The page you requested does not exist.</p>

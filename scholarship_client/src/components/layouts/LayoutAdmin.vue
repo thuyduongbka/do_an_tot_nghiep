@@ -1,11 +1,50 @@
 <template>
-  <div>
-    Layout Admin
-    <router-view></router-view>
-  </div>
+  <el-container>
+    <el-header>
+      <header-admin></header-admin>
+    </el-header>
+    <el-container>
+      <el-aside style="margin-top: 20px; border-right: 1px solid #36474F; min-height: 500px;" width="250px">
+        <div class="menu">
+          <div><a href="/admin"><p>Cài đặt trích rút</p></a></div>
+          <div><a href="/admin/report"><p>Báo cáo</p></a></div>
+          <div><a href="/admin/admin-management"><p>Phân quyền</p></a></div>
+          <div><a @click="logout" style="text-decoration: underline">Đăng xuất</a></span></div>
+        </div>
+      </el-aside>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
+    </el-container>
+  </el-container>
 </template>
 <script>
+  import HeaderAdmin from "./modules/HeaderAdmin";
+  import Auth from "@/security/Authentication";
+  import router from "@/router";
+  import Pages from "@/router/Pages";
   export default {
-    name: "LayoutAdmin"
+    name: "LayoutAdmin",
+    components: {HeaderAdmin},
+    methods: {
+      logout(){
+        Auth.logout();
+        router.push({path: Pages.loginAdmin.path});
+      }
+    }
   }
 </script>
+<style>
+  .menu {
+    margin-top: 50%;
+    font-weight: bold;
+    font-size: large;
+    text-align: left;
+  }
+  .menu > * {
+    margin: 30px;
+  }
+  a {
+    color: #36474F !important;
+  }
+</style>

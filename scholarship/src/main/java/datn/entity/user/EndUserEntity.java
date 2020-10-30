@@ -2,14 +2,16 @@ package datn.entity.user;
 
 import datn.base.BaseEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "end_user")
 public class EndUserEntity extends BaseEntity {
-    private Long accountId;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    private AccountEntity accountEntity;
+    
     private String accessToken;
     
     private String name;
@@ -20,12 +22,12 @@ public class EndUserEntity extends BaseEntity {
     private Date graduationDate;
     private String phone;
     
-    public Long getAccountId() {
-        return accountId;
+    public AccountEntity getAccountEntity() {
+        return accountEntity;
     }
     
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
+    public void setAccountEntity(AccountEntity accountEntity) {
+        this.accountEntity = accountEntity;
     }
     
     public String getAccessToken() {

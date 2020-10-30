@@ -7,6 +7,7 @@ import datn.custom.dto.UserFilter;
 import datn.custom.specs.AccountSpecs;
 import datn.entity.user.AccountEntity;
 import datn.repository.AccountRepository;
+import datn.security.CustomUserDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,10 @@ public class AccountService extends BaseService<AccountEntity, AccountRepository
 
     @Autowired
     PasswordEncoder passwordEncoder;
+    
+    public AccountEntity findByUsername(String username){
+        return findUserEntity(username);
+    }
 
     public Account findUser(String username) {
         AccountEntity entity = findUserEntity(username);

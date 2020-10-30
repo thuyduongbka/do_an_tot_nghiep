@@ -3,10 +3,11 @@ import Auth from '@/security/Authentication';
 import Pages from '@/router/Pages';
 import Roles from "@/security/Roles";
 
-let enableSecurity = process.env.VUE_APP_ENABLE_SECURITY == 'true';
+let enableSecurity = true;
 
 if (enableSecurity) {
   Router.beforeEach((to, from, next) => {
+    // debugger
     let needAuthoritiesToViewPage = to.meta && to.meta.authorities;
 
     if (Auth.isAuthenticated()) {
@@ -17,7 +18,7 @@ if (enableSecurity) {
         return;
       }
 
-      if (currentUser.firstLogin && !currentUser.hasRole(Roles.SYSTEM_ADMIN)) {
+      if (currentUser.firstLogin && !currentUser.hasRole(Roles.ROLE_ADMIN)) {
         // redirect to change password first time login.
         next("/login?step=CHANGE_PASSWORD");
         return;
@@ -36,12 +37,13 @@ if (enableSecurity) {
           console.log(to)
           next(Pages.loginUser.path);
         } else {
-          next(Pages.forbidden.path);
+          console.log(Pages.forbidden.path)
+          next("/forbidden");
         }
       }
     } else {
 
-      if (Auth.isAuthenticated() && to.path == Pages.login.path)
+      if (Auth.isAuthenticated() && to.path == Pages.loginUser.path)
         next(Pages.redirect.path);
       next();
     }

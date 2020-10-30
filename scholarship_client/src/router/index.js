@@ -8,6 +8,7 @@ import RedirectComponent from "@/components/RedirectComponent";
 import LayoutUser from "@/components/layouts/LayoutUser";
 import LayoutAdmin from "@/components/layouts/LayoutAdmin";
 import LoginAdmin from "@/views/admin/LoginAdmin";
+import Error from "@/views/common/Error";
 
 Vue.use(Router)
 

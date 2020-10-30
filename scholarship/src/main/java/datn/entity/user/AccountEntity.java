@@ -1,6 +1,7 @@
 package datn.entity.user;
 
 import datn.base.BaseEntity;
+import datn.custom.domain.Account;
 import datn.enums.Role;
 
 import javax.persistence.Entity;
@@ -50,5 +51,23 @@ public class AccountEntity extends BaseEntity {
 
 	public void setActive(boolean active) {
 		isActive = active;
+	}
+	
+	public AccountEntity(){
+	
+	}
+	
+	public AccountEntity(Account domain){
+		this.username = domain.getUsername();
+		this.password = domain.getPassword();
+		this.role = domain.getRole();
+		this.isActive = true;
+		this.isDeleted = false;
+	}
+	public AccountEntity(String username){
+		this.username = username;
+		this.password = "";
+		this.isActive = true;
+		this.role = Role.ADMIN;
 	}
 }
