@@ -1,7 +1,6 @@
 package datn.enums;
 
 public enum TypeTime {
-    HOUR("HOUR"),
     DAY("DAY"),
     MONTH("MONTH");
     

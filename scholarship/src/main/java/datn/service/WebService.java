@@ -22,8 +22,4 @@ public class WebService extends BaseService<WebEntity, WebRepository> {
         return repository.findAll();
     }
     
-    public void crawler(){
-        crawlerService.crawlerApi("1");
-    }
-    
 }

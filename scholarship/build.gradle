@@ -35,6 +35,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-test")
     compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile group: 'org.quartz-scheduler', name: 'quartz', version: '2.3.0'
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
 
     runtime("mysql:mysql-connector-java")
