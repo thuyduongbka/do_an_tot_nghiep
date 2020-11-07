@@ -2,5 +2,6 @@
 cài đặt
 - khởi động mysql
 - bật pycham chạy api trong scholarship_crawling
-- khởi động scholarship_client: npm run dev
+    # \do_an_tot_nghiep\scholarship_crawling\fast_api>uvicorn test:app --reload
+- khởi động scholarship_client: # npm run dev
 - khỏi động scholarship để chạy backend
