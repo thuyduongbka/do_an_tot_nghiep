@@ -6,9 +6,9 @@
     <el-col :span="12">
       <h4>... và sở thích của bạn</h4>
       <el-form :model="formData" status-icon ref="formData" class="register-form">
-        <el-form-item prop="country">
+        <el-form-item prop="listCountryId">
           <div>đất nước bạn muốn tới là: </div>
-          <el-select multiple v-model="formData.country" filterable placeholder="Select">
+          <el-select multiple v-model="formData.listCountryId" filterable placeholder="Select">
             <el-option
               v-for="item in listCountry"
               :key="item.id"
@@ -17,9 +17,9 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item prop="school">
+        <el-form-item prop="listSchoolId">
           <div>trường bạn muốn học là: </div>
-          <el-select multiple v-model="formData.school" filterable placeholder="Select">
+          <el-select multiple v-model="formData.listSchoolId" filterable placeholder="Select">
             <el-option
               v-for="item in listSchool"
               :key="item.id"
@@ -28,9 +28,9 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item prop="school">
+        <el-form-item prop="listSchoolId">
           <div>ngành bạn muốn theo đuổi là: </div>
-          <el-select multiple v-model="formData.major" filterable placeholder="Select">
+          <el-select multiple v-model="formData.listMajorId" filterable placeholder="Select">
             <el-option
               v-for="item in listMajor"
               :key="item.id"

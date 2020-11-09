@@ -10,6 +10,10 @@
   import RegisterOne from "@/views/user/register/RegisterOne";
   import RegisterTwo from "@/views/user/register/RegisterTwo";
   import RegisterThree from "@/views/user/register/RegisterThree";
+  import SchoolApi from "@/api/SchoolApi";
+  import EndUserApi from "@/api/EndUserApi";
+  import router from "@/router";
+  import Pages from "@/router/Pages";
 
   export default {
     name: "Register",
@@ -19,16 +23,16 @@
         formData: {
           password: '',
           checkPassword: '',
-          email: '',
+          username: '',
           name: '',
           gender: null,
           phone: '',
           birthday: null,
-          dateGraduation: null,
+          graduationDate: null,
           level: '',
-          country: null,
-          school: null,
-          major: null,
+          listCountryId: null,
+          listSchoolId: null,
+          listMajorId: null,
         },
         tab: 1
       }
@@ -37,8 +41,15 @@
       changeTab(tab){
         this.tab = tab;
       },
-      submit(){
-        AlertService.success("uOK")
+      async submit(){
+        try {
+          await EndUserApi.save(this.formData).then(result => {
+            AlertService.success("Tạo thành công");
+            router.push({path: Pages.loginUser.path});
+          })
+        } catch (e) {
+          AlertService.error("Thất bại :  " + e)
+        }
       }
     }
   }

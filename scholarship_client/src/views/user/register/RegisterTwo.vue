@@ -50,13 +50,13 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-col :span="12">
-              <el-form-item prop="dateGraduation">
+              <el-form-item prop="graduationDate">
                 <span>Ngày tốt nghiệp</span>
                 <el-date-picker
-                  v-model="formData.dateGraduation"
+                  v-model="formData.graduationDate"
                   type="date"
                   placeholder="Pick a day"
-                  format="yyyy/MM/dd">
+                  format="dd/MM/yyyy">
                 </el-date-picker>
               </el-form-item>
             </el-col>
@@ -68,7 +68,7 @@
                 v-model="formData.birthday"
                 type="date"
                 placeholder="Pick a day"
-                format="yyyy/MM/dd">
+                format="dd/MM/yyyy">
               </el-date-picker>
             </el-form-item>
           </el-col>

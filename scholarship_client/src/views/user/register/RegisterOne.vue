@@ -6,9 +6,9 @@
     <el-col :span="12">
       <h1>ĐĂNG KÝ TÀI KHOẢN</h1>
       <el-form :model="formData" status-icon :rules="rules" ref="formData" class="register-form">
-        <el-form-item prop="email">
+        <el-form-item prop="username">
           <span>Địa chỉ Email</span>
-          <el-input v-model="formData.email"></el-input>
+          <el-input v-model="formData.username"></el-input>
         </el-form-item>
         <el-form-item label="" prop="password">
           <span>Mật khẩu</span>
@@ -65,7 +65,7 @@
           checkPassword: [
             {validator: validatePass2, trigger: 'blur'}
           ],
-          email: [
+          username: [
             {validator: checkEmail, trigger: 'blur'}
           ]
         }

@@ -1,10 +1,20 @@
 package datn.entity.user;
 
 import datn.base.BaseEntity;
+import datn.custom.domain.EndUser;
+import datn.entity.CountryEntity;
+import datn.entity.MajorEntity;
+import datn.entity.SchoolEntity;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "end_user")
 public class EndUserEntity extends BaseEntity {
@@ -22,75 +32,41 @@ public class EndUserEntity extends BaseEntity {
     private Date graduationDate;
     private String phone;
     
+    @ManyToMany
+            @JoinTable(
+                    name = "country_favorite",
+                    joinColumns = @JoinColumn(name = "user_id"),
+                    inverseJoinColumns = @JoinColumn(name = "country_id")
+            )
+    private List<CountryEntity> countryEntities;
+    @ManyToMany
+    @JoinTable(
+            name = "school_favorite",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "school_id")
+    )
+    private List<SchoolEntity> schoolEntities;
+    @ManyToMany
+    @JoinTable(
+            name = "major_favorite",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "major_id")
+    )
+    private List<MajorEntity> majorEntities;
+    
+    public EndUserEntity(){}
+    public EndUserEntity(EndUser dto){
+        this.name = dto.getName();
+        this.gender = dto.getGender();
+        this.level = dto.getLevel();
+        this.birthday = dto.getBirthday();
+        this.country = dto.getCountry();
+        this.graduationDate = dto.getGraduationDate();
+        this.phone = dto.getPhone();
+    }
+    
     public AccountEntity getAccountEntity() {
         return accountEntity;
     }
-    
-    public void setAccountEntity(AccountEntity accountEntity) {
-        this.accountEntity = accountEntity;
-    }
-    
-    public String getAccessToken() {
-        return accessToken;
-    }
-    
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-    
-    public String getName() {
-        return name;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    public String getGender() {
-        return gender;
-    }
-    
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-    
-    public String getLevel() {
-        return level;
-    }
-    
-    public void setLevel(String level) {
-        this.level = level;
-    }
-    
-    public Date getBirthday() {
-        return birthday;
-    }
-    
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
-    
-    public String getCountry() {
-        return country;
-    }
-    
-    public void setCountry(String country) {
-        this.country = country;
-    }
-    
-    public Date getGraduationDate() {
-        return graduationDate;
-    }
-    
-    public void setGraduationDate(Date graduationDate) {
-        this.graduationDate = graduationDate;
-    }
-    
-    public String getPhone() {
-        return phone;
-    }
-    
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+
 }
