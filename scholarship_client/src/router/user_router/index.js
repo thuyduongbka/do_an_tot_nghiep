@@ -4,6 +4,8 @@ import Pages from "@/router/Pages";
 import HomeUser from "@/views/user/home/HomeUser";
 import LoginUser from "@/views/user/LoginUser";
 import Detail from "@/views/user/detail/Detail";
+import Search from "@/views/user/search/Search";
+import Register from "@/views/user/register/Register";
 
 let meta = {
   authorities : [Roles.ROLE_END_USER],
@@ -19,6 +21,13 @@ let UserRouter = [
     }
   },
   {
+    ...Pages.search,
+    component : Search,
+    meta: {
+      title: "Search User",
+    }
+  },
+  {
     ...Pages.detailScholarship,
     component : Detail,
     meta: {
@@ -27,11 +36,17 @@ let UserRouter = [
     }
   },
   {
+    ...Pages.signUp,
+    component : Register,
+    meta: {
+      title: "Register User",
+    }
+  },
+  {
     ...Pages.loginUser,
     component : LoginUser,
     meta: {
       title: "Login User",
-      ...meta
     }
   }
 ]

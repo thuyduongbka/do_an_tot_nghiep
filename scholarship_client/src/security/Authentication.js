@@ -87,16 +87,6 @@ function getCurrentRole() {
   }
 }
 
-function getDefaultMall() {
-  return getCurrentUser().getDefaultMall();
-}
-
-function setDefaultMall(mallCode) {
-  let currentUser = JSON.parse(localStorage.getItem(currentUserKey));
-  currentUser.defaultMall = mallCode;
-  localStorage.setItem(currentUserKey, JSON.stringify(currentUser));
-}
-
 let Auth = {
   setToken: setToken,
   setCurrentUser: setCurrentUser,
@@ -104,8 +94,6 @@ let Auth = {
   getAccessToken: getToken,
   isAuthenticated: isAuthenticated,
   hasAnyRoles: hasAnyRoles,
-  getDefaultMall: getDefaultMall,
-  setDefaultMall: setDefaultMall,
   getCurrentRole: getCurrentRole,
   setUserFirstLoginFalse: function(){
     let user  = JSON.parse(localStorage.getItem(currentUserKey));

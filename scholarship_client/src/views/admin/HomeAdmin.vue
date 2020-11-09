@@ -110,6 +110,9 @@
       resetTable(){
         this.getData();
       },
+      create(){
+
+      }
     },
     computed: {
 

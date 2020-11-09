@@ -27,7 +27,7 @@ public class JobConfiguration {
                 .newTrigger()
                 .forJob(crawlerJobDetail())
                 .withIdentity(TriggerKey.triggerKey("crawler"))
-                .withSchedule(CronScheduleBuilder.cronSchedule("*/5 * * * * ?")) //every 5s
+                .withSchedule(CronScheduleBuilder.cronSchedule("0 0/5 * * * ?")) //every 5minute
                 .build();
     }
 }

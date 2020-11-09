@@ -20,16 +20,18 @@
     },
     methods : {
       async checkAuth() {
-        this.loading = true;
-        await LoginApi.isAuthenticated().then((response) => {
-          if (!response) {
-            Auth.logout();
-          }
-          this.loading = false;
-        }).catch((e) => {
-          console.error(e);
-          this.loading = false;
-        })
+      //   console.log(this.$route.meta)
+      //   debugger
+      //   this.loading = true;
+      //   await LoginApi.isAuthenticated().then((response) => {
+      //     if (!response) {
+      //       Auth.logout();
+      //     }
+      //     this.loading = false;
+      //   }).catch((e) => {
+      //     console.error(e);
+      //     this.loading = false;
+      //   })
       }
     }
 

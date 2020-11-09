@@ -97,8 +97,7 @@ class SqlNguonHocBongSpider(scrapy.Spider):
     def getCountry(self, country):
         if country is None or country.lower() == "khác":
             return None
-        country = country.replace("Học Bổng du học", "")
-        return country
+        return country.replace("Học bổng du học", "").strip()
     def getTime(self, time):
         if (time is None):
             time = "05/08/2021"

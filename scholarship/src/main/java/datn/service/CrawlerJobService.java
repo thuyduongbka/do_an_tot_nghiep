@@ -22,18 +22,10 @@ public class CrawlerJobService {
     public void crawler(){
         List<WebEntity> listWeb = webService.getAll();
         for (WebEntity web : listWeb){
-            if (checkTimeCrawlBeforeNow(web)){
+            if (web.getActive() && checkTimeCrawlBeforeNow(web)){
                 crawlerService.crawlerApi(web.getUrl());
             }
         }
-    }
-    
-    public static void main(String[] args) {
-        WebEntity web = new WebEntity();
-        web.setTime(1);
-        web.setTypeTime(TypeTime.DAY);
-        web.setLastCrawled(new Date());
-        System.out.println(checkTimeCrawlBeforeNow(web));
     }
     
     private static boolean checkTimeCrawlBeforeNow(WebEntity web){

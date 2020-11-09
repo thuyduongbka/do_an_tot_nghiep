@@ -13,7 +13,6 @@ import java.util.UUID;
  */
 @NoRepositoryBean
 public interface BaseRepository<E extends BaseEntity> extends PagingAndSortingRepository<E, Long>, JpaRepository<E, Long> {
-    E findByCode(UUID code);
 
     Page<E> findByIsDeleted(Pageable page, boolean isDeleted);
 }

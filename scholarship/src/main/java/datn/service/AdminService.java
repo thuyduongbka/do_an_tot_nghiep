@@ -31,7 +31,6 @@ public class AdminService extends BaseService<AdminEntity, AdminRepository> {
         AdminEntity entity = repository.findByAccountEntity_id(accountId);
         
         admin.setId(entity.getId());
-        admin.setCode(entity.getCode());
         admin.setAccountId(entity.getAccountEntity().getId());
         admin.setUsername(entity.getAccountEntity().getUsername());
         return admin;
@@ -40,7 +39,6 @@ public class AdminService extends BaseService<AdminEntity, AdminRepository> {
         Admin domain = new Admin();
         
         domain.setId(entity.getId());
-        domain.setCode(entity.getCode());
         domain.setAccountId(entity.getAccountEntity().getId());
         domain.setLastLogin(entity.getLastLogin());
         domain.setUsername(entity.getAccountEntity().getUsername());
@@ -64,7 +62,7 @@ public class AdminService extends BaseService<AdminEntity, AdminRepository> {
         accountEntity.setActive(account.isActive());
         accountEntity.setUpdatedTime(new Date());
         if (!account.getPassword().equals("")) {
-            accountEntity.setPassword(passwordEncoder.encode(account.getPassword()));
+                accountEntity.setPassword(passwordEncoder.encode(account.getPassword()));
         }
         accountEntity = accountService.update(accountEntity);
         AdminEntity admin = repository.findByAccountEntity(accountEntity);

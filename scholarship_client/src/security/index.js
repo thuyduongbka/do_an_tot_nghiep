@@ -2,6 +2,7 @@ import Router from '@/router'
 import Auth from '@/security/Authentication';
 import Pages from '@/router/Pages';
 import Roles from "@/security/Roles";
+import de from "element-ui/src/locale/lang/de";
 
 let enableSecurity = true;
 
@@ -31,15 +32,22 @@ if (enableSecurity) {
         /* has permission to access page */
         next();
       } else {
-        if (!Auth.isAuthenticated()) {
-          localStorage.setItem("requestUrl", to.fullPath)
-          console.log("Redirect to: ")
-          console.log(to)
-          next(Pages.loginUser.path);
+        if (to.meta.functionScope === "USER"){
+          next(Pages.search.path);
         } else {
-          console.log(Pages.forbidden.path)
-          next("/forbidden");
+          next(Pages.loginAdmin.path)
         }
+
+        // if (!Auth.isAuthenticated()) {
+        //   localStorage.setItem("requestUrl", to.fullPath)
+        //   console.log("Redirect to: ")
+        //   console.log(to)
+        //   console.log(to.meta.functionScope)
+        //   next(Pages.loginAdmin.path)
+        // } else {
+        //   console.log(Pages.forbidden.path)
+        //   next("/forbidden");
+        // }
       }
     } else {
 

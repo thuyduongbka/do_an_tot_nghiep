@@ -11,18 +11,8 @@ public class BaseDomain {
      */
     protected Long id;
 
-    protected UUID code;
-
     public Long getId() {
         return id;
-    }
-
-    public UUID getCode() {
-        return code;
-    }
-
-    public void setCode(UUID code) {
-        this.code = code;
     }
 
     public void setId(Long id) {

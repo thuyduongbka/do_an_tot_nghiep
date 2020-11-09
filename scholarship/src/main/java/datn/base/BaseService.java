@@ -52,7 +52,6 @@ public abstract class BaseService<E extends BaseEntity, R extends BaseRepository
         if (entity.getId() != null) {
             throw new IllegalStateException("Cannot call save for saved entity");
         }
-        entity.setCode(UUID.randomUUID());
 
         if (getCurrentUser() != null) {
             entity.setCreatedByUserId(getCurrentUser().getAdminId());
@@ -66,59 +65,12 @@ public abstract class BaseService<E extends BaseEntity, R extends BaseRepository
         entity.setUpdatedTime(new Date());
     }
 
-    /**
-     * Save List (Author: Hoang Van Toan)
-     */
-
     public List<E> saveList(List<E> entities) {
         for (E entity : entities) {
             preSave(entity);
         }
         return repository.saveAll(entities);
     }
-
-
-    /**
-     * Service Read
-     */
-    public E findByCode(String code) {
-        return findByCode(UUID.fromString(code));
-    }
-
-    public Long findIdByCode(String code) {
-        Object entity = repository.findByCode(UUID.fromString(code));
-
-        if (entity == null) {
-            return null;
-        }
-
-        return ((E) entity).getId();
-    }
-
-    public String findCodeById(Long id) {
-        Optional<E> entity = repository.findById(id);
-
-        if (entity == null || entity.isPresent() == false) {
-            return null;
-        }
-
-        return (entity.get()).getCode().toString();
-    }
-
-
-    /**
-     * Service Read
-     */
-    public E findByCode(UUID code) {
-        Object entity = repository.findByCode(code);
-
-        if (entity == null) {
-            return null;
-        }
-
-        return (E) entity;
-    }
-
 
     /**
      * Service Read
@@ -149,29 +101,6 @@ public abstract class BaseService<E extends BaseEntity, R extends BaseRepository
                 entity.setUpdatedByUserId(getCurrentUser().getAdminId());
 
             return (E) repository.save(entity);
-        }
-    }
-
-    /**
-     * Delete
-     */
-    public boolean delete(String code) {
-        return delete(UUID.fromString(code));
-    }
-
-    /**
-     * Delete
-     */
-    public boolean delete(UUID code) {
-        Object entityObj = repository.findByCode(code);
-        if (entityObj == null) {
-            return false;
-        } else {
-            E entity = (E) entityObj;
-            entity.setDeleted(true); // logic delete
-            entity.setUpdatedByUserId(getCurrentUser().getAdminId());
-            repository.save(entity);
-            return true;
         }
     }
 

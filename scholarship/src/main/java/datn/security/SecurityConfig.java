@@ -68,6 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
             http.authorizeRequests()
                     .antMatchers("/api-docs/**").permitAll()
+                    .antMatchers("/api-public/**").permitAll()
                     .antMatchers("/api/**").authenticated()
                     .antMatchers("/actuator/**").authenticated();
         } else {

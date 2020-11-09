@@ -41,7 +41,6 @@ public class AccountService extends BaseService<AccountEntity, AccountRepository
         Account domain = new Account();
 
         domain.setId(entity.getId());
-        domain.setCode(entity.getCode());
         domain.setUsername(entity.getUsername());
         domain.setPassword(entity.getPassword());
         domain.setRole(entity.getRole());

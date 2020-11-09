@@ -1,8 +1,6 @@
 package datn.resource;
 
-import datn.custom.domain.Account;
 import datn.entity.WebEntity;
-import datn.entity.user.AdminEntity;
 import datn.service.WebService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

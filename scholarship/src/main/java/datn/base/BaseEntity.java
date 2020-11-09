@@ -17,8 +17,6 @@ public abstract class BaseEntity {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     protected Long id;
 
-    protected UUID code;
-
     protected Date createdTime;
 
     protected Date updatedTime;
@@ -35,14 +33,6 @@ public abstract class BaseEntity {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public UUID getCode() {
-        return code;
-    }
-
-    public void setCode(UUID code) {
-        this.code = code;
     }
 
     public Date getCreatedTime() {
