@@ -16,9 +16,10 @@ Vue.use(VueMoment);
 Vue.config.productionTip = false
 Vue.prototype.$auth = Auth;
 
-new Vue({
+let vm = new Vue({
   el: '#app',
   router,
   components: { App },
   template: '<App/>'
 })
+ export default vm;

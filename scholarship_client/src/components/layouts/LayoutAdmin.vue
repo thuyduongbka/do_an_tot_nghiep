@@ -9,7 +9,7 @@
           <div><a href="/admin"><p>Cài đặt trích rút</p></a></div>
           <div><a href="/admin/report"><p>Báo cáo</p></a></div>
           <div><a href="/admin/admin-management"><p>Phân quyền</p></a></div>
-          <div><a @click="logout" style="text-decoration: underline">Đăng xuất</a></span></div>
+          <div><a @click="logout" style="text-decoration: underline">Đăng xuất</a></div>
         </div>
       </el-aside>
       <el-main>

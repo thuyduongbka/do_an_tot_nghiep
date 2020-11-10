@@ -2,9 +2,11 @@ package datn.security;
 
 import datn.custom.domain.Account;
 import datn.custom.domain.Admin;
+import datn.entity.user.EndUserEntity;
 import datn.enums.Role;
 import datn.service.AccountService;
 import datn.service.AdminService;
+import datn.service.EndUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +26,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private AdminService adminService;
+    
+    @Autowired
+    private EndUserService endUserService;
     
 
     @Override
@@ -49,9 +54,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .setAccountId(account.getId())
                 .setLastLoginTime(new Date());
         {
-            Admin admin = adminService.findByAccountId(account.getId());
-            builder.setAdminId(admin.getId());
-            builder.setName(admin.getUsername());
+            if (role.equals(Role.ADMIN)){
+                Admin admin = adminService.findByAccountId(account.getId());
+                builder.setAdminId(admin.getId());
+                builder.setName(admin.getUsername());
+            } else {
+                EndUserEntity endUserEntity = endUserService.findByAccountId(account.getId());
+                builder.setEndUserId(endUserEntity.getId());
+                builder.setName(endUserEntity.getName());
+            }
         }
 
         return builder.build();

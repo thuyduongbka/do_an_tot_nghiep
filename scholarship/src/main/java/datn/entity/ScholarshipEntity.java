@@ -5,6 +5,7 @@ import datn.base.BaseEntity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "scholarship")
@@ -20,6 +21,10 @@ public class ScholarshipEntity extends BaseEntity implements Serializable {
     private Long number_seen;
     private Long number_share;
     private Long number_comment;
+    
+    @OneToMany
+    @JoinColumn(name = "id")
+    private List<LevelEntity> levelEntities;
     
     public int getWebId() {
         return webId;

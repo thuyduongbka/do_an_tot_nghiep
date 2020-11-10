@@ -1,6 +1,9 @@
 package datn.resource;
 
 import datn.custom.domain.EndUser;
+import datn.custom.dto.ResponseCase;
+import datn.custom.dto.ServerResponseDTO;
+import datn.custom.exception.LoginFailureException;
 import datn.entity.user.EndUserEntity;
 import datn.service.EndUserService;
 import org.slf4j.Logger;
@@ -31,5 +34,16 @@ public class EndUserApi {
     public ResponseEntity<EndUserEntity> get(@RequestParam Long id){
         LOGGER.info("get user");
         return ResponseEntity.ok(endUserService.get(id));
+    }
+    @PostMapping("/login")
+    public ResponseEntity login (@RequestParam("username") String username,
+                                 @RequestParam("password") String password){
+        LOGGER.info("login");
+        try{
+            
+            return ResponseEntity.ok(new ServerResponseDTO(ResponseCase.SUCCESS, endUserService.login(username,password)));
+        } catch (LoginFailureException e) {
+            return ResponseEntity.ok(e);
+        }
     }
 }

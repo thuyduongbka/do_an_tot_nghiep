@@ -1,7 +1,7 @@
 import Roles from "@/security/Roles";
 
-const accessKey = 'scholarship-access-token';
-const currentUserKey = "scholarship-current-user";
+const accessKey = 'access-token';
+const currentUserKey = "current-user";
 let accessTokenInMemory = null;
 let userCodeJson = localStorage.getItem(currentUserKey);
 let userInMemory = userCodeJson != null ? JSON.parse(userCodeJson) : null;

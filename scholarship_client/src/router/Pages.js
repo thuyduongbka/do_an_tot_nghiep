@@ -3,7 +3,7 @@ const adminPathPrefix = "/admin"
 
 let Pages = {
   /** common pages **/
-  homeUser: {name: "home-user", path: ""},
+  homeUser: {name: "home-user", path: "/"},
   signUp : {name: "sign-up", path: "sign-up"},
   loginUser: {name: "login-user", path: "login"},
 

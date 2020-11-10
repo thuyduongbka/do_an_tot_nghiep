@@ -27,9 +27,14 @@
   import LoginApi from "@/api/LoginApi";
   import Auth from "@/security/Authentication";
   import Pages from "@/router/Pages";
+  import vm from "@/main";
+  import HeaderUser from "@/components/layouts/modules/HeaderUser";
 
   export default {
     name: "LoginUser",
+    created() {
+      Auth.logout();
+    },
     data() {
       const checkEmpty= (rule, value, callback) => {
         if (!value) {
@@ -60,7 +65,7 @@
       async submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.$emit("changeTab",2);
+            this.login(this.formData);
           } else {
             AlertService.error("Error");
             return;
@@ -70,11 +75,12 @@
       async login(formData){
         try {
           this.loading = true;
-          await LoginApi.login(formData).then((response) => {
+          await LoginApi.loginUser(formData).then((response) => {
             if (response.status.code == 200) {
               Auth.setToken(response.data.accessToken);
               Auth.setCurrentUser(response.data.userDetails);
-              this.$router.push({path: "/admin" + Pages.homeAdmin.path});
+              this.$router.push({path: Pages.homeUser.path});
+              location.reload();
             } else if (response.status.code == 400) {
               AlertService.error("Error");
             }

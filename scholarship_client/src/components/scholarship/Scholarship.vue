@@ -37,13 +37,15 @@
 <style>
   .card {
     margin: 30px;
-    width: 250px;
-    min-height: 390px;
+    width: 90%;
+    max-width: 250px;
+    min-height: 300px;
     height: 100%;
     border-radius: var(--radius-value);
     box-shadow: rgba(148, 149, 174, 0.2) 8px 10px 8px 0px, rgba(148, 149, 174, 0.14) 0px 3px 4px 0px, rgba(148, 149, 174, 0.12) 0px 3px 3px -2px;
     display: block;
     position: relative;
+    font-size: 12px;
   }
   .card-image {
     position: relative;

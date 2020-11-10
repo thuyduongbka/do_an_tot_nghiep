@@ -81,4 +81,14 @@
   .float-left {
     float: left;
   }
+  @media only screen and (max-width: 900px) {
+    .btn {
+      font-size: 12px;
+    }
+  }
+  @media only screen and (max-width: 400px) {
+    .btn {
+      font-size: 10px;
+    }
+  }
 </style>

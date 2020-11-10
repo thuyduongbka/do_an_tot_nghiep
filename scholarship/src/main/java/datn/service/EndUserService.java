@@ -2,6 +2,8 @@ package datn.service;
 
 import datn.base.BaseService;
 import datn.custom.domain.EndUser;
+import datn.custom.dto.LoginSuccessResponse;
+import datn.custom.exception.LoginFailureException;
 import datn.entity.CountryEntity;
 import datn.entity.MajorEntity;
 import datn.entity.SchoolEntity;
@@ -9,7 +11,11 @@ import datn.entity.user.AccountEntity;
 import datn.entity.user.EndUserEntity;
 import datn.enums.Role;
 import datn.repository.EndUserRepository;
+import datn.security.CustomAuthenticationProvider;
+import datn.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +40,12 @@ public class EndUserService extends BaseService<EndUserEntity, EndUserRepository
     @Autowired
     private MajorService majorService;
     
+    @Autowired
+    private CustomAuthenticationProvider authenticationProvider;
+    
+    @Autowired
+    private AuthenticationTokenService authenticationTokenService;
+    
     @Transactional
     public EndUserEntity save(EndUser dto) throws Exception {
         EndUserEntity endUserEntity = new EndUserEntity(dto);
@@ -54,5 +66,24 @@ public class EndUserService extends BaseService<EndUserEntity, EndUserRepository
     }
     public EndUserEntity get(Long id){
         return findById(id);
+    }
+    
+    public LoginSuccessResponse login(String username, String password){
+        Authentication authentication = new UsernamePasswordAuthenticationToken(username,password);
+        authentication = authenticationProvider.authenticate(authentication);
+    
+        CustomUserDetails userDetail = (CustomUserDetails) authentication.getPrincipal();
+        if (userDetail.isRole(Role.END_USER)){
+            String refreshToken = authenticationTokenService.createRefreshToken(userDetail.getAccountId());
+            String accessToken = authenticationTokenService.createAccessToken(userDetail.getAccountId());
+            LoginSuccessResponse loginSuccessResponse = new LoginSuccessResponse(userDetail, null);
+            loginSuccessResponse.setAccessToken(accessToken);
+            loginSuccessResponse.setRefreshToken(refreshToken);
+            return loginSuccessResponse;
+        }
+        throw new LoginFailureException("Login Fail");
+    }
+    public EndUserEntity findByAccountId(Long accountId){
+        return repository.findByAccountEntity_id(accountId);
     }
 }

@@ -28,7 +28,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item prop="listSchoolId">
+        <el-form-item prop="listMajorId">
           <div>ngành bạn muốn theo đuổi là: </div>
           <el-select multiple v-model="formData.listMajorId" filterable placeholder="Select">
             <el-option
