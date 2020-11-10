@@ -1,6 +1,5 @@
 <template>
   <el-header class="header">
-    <el-row>
       <div class="header-el float-left">
         <img style="width: 60px" src="@/assets/logo.png"/>
         <a v-if="isUser" class="header-el-link" href="/">TRANG CHỦ</a>
@@ -19,7 +18,6 @@
           <button class="btn btn-blue" round>Đăng Ký</button>
         </a>
       </div>
-    </el-row>
   </el-header>
 </template>
 <script>

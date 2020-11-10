@@ -1,11 +1,11 @@
 <template>
   <div class="search">
     <h1>TÌM KIẾM HỌC BỔNG</h1>
-    <el-form :model="formData" status-icon ref="formData" class="register-form">
-      <el-row :gutter="5">
-        <el-col :span="6">
+    <el-container>
+      <el-aside>
+        <el-form :model="formData" status-icon ref="formData" class="register-form">
           <el-form-item prop="listCountryId">
-            <div>đất nước bạn muốn tới là: </div>
+            <div>Quốc gia </div>
             <el-select multiple v-model="formData.listCountryId" filterable placeholder="Select">
               <el-option
                 v-for="item in listCountry"
@@ -15,11 +15,9 @@
               </el-option>
             </el-select>
           </el-form-item>
-        </el-col>
-        <el-col :span="6">
           <el-form-item prop="listMajorId">
-            <div>ngành bạn muốn theo đuổi là:</div>
-            <el-select multiple v-model="formData.listMajorId" filterable placeholder="Khoa học máy tính">
+            <div>Ngành học</div>
+            <el-select v-model="formData.majorId" filterable placeholder="Khoa học máy tính">
               <el-option
                 v-for="item in listMajor"
                 :key="item.id"
@@ -28,10 +26,8 @@
               </el-option>
             </el-select>
           </el-form-item>
-        </el-col>
-        <el-col :span="6">
           <el-form-item prop="listSchoolId">
-            <div>trường bạn muốn học là:</div>
+            <div>Trường học</div>
             <el-select multiple v-model="formData.listSchoolId" filterable placeholder="Select">
               <el-option
                 v-for="item in listSchool"
@@ -41,9 +37,33 @@
               </el-option>
             </el-select>
           </el-form-item>
-        </el-col>
-      </el-row>
-    </el-form>
+          <el-form-item prop="listMajorId">
+            <div>Bậc học</div>
+            <el-select v-model="formData.levelName" filterable placeholder="Thạc sỹ">
+              <el-option
+                v-for="item in listLevel"
+                :key="item"
+                :label="item"
+                :value="item">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item prop="dueDate">
+            <div>Thời hạn</div>
+            <el-date-picker
+              v-model="formData.dueDate"
+              type="date"
+              placeholder="Pick a day"
+              format="dd/MM/yyyy">
+            </el-date-picker>
+          </el-form-item>
+          <el-button class="btn btn-blue" round @click="search()">Tìm kiếm</el-button>
+        </el-form>
+      </el-aside>
+      <el-main>
+        <search-result :result="result" @search="search()" :pageParam="pageParam"></search-result>
+      </el-main>
+    </el-container>
 
   </div>
 </template>
@@ -52,9 +72,12 @@
   import AlertService from "@/services/AlertService";
   import SchoolApi from "@/api/SchoolApi";
   import MajorApi from "@/api/MajorApi";
-
+  import LevelApi from "@/api/LevelApi";
+  import ScholarshipApi from "@/api/ScholarshipApi";
+  import SearchResult from "@/views/user/search/SearchResult";
   export default {
     name: "Search",
+    components: {SearchResult},
     created() {
       this.getData();
     },
@@ -63,19 +86,33 @@
         formData: {
           listCountryId: [],
           listSchoolId: [],
-          listMajorId: [],
+          majorId: null,
+          levelName: null,
+          dueDate: null
         },
         listSchool: [],
         listCountry: [],
         listMajor: [],
+        listLevel: [],
+        pageParam: {
+          page: 1,
+          pageSize: 10,
+        },
+        result: null,
       }
     },
     methods: {
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },
-      async submitForm(formName) {
-        this.$emit("submit");
+      async search() {
+        try {
+          await ScholarshipApi.getAll(this.pageParam, this.formData).then(result => {
+            this.result = result;
+          })
+        } catch (e) {
+          AlertService.error(e)
+        }
       },
       async getData() {
         try {
@@ -95,6 +132,13 @@
         try {
           await MajorApi.getAll().then(result => {
             this.listMajor = result;
+          })
+        } catch (e) {
+          AlertService.error(e)
+        }
+        try {
+          await LevelApi.getAll().then(result => {
+            this.listLevel = result;
           })
         } catch (e) {
           AlertService.error(e)

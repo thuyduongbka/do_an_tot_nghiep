@@ -2,7 +2,7 @@
   <div class="list-scholarship">
     <div style="margin: auto; font-size: xxx-large;" @click="changeView(-1)"><i class="el-icon-arrow-left"></i></div>
     <div v-for="(scholarship, index) in data">
-      <scholarship v-show="checkData(index)" :scholarship="scholarship"></scholarship>
+      <scholarship v-show="checkData(index)" :scholarship="scholarship" :show-image="true"></scholarship>
     </div>
     <div  style="margin: auto; font-size: xxx-large"><i class="el-icon-arrow-right" @click="changeView(1)"></i></div>
   </div>

@@ -12,9 +12,10 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Entity
-@Table(name = "level")
-public class LevelEntity extends BaseEntity {
+@Table(name = "requirement")
+public class RequirementEntity extends BaseEntity {
     
     private Long scholarshipId;
     private String name;
+    private String value;
 }

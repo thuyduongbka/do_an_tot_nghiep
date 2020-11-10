@@ -25,11 +25,18 @@ const utils = {
   isEmpty(value){
     return value == null || value == undefined || ( typeof value == "string" && value.trim() == "" );
   },
-  formatDate(date){
-    if (!date){
-      return "";
-    }
-    return moment(date).format("YYYY/MM/DD");
+  formatDate(date) {
+    let d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
+
+    return [year, month, day].join('-');
   },
   formatDateTime(dateTime){
     if(!dateTime){

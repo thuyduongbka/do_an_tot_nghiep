@@ -6,10 +6,11 @@ import ElementUI from 'element-ui';
 import HighChartsVue from 'highcharts-vue';
 import VueMoment from 'vue-moment';
 import Auth from "@/security/Authentication";
+import locale from 'element-ui/lib/locale/lang/vi'
 
 import 'element-ui/lib/theme-chalk/index.css';
 
-Vue.use(ElementUI);
+Vue.use(ElementUI, { locale })
 Vue.use(HighChartsVue);
 Vue.use(VueMoment);
 
