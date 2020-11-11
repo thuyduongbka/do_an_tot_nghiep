@@ -1,5 +1,6 @@
 package datn.custom.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +14,7 @@ public class ScholarshipFilterDto {
     private List<Long> listCountryId;
     private Long majorId;
     private String levelName;
-    
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
     private Date dueDate;
     
 }

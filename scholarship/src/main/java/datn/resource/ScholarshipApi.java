@@ -33,4 +33,10 @@ public class ScholarshipApi {
         PageRequest request = PageRequest.of(page - 1, pageSize, sort);
         return ResponseEntity.ok(service.getAll(scholarshipFilterDto,request));
     }
+    
+    @GetMapping("/get/{id}")
+    public ResponseEntity<ScholarshipEntity> get(@PathVariable Long id){
+        LOGGER.info("call /api/scholarship/get/{id}");
+        return ResponseEntity.ok(service.findById(id));
+    }
 }

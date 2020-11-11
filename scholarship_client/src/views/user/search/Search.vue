@@ -1,12 +1,12 @@
 <template>
   <div class="search">
-    <h1>TÌM KIẾM HỌC BỔNG</h1>
+
     <el-container>
       <el-aside>
         <el-form :model="formData" status-icon ref="formData" class="register-form">
           <el-form-item prop="listCountryId">
             <div>Quốc gia </div>
-            <el-select multiple v-model="formData.listCountryId" filterable placeholder="Select">
+            <el-select clearable multiple v-model="formData.listCountryId" filterable placeholder="Select">
               <el-option
                 v-for="item in listCountry"
                 :key="item.id"
@@ -17,7 +17,7 @@
           </el-form-item>
           <el-form-item prop="listMajorId">
             <div>Ngành học</div>
-            <el-select v-model="formData.majorId" filterable placeholder="Khoa học máy tính">
+            <el-select clearable v-model="formData.majorId" filterable placeholder="Khoa học máy tính">
               <el-option
                 v-for="item in listMajor"
                 :key="item.id"
@@ -28,7 +28,7 @@
           </el-form-item>
           <el-form-item prop="listSchoolId">
             <div>Trường học</div>
-            <el-select multiple v-model="formData.listSchoolId" filterable placeholder="Select">
+            <el-select clearable multiple v-model="formData.listSchoolId" filterable placeholder="Select">
               <el-option
                 v-for="item in listSchool"
                 :key="item.id"
@@ -39,7 +39,7 @@
           </el-form-item>
           <el-form-item prop="listMajorId">
             <div>Bậc học</div>
-            <el-select v-model="formData.levelName" filterable placeholder="Thạc sỹ">
+            <el-select clearable v-model="formData.levelName" filterable placeholder="Thạc sỹ">
               <el-option
                 v-for="item in listLevel"
                 :key="item"
@@ -60,7 +60,8 @@
           <el-button class="btn btn-blue" round @click="search()">Tìm kiếm</el-button>
         </el-form>
       </el-aside>
-      <el-main>
+      <el-main style="margin-top: 0px; padding: 5px;">
+        <h1>TÌM KIẾM HỌC BỔNG</h1>
         <search-result :result="result" @search="search()" :pageParam="pageParam"></search-result>
       </el-main>
     </el-container>

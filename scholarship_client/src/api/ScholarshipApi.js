@@ -1,10 +1,11 @@
 import {UserRequest as userRequest} from "@/api/Request"
 import utils from "@/utils";
 
+let baseUrl = "/api/scholarship";
 export default {
   getAll(pageParam, dataFilter ) {
     return userRequest({
-      url : "/api/scholarship/getAll" + utils.createParam(pageParam),
+      url : baseUrl + "/getAll" + utils.createParam(pageParam),
       method: "POST",
       data: dataFilter,
       headers: {
@@ -12,4 +13,7 @@ export default {
       }
     });
   },
+  get(id){
+    return userRequest.get(baseUrl + "/get/" + id  );
+  }
 }

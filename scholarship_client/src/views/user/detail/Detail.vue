@@ -2,20 +2,41 @@
   <el-container style="margin: 50px">
     <el-container>
       <el-header class="header">
-        <h2> Học bổng du học New Zealand- PhD </h2>
-        <p>University of Wellington</p>
+        <h2> {{scholarship.name}} </h2>
+        <p>{{scholarship.schoolEntity.name}}</p>
       </el-header>
       <el-main class="content">
         <div class="rating"></div>
         <div class="content-field">
           <i class="icon el-icon-location"></i>
           <span class="label">Quốc gia: </span>
-          <span class="value">New Zealand</span>
+          <span class="value">{{scholarship.schoolEntity.name}}</span>
         </div>
         <div class="content-field">
           <i class="icon el-icon-school"></i>
-          <span class="label">Trường học </span>
-          <span class="value">New Zealand</span>
+          <span class="label">Ngành học: </span>
+          <ul>
+            <li v-for="major in scholarship.majorEntities" :key="major.id">{{major.name}}</li>
+          </ul>
+        </div>
+        <div class="content-field">
+          <i class="icon el-icon-school"></i>
+          <span class="label">Bằng cấp: </span>
+          <ul>
+            <li v-for="level in scholarship.levelEntities" :key="level.id">{{level.name}}</li>
+          </ul>
+        </div>
+        <div class="content-field">
+          <i class="icon el-icon-location"></i>
+          <span class="label">Thời hạn: </span>
+          <span class="value">{{scholarship.time}}</span>
+        </div>
+        <div class="content-field">
+          <i class="icon el-icon-school"></i>
+          <span class="label">Yêu cầu: </span>
+          <ul>
+            <li v-for="requirement in scholarship.requirementEntities" :key="requirement.id">{{requirement.name}}</li>
+          </ul>
         </div>
 
       </el-main>
@@ -59,17 +80,39 @@
 <script>
 
 
+  import ScholarshipApi from "@/api/ScholarshipApi";
+  import AlertService from "@/services/AlertService";
+
   export default {
     name: "Detail",
     components: {},
     data() {
-      return {}
+      return {
+        scholarship: null,
+      }
+    },
+    mounted() {
+      this.getData();
+    },
+    methods: {
+      async getData() {
+        try {
+          let id = this.$route.params.id;
+          await ScholarshipApi.get(id).then(result => {
+            this.scholarship = result;
+          })
+        } catch (e) {
+          AlertService.error(e)
+        }
+      }
     }
   }
 </script>
 <style scoped>
   .header {
     margin-bottom: 30px;
+    text-align: left;
+    min-height: 70px;
   }
 
   .content {
@@ -79,6 +122,9 @@
     text-align: left;
     margin-right: 30px;
     box-shadow: 5px 10px 8px rgba(148, 149, 174, 0.2);
+  }
+  .content-field {
+    margin: 10px;
   }
 
   .content-field > * {

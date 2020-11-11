@@ -11,7 +11,7 @@
     </div>
     <div class="card-footer" >
       <div class="card-link">
-        <button class="btn btn-white"> Xem thêm </button>
+        <button class="btn btn-white" @click="detail()"> Xem thêm </button>
       </div>
       <div class="card-react" v-if="showImage" >
         <div class="card-react--item">
@@ -30,6 +30,7 @@
 </template>
 <script>
   import utils from "@/utils";
+  import Pages from "@/router/Pages";
 
   export default {
     name : "Scholarship",
@@ -37,6 +38,9 @@
     methods: {
       formatDate(date){
         return utils.formatDate(date);
+      },
+      detail(){
+        this.$router.push({name:Pages.detailScholarship.name, params: {id : this.scholarship.id} });
       }
     }
   }
