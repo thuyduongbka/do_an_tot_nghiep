@@ -21,9 +21,9 @@ public class ScholarshipEntity extends BaseEntity {
     private String url;
     private Boolean isExpired;
     
-    private Long number_seen;
-    private Long number_share;
-    private Long number_comment;
+    private Long numberSeen;
+    private Long numberShare;
+    private Long numberComment;
     
     @OneToOne
     @JoinColumn(name = "school_id", referencedColumnName = "id")
@@ -31,7 +31,6 @@ public class ScholarshipEntity extends BaseEntity {
     @OneToOne
     @JoinColumn(name = "country_id", referencedColumnName = "id")
     private CountryEntity countryEntity;
-    
     @OneToMany
     @JoinColumn(name = "id")
     private List<LevelEntity> levelEntities;
@@ -41,6 +40,9 @@ public class ScholarshipEntity extends BaseEntity {
     @OneToMany
     @JoinColumn(name = "id")
     private List<RequirementEntity> requirementEntities;
+    
+    @Transient
+    private List<CommentEntity> commentEntities;
     
     @ManyToMany
     @JoinTable(

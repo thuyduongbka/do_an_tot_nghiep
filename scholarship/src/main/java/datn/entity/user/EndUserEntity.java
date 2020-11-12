@@ -2,9 +2,7 @@ package datn.entity.user;
 
 import datn.base.BaseEntity;
 import datn.custom.domain.EndUser;
-import datn.entity.CountryEntity;
-import datn.entity.MajorEntity;
-import datn.entity.SchoolEntity;
+import datn.entity.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -53,6 +51,10 @@ public class EndUserEntity extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "major_id")
     )
     private List<MajorEntity> majorEntities;
+    
+    @OneToMany
+    @JoinColumn(name = "id")
+    private List<ScholarshipInteractiveEntity> interactiveEntities;
     
     public EndUserEntity(){}
     public EndUserEntity(EndUser dto){

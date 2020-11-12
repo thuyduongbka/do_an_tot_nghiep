@@ -24,6 +24,6 @@ public class MajorApi {
     @GetMapping("/list-all")
     public ResponseEntity<List<MajorEntity>> getAll(){
         LOGGER.info("get all major");
-        return ResponseEntity.ok(service.findAll());
+        return ResponseEntity.ok(service.findAllChild());
     }
 }

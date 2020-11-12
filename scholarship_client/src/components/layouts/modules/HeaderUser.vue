@@ -8,8 +8,8 @@
       </div>
       <div class="header-el float-right">
         <a v-if="isUser" href="/profile">TRANG CÁ NHÂN</a>
-        <a v-if="isUser">
-          <button class="btn btn-blue" href="/login" round>Đăng Xuất</button>
+        <a v-if="isUser" href="/login" >
+          <button class="btn btn-blue" round>Đăng Xuất</button>
         </a>
         <a v-if="!isUser" href="/login">
           <button class="btn btn-white" round>Đăng Nhập</button>

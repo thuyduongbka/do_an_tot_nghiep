@@ -13,7 +13,7 @@ export default {
       }
     });
   },
-  get(id){
-    return userRequest.get(baseUrl + "/get/" + id  );
-  }
+  get(userId,scholarshipId){
+    return userRequest.get(baseUrl + "/get?userId=" + userId + "&scholarshipId=" + scholarshipId );
+  },
 }

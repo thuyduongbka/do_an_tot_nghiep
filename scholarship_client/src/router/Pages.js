@@ -11,7 +11,7 @@ let Pages = {
   notFound: {name: "notFound", path: "/not-found"},
   forbidden: {name: "forbidden", path: "/forbidden"},
   /** user page **/
-  detailScholarship: {name: "detail", path: "detail/:id"},
+  detailScholarship: {name: "detail", path: "detail"},
   search: {name: "search", path: "search"},
   compare: {name: "compare", path: "compare"},
   profile: {name: "profile", path: "profile"},

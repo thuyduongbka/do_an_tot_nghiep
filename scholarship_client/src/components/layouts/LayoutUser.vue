@@ -21,7 +21,7 @@
 </script>
 <style scoped>
   /deep/
-  .el-main {
-    margin-top: 30px;
+  .el-header {
+    padding: 0 0px;
   }
 </style>

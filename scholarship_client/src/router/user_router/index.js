@@ -6,6 +6,7 @@ import LoginUser from "@/views/user/LoginUser";
 import Detail from "@/views/user/detail/Detail";
 import Search from "@/views/user/search/Search";
 import Register from "@/views/user/register/Register";
+import Compare from "@/views/user/compare/Compare";
 
 let meta = {
   authorities : [Roles.ROLE_END_USER],
@@ -32,6 +33,14 @@ let UserRouter = [
     component : Detail,
     meta: {
       title: "Detail Scholarship",
+      ...meta
+    }
+  },
+  {
+    ...Pages.compare,
+    component : Compare,
+    meta: {
+      title: "Compare Scholarship",
       ...meta
     }
   },

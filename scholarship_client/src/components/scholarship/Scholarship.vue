@@ -40,7 +40,7 @@
         return utils.formatDate(date);
       },
       detail(){
-        this.$router.push({name:Pages.detailScholarship.name, params: {id : this.scholarship.id} });
+        this.$router.push({name:Pages.detailScholarship.name, query: {id : this.scholarship.id} });
       }
     }
   }

@@ -73,6 +73,11 @@
     color: white;
     background-color: #FF275A;
   }
+  .btn-white-pink {
+    border: 2px solid #FF275A;
+    color: #FF275A;
+    background-color: white;
+  }
 
   .float-right {
     float: right;

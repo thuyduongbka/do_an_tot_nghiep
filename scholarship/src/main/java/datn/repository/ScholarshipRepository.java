@@ -6,6 +6,7 @@ import datn.entity.MajorEntity;
 import datn.entity.ScholarshipEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -54,4 +55,8 @@ public interface ScholarshipRepository extends BaseRepository<ScholarshipEntity>
     Page<ScholarshipEntity> findAll(@Param("majorId") Long majorId,
                                     @Param("levelName") String levelName,
                                     @Param("dueDate")Date dueDate, Pageable pageable);
+    
+    @Modifying
+    @Query(value = "UPDATE scholarship SET number_seen = number_seen + 1 WHERE id = ?1 ", nativeQuery = true)
+    int increaseNumberSeen(Long scholarshipId);
 }

@@ -1,16 +1,23 @@
 <template>
-  <el-container style="margin: 50px">
+  <el-container v-if="scholarship != null" style="margin: 50px">
     <el-container>
       <el-header class="header">
         <h2> {{scholarship.name}} </h2>
-        <p>{{scholarship.schoolEntity.name}}</p>
+        <p v-if="scholarship.schoolEntity">{{scholarship.schoolEntity.name}}</p>
       </el-header>
       <el-main class="content">
-        <div class="rating"></div>
-        <div class="content-field">
+        <div class="rating">
+          <div class="block">
+            <el-rate
+              v-model="rating"
+              :colors="['#6637EB','#F7BA2A','#FF275A']">
+            </el-rate>
+          </div>
+        </div>
+        <div class="content-field" v-if="scholarship.countryEntity">
           <i class="icon el-icon-location"></i>
           <span class="label">Quốc gia: </span>
-          <span class="value">{{scholarship.schoolEntity.name}}</span>
+          <span class="value">{{scholarship.countryEntity.name}}</span>
         </div>
         <div class="content-field">
           <i class="icon el-icon-school"></i>
@@ -20,22 +27,22 @@
           </ul>
         </div>
         <div class="content-field">
-          <i class="icon el-icon-school"></i>
+          <i class="icon el-icon-trophy"></i>
           <span class="label">Bằng cấp: </span>
           <ul>
             <li v-for="level in scholarship.levelEntities" :key="level.id">{{level.name}}</li>
           </ul>
         </div>
         <div class="content-field">
-          <i class="icon el-icon-location"></i>
+          <i class="icon el-icon-time"></i>
           <span class="label">Thời hạn: </span>
           <span class="value">{{scholarship.time}}</span>
         </div>
-        <div class="content-field">
-          <i class="icon el-icon-school"></i>
+        <div class="content-field" v-if="scholarship.requirementEntities.length > 0">
+          <i class="icon el-icon-collection-tag"></i>
           <span class="label">Yêu cầu: </span>
           <ul>
-            <li v-for="requirement in scholarship.requirementEntities" :key="requirement.id">{{requirement.name}}</li>
+            <li v-for="requirement in scholarship.requirementEntities" :key="requirement.id">{{requirement}}</li>
           </ul>
         </div>
 
@@ -43,35 +50,46 @@
     </el-container>
     <el-aside class="interactive" width="300px">
 
-      <h2> 100% </h2>
-      <button class="btn btn-pink">
-        <span style="font-size: large; vertical-align: middle">&#10084;</span>
-        <span>Thêm vào yêu thích</span>
+      <h2> {{scholarship.moneyEntities[0].value}}</h2>
+      <button v-if="!interactive || !interactive.isInListFavorite" @click="addFavorite()" class="btn btn-pink">
+        <span class="icon">&#10084;</span>
+        <span >Thêm vào danh sách</span>
       </button>
-      <button class="btn btn-pink">
+      <button v-if="interactive && interactive.isInListFavorite" class="btn btn-white-pink">
+        <span class="icon">&#10084;</span>
+        <span >Đã thêm vào danh sách</span>
+      </button>
+      <button class="btn btn-pink" @click="countClickContact()">
         &#9742;
         <span>Liên hệ</span>
       </button>
-      <button class="btn btn-pink">
+      <button @click="countCompare()" class="btn btn-pink">
         &#8651;
         <span>So sánh</span>
       </button>
-      <div style="text-align: left; margin: 20px; font-size: large">
+      <div style="text-align: left; margin: 20px;">
         <div class="react">
           <span class="icon">&#128065;</span>
-          <span class="value">12 Lượt xem</span>
+          <span class="value">{{interactive ? interactive.numberSeen: 0}} Lượt xem</span>
         </div>
         <div class="react">
           <span class="icon">&#10084;</span>
-          <span class="value">12 Lượt yêu thích</span>
+          <span class="value">{{interactive? interactive.numberSeen : 0}} Lượt yêu thích</span>
         </div>
         <div class="react">
           <span class="icon"><i class="el-icon-share"></i></span>
-          <span class="value">12 Lượt chia sẻ</span>
+          <span class="value">{{interactive? interactive.numberShare :0}} Lượt chia sẻ</span>
         </div>
         <div class="react">
           <span class="icon"><i class="el-icon-chat-square"></i> </span>
-          <span class="value">12 Lượt bình luận</span>
+          <span class="value">{{interactive? interactive.numberComment: 0}} Lượt bình luận</span>
+        </div>
+        <div class="content-field" >
+          <div style="margin: 10px" v-for="mess in scholarship.commentEntities" :key="mess.id">
+            <div v-if="mess.userEntity" style="font-size: 14px; font-weight: normal; "><i class="el-icon-chat-square"/> {{mess.userEntity.name}}</div>
+            <div style="font-size: 14px; font-weight: normal; color: #6637EB;">{{mess.message}}</div>
+          </div>
+          <el-input size="small" placeholder="câu hỏi ..." v-model="newComment" @keyup.enter.native="createComment"></el-input>
         </div>
       </div>
     </el-aside>
@@ -82,6 +100,10 @@
 
   import ScholarshipApi from "@/api/ScholarshipApi";
   import AlertService from "@/services/AlertService";
+  import Auth from "@/security/Authentication";
+  import ScholarshipInteractiveApi from "@/api/ScholarshipInteractiveApi";
+  import CommentApi from "@/api/CommentApi";
+  import Pages from "@/router/Pages";
 
   export default {
     name: "Detail",
@@ -89,21 +111,100 @@
     data() {
       return {
         scholarship: null,
+        rating: 0,
+        newComment: "",
+        interactive: null,
       }
     },
-    mounted() {
+    created() {
       this.getData();
+      this.countView();
+    },
+    watch: {
+      'rating'(value){
+        this.changeRating();
+      }
     },
     methods: {
       async getData() {
         try {
-          let id = this.$route.params.id;
-          await ScholarshipApi.get(id).then(result => {
-            this.scholarship = result;
+          let id = this.$route.query.id;
+          let userId = Auth.getCurrentUser().endUserId;
+          await ScholarshipApi.get(userId,id).then(result => {
+            this.scholarship = result.scholarshipEntity;
+            this.interactive = result.interactiveEntity;
+            this.rating = this.interactive?this.interactive.rating:0;
           })
         } catch (e) {
           AlertService.error(e)
         }
+      },
+      async countView() {
+        try {
+          let id = this.$route.query.id;
+          let userId = Auth.getCurrentUser().endUserId;
+          await ScholarshipInteractiveApi.countView(id, userId);
+        } catch (e) {
+          AlertService.error(e)
+        }
+      },
+      async countClickContact(){
+        window.location.href = this.scholarship.url;
+        try {
+          let id = this.$route.query.id;
+          let userId = Auth.getCurrentUser().endUserId;
+          await ScholarshipInteractiveApi.countClickContact(id, userId);
+        } catch (e) {
+          AlertService.error(e)
+        }
+      },
+      async createComment(){
+        console.log("comment")
+        if (this.newComment != ""){
+          try {
+            let id = this.$route.query.id;
+            let userId = Auth.getCurrentUser().endUserId;
+            await CommentApi.create(this.newComment,id, userId).then(result => {
+              this.newComment = "";
+                this.getData();
+            });
+          } catch (e) {
+            AlertService.error(e)
+          }
+        }
+      },
+      async addFavorite(){
+        try {
+          let id = this.$route.query.id;
+          let userId = Auth.getCurrentUser().endUserId;
+          await ScholarshipInteractiveApi.addFavorite(id, userId, true).then(result=>{
+            this.getData();
+          });
+        } catch (e) {
+          AlertService.error(e)
+        }
+      },
+      async changeRating(){
+        if (this.rating == null) return ;
+        try {
+          let id = this.$route.query.id;
+          let userId = Auth.getCurrentUser().endUserId;
+          await ScholarshipInteractiveApi.rating(id, userId, this.rating).then(result=>{
+            this.getData();
+          });
+        } catch (e) {
+          AlertService.error(e)
+        }
+      },
+      countCompare(){
+        this.$router.push({path: Pages.compare.path, query: {scholarship1: this.scholarship.id}});
+        // try {
+        //   let id = this.$route.query.id;
+        //   let userId = Auth.getCurrentUser().endUserId;
+        //   await ScholarshipInteractiveApi.countCompare(id, userId);
+        // } catch (e) {
+        //   AlertService.error(e)
+        // }
       }
     }
   }
@@ -112,9 +213,15 @@
   .header {
     margin-bottom: 30px;
     text-align: left;
-    min-height: 70px;
+    height: auto !important;
   }
-
+  .rating {
+    text-align: right ;
+  }
+  /deep/
+  .el-rate__icon {
+    font-size: 24px;
+  }
   .content {
     padding: 10px;
     border-radius: 15px;
@@ -158,7 +265,7 @@
   .react > * {
 
     margin-left: 10px;
-    margin-right: 20px;
+    margin-right: 5px;
     vertical-align: middle;
   }
 

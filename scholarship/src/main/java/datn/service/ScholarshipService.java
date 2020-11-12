@@ -2,16 +2,17 @@ package datn.service;
 
 import datn.base.BaseService;
 import datn.custom.dto.ScholarshipFilterDto;
-import datn.entity.LevelEntity;
-import datn.entity.MajorEntity;
-import datn.entity.ScholarshipEntity;
+import datn.custom.dto.UserScholarshipDto;
+import datn.entity.*;
 import datn.repository.ScholarshipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ScholarshipService extends BaseService<ScholarshipEntity, ScholarshipRepository> {
@@ -20,6 +21,12 @@ public class ScholarshipService extends BaseService<ScholarshipEntity, Scholarsh
     
     @Autowired
     private LevelService levelService;
+    
+    @Autowired
+    private CommentService commentService;
+    
+    @Autowired
+    private ScholarshipInteractiveService interactiveService;
     
     public Page<ScholarshipEntity> getAll(ScholarshipFilterDto dto, PageRequest page){
         List<Long> listSchoolId = dto.getListSchoolId();
@@ -35,5 +42,18 @@ public class ScholarshipService extends BaseService<ScholarshipEntity, Scholarsh
             return repository.findAllByListCountry(listCountryId, dto.getMajorId(), dto.getLevelName(), dto.getDueDate(), page);
         }
         return repository.findAll(listSchoolId, listCountryId, dto.getMajorId(), dto.getLevelName(), dto.getDueDate(), page);
+    }
+    
+    @Transactional
+    public void countView(Long scholarshipId){
+        repository.increaseNumberSeen(scholarshipId);
+    }
+    
+    public UserScholarshipDto findScholarshipById(Long userId, Long scholarshipId){
+        ScholarshipEntity scholarshipEntity = findById(scholarshipId);
+        List<CommentEntity> commentEntities = commentService.getByScholarshipId(scholarshipId);
+        scholarshipEntity.setCommentEntities(commentEntities);
+        ScholarshipInteractiveEntity interactiveEntity =  interactiveService.findByScholarshipIdAndUserId(scholarshipId,userId);
+        return new UserScholarshipDto(interactiveEntity, scholarshipEntity);
     }
 }

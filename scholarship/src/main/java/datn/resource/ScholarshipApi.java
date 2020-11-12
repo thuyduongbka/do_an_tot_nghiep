@@ -2,6 +2,7 @@ package datn.resource;
 
 import datn.custom.domain.Scholarship;
 import datn.custom.dto.ScholarshipFilterDto;
+import datn.custom.dto.UserScholarshipDto;
 import datn.entity.ScholarshipEntity;
 import datn.service.ScholarshipService;
 import org.slf4j.Logger;
@@ -34,9 +35,10 @@ public class ScholarshipApi {
         return ResponseEntity.ok(service.getAll(scholarshipFilterDto,request));
     }
     
-    @GetMapping("/get/{id}")
-    public ResponseEntity<ScholarshipEntity> get(@PathVariable Long id){
+    @GetMapping("/get")
+    public ResponseEntity<UserScholarshipDto> get(@RequestParam(value = "userId") Long userId,
+                                                  @RequestParam(value = "scholarshipId") Long scholarshipId){
         LOGGER.info("call /api/scholarship/get/{id}");
-        return ResponseEntity.ok(service.findById(id));
+        return ResponseEntity.ok(service.findScholarshipById(userId, scholarshipId));
     }
 }
