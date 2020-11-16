@@ -2,7 +2,7 @@ import {UserRequest as userRequest} from "@/api/Request"
 
 let baseUrl = "/api-public/end-user"
 export default {
-  getAll(id) {
+  get(id) {
     return userRequest.get(baseUrl + "/get?id=" + id);
   },
   save(data) {

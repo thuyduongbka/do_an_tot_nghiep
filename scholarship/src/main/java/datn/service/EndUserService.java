@@ -66,6 +66,7 @@ public class EndUserService extends BaseService<EndUserEntity, EndUserRepository
         
         return save(endUserEntity);
     }
+    @Transactional
     public EndUserEntity update(EndUser dto){
         EndUserEntity userEntity = findByAccountId(dto.getAccountId());
         userEntity.setName(dto.getName());
