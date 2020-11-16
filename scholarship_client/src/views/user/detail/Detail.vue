@@ -9,6 +9,7 @@
         <div class="rating">
           <div class="block">
             <el-rate
+              :allow-half="true"
               v-model="rating"
               :colors="['#6637EB','#F7BA2A','#FF275A']">
             </el-rate>
@@ -70,19 +71,19 @@
       <div style="text-align: left; margin: 20px;">
         <div class="react">
           <span class="icon">&#128065;</span>
-          <span class="value">{{interactive ? interactive.numberSeen: 0}} Lượt xem</span>
+          <span class="value">{{scholarship ? scholarship.numberSeen: 0}} Lượt xem</span>
         </div>
         <div class="react">
-          <span class="icon">&#10084;</span>
-          <span class="value">{{interactive? interactive.numberSeen : 0}} Lượt yêu thích</span>
+          <span class="icon">&#9734;</span>
+          <span class="value">{{scholarship? scholarship.rating + "/" + scholarship.numberRating : 0}} Đánh giá</span>
         </div>
         <div class="react">
           <span class="icon"><i class="el-icon-share"></i></span>
-          <span class="value">{{interactive? interactive.numberShare :0}} Lượt chia sẻ</span>
+          <span class="value">{{scholarship? scholarship.numberShare :0}} Lượt chia sẻ</span>
         </div>
         <div class="react">
           <span class="icon"><i class="el-icon-chat-square"></i> </span>
-          <span class="value">{{interactive? interactive.numberComment: 0}} Lượt bình luận</span>
+          <span class="value">{{scholarship? scholarship.numberComment: 0}} Lượt bình luận</span>
         </div>
         <div class="content-field" >
           <div style="margin: 10px" v-for="mess in scholarship.commentEntities" :key="mess.id">
@@ -122,7 +123,8 @@
     },
     watch: {
       'rating'(value){
-        this.changeRating();
+        if (value>0)
+          this.changeRating();
       }
     },
     methods: {
@@ -133,7 +135,7 @@
           await ScholarshipApi.get(userId,id).then(result => {
             this.scholarship = result.scholarshipEntity;
             this.interactive = result.interactiveEntity;
-            this.rating = this.interactive?this.interactive.rating:0;
+            this.rating = this.interactive ? this.interactive.rating :0 ;
           })
         } catch (e) {
           AlertService.error(e)
@@ -197,14 +199,7 @@
         }
       },
       countCompare(){
-        this.$router.push({path: Pages.compare.path, query: {scholarship1: this.scholarship.id}});
-        // try {
-        //   let id = this.$route.query.id;
-        //   let userId = Auth.getCurrentUser().endUserId;
-        //   await ScholarshipInteractiveApi.countCompare(id, userId);
-        // } catch (e) {
-        //   AlertService.error(e)
-        // }
+        this.$router.push({path: Pages.compare.path, query: {scholarshipId1: this.scholarship.id}});
       }
     }
   }

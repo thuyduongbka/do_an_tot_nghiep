@@ -1,12 +1,15 @@
 package datn.service;
 
 import datn.base.BaseService;
+import datn.entity.ScholarshipEntity;
 import datn.entity.ScholarshipInteractiveEntity;
+import datn.entity.SchoolEntity;
 import datn.repository.ScholarshipInteractiveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class ScholarshipInteractiveService extends BaseService<ScholarshipInteractiveEntity, ScholarshipInteractiveRepository> {
@@ -28,17 +31,16 @@ public class ScholarshipInteractiveService extends BaseService<ScholarshipIntera
     }
     @Transactional
     public void countContact(Long userId, Long scholarshipId){
-        scholarshipService.countView(scholarshipId);
         repository.increaseNumberClickContact(scholarshipId,userId);
     }
     @Transactional
     public void countComment(Long userId, Long scholarshipId){
-        scholarshipService.countView(scholarshipId);
+        scholarshipService.increaseNumberComment(scholarshipId);
         repository.increaseNumberComment(scholarshipId,userId);
+
     }
     @Transactional
     public void countCompare(Long userId, Long scholarshipId){
-        scholarshipService.countView(scholarshipId);
         repository.increaseNumberCompare(scholarshipId,userId);
     }
     @Transactional
@@ -50,7 +52,15 @@ public class ScholarshipInteractiveService extends BaseService<ScholarshipIntera
         repository.changeFavorite(scholarshipId,userId,addFavorite);
     }
     @Transactional
-    public void changeRating(Long userId, Long scholarshipId, Integer rating){
+    public void changeRating(Long userId, Long scholarshipId, Float rating){
         repository.changeRating(scholarshipId,userId,rating);
+        Float ratingAverage = repository.getRating(scholarshipId);
+        Long numberRating = repository.getNumberRating(scholarshipId);
+        scholarshipService.changeRating(scholarshipId, ratingAverage);
+        scholarshipService.changeNumberRating(scholarshipId, numberRating);
+    }
+    public List<ScholarshipEntity> findScholarshipFavoriteByUserId(){
+        Long userId = getCurrentUser().getEndUserId();
+        return repository.findScholarshipFavoriteByUser(userId);
     }
 }

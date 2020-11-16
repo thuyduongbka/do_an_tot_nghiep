@@ -45,6 +45,14 @@ let UserRouter = [
     }
   },
   {
+    ...Pages.compare,
+    component : Compare,
+    meta: {
+      title: "Compare Scholarship",
+      ...meta
+    }
+  },
+  {
     ...Pages.signUp,
     component : Register,
     meta: {

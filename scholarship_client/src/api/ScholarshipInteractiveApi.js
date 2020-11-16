@@ -21,4 +21,7 @@ export default {
   rating(scholarshipId, userId, rating){
     return userRequest.get(baseUrl + "/rating?userId=" + userId + "&scholarshipId=" + scholarshipId + "&rating=" + rating );
   },
+  listAllFavorite(){
+    return userRequest.get(baseUrl + "/listAllFavorite");
+  }
 }

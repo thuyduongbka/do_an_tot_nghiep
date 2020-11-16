@@ -59,4 +59,19 @@ public interface ScholarshipRepository extends BaseRepository<ScholarshipEntity>
     @Modifying
     @Query(value = "UPDATE scholarship SET number_seen = number_seen + 1 WHERE id = ?1 ", nativeQuery = true)
     int increaseNumberSeen(Long scholarshipId);
+
+    List<ScholarshipEntity> findByIsExpiredIsFalseAndIsDeletedFalse();
+
+    @Modifying
+    @Query(value = "UPDATE scholarship SET rating = ?2 WHERE id = ?1 ", nativeQuery = true)
+    int changeRating(Long scholarshipId, Float rating);
+    @Modifying
+    @Query(value = "UPDATE scholarship SET number_rating = ?2 WHERE id = ?1 ", nativeQuery = true)
+    int changeNumberRating(Long scholarshipId, Long numberRating);
+    @Modifying
+    @Query(value = "UPDATE scholarship SET number_comment = number_comment + 1 WHERE id = ?1 ", nativeQuery = true)
+    int increaseNumberComment(Long scholarshipId);
+    @Modifying
+    @Query(value = "UPDATE scholarship SET number_share = number_share + 1 WHERE id = ?1 ", nativeQuery = true)
+    int increaseNumberShare(Long scholarshipId);
 }

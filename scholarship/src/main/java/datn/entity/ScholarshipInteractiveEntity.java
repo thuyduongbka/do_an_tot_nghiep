@@ -28,7 +28,7 @@ public class ScholarshipInteractiveEntity extends BaseEntity {
     private Long scholarshipId;
     
     private Boolean isLiked;
-    private Integer rating;
+    private Float rating;
     private Boolean isInListFavorite;
     private int numberSeen ;
     private int numberShare ;

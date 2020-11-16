@@ -20,7 +20,9 @@ public class ScholarshipEntity extends BaseEntity {
     private String content;
     private String url;
     private Boolean isExpired;
-    
+    private Float rating;
+
+    private Long numberRating;
     private Long numberSeen;
     private Long numberShare;
     private Long numberComment;

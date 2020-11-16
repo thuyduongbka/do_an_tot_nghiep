@@ -1,5 +1,6 @@
 package datn.resource;
 
+import datn.entity.ScholarshipEntity;
 import datn.entity.SchoolEntity;
 import datn.service.ScholarshipInteractiveService;
 import datn.service.SchoolService;
@@ -41,7 +42,7 @@ public class ScholarshipInteractiveApi {
     @GetMapping("/rating")
     public ResponseEntity like(@RequestParam(value = "userId") Long userId,
                                @RequestParam(value = "scholarshipId") Long scholarshipId,
-                               @RequestParam(value = "rating") Integer rating){
+                               @RequestParam(value = "rating") Float rating){
         LOGGER.info("rating");
         service.changeRating(userId,scholarshipId,rating);
         return ResponseEntity.ok("OK");
@@ -64,5 +65,10 @@ public class ScholarshipInteractiveApi {
                                        @RequestParam(value = "scholarshipId") Long scholarshipId){
         service.countContact(userId,scholarshipId);
         return ResponseEntity.ok("Ok");
+    }
+
+    @GetMapping("/listAllFavorite")
+    public ResponseEntity<List<ScholarshipEntity>> listAllFavorite(){
+        return ResponseEntity.ok(service.findScholarshipFavoriteByUserId());
     }
 }

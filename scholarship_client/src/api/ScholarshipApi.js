@@ -16,4 +16,7 @@ export default {
   get(userId,scholarshipId){
     return userRequest.get(baseUrl + "/get?userId=" + userId + "&scholarshipId=" + scholarshipId );
   },
+  getAllName(){
+    return userRequest.get(baseUrl + "/getAllName" );
+  },
 }

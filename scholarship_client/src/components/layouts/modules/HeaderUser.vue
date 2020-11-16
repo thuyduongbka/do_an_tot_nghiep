@@ -30,7 +30,8 @@
     name: "HeaderUser",
     data(){
       return {
-        isUser: Auth.getCurrentRole() === Roles.ROLE_END_USER
+        isUser: Auth.getCurrentRole() === Roles.ROLE_END_USER,
+        username: Auth.getCurrentUser().name,
       }
     },
     methods: {

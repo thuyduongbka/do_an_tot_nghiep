@@ -1,7 +1,9 @@
 package datn.service;
 
 import datn.base.BaseService;
+import datn.custom.domain.Scholarship;
 import datn.custom.dto.ScholarshipFilterDto;
+import datn.custom.dto.ScholarshipNameDto;
 import datn.custom.dto.UserScholarshipDto;
 import datn.entity.*;
 import datn.repository.ScholarshipRepository;
@@ -13,6 +15,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 public class ScholarshipService extends BaseService<ScholarshipEntity, ScholarshipRepository> {
@@ -55,5 +59,24 @@ public class ScholarshipService extends BaseService<ScholarshipEntity, Scholarsh
         scholarshipEntity.setCommentEntities(commentEntities);
         ScholarshipInteractiveEntity interactiveEntity =  interactiveService.findByScholarshipIdAndUserId(scholarshipId,userId);
         return new UserScholarshipDto(interactiveEntity, scholarshipEntity);
+    }
+
+    public List<ScholarshipNameDto> findAllName(){
+        List<ScholarshipEntity> scholarshipEntities = repository.findByIsExpiredIsFalseAndIsDeletedFalse();
+        return scholarshipEntities.stream()
+                .map(scholarshipEntity -> new ScholarshipNameDto(scholarshipEntity))
+                .collect(Collectors.toList());
+    }
+    public void changeRating(Long scholarshipId, Float rating){
+        repository.changeRating(scholarshipId, rating);
+    }
+    public void changeNumberRating(Long scholarshipId, Long numberRating){
+        repository.changeNumberRating(scholarshipId, numberRating);
+    }
+    public int increaseNumberComment(Long scholarshipId){
+        return repository.increaseNumberComment(scholarshipId);
+    }
+    public void increaseNumberShare(Long scholarshipId){
+        repository.increaseNumberShare(scholarshipId);
     }
 }
