@@ -42,8 +42,8 @@ public interface ScholarshipInteractiveRepository extends BaseRepository<Scholar
     ScholarshipInteractiveEntity findByScholarshipIdAndUserId(Long scholarshipId, Long userId);
 
     @Query(value = "select s from ScholarshipEntity s " +
-            " join ScholarshipInteractiveEntity si on si.id = s.id " +
-            " where si.isInListFavorite = true ")
+            " join ScholarshipInteractiveEntity si on si.scholarshipId = s.id " +
+            " where si.isInListFavorite = true and si.userId = ?1 ")
     List<ScholarshipEntity> findScholarshipFavoriteByUser(Long userId);
 
     @Query(value = "select AVG(si.rating) from ScholarshipInteractiveEntity si where si.scholarshipId = ?1 and si.rating is not null ")

@@ -75,7 +75,7 @@ public class EndUserService extends BaseService<EndUserEntity, EndUserRepository
         userEntity.setBirthday(dto.getBirthday());
         userEntity.setLevel(dto.getLevel());
         userEntity.setGraduationDate(dto.getGraduationDate());
-        return save(userEntity);
+        return update(userEntity);
     }
     @Transactional
     public boolean changePassword(ChangePasswordDTO changePasswordDTO) throws OldPasswordNotEqualException {
@@ -122,21 +122,21 @@ public class EndUserService extends BaseService<EndUserEntity, EndUserRepository
         EndUserEntity userEntity = findById(currentUserId);
         CountryEntity countryEntity = countryService.findById(countryId);
         userEntity.getCountryEntities().add(countryEntity);
-        return save(userEntity);
+        return update(userEntity);
     }
     public EndUserEntity addSchoolFavorite(Long schoolId){
         Long currentUserId = getCurrentUser().getEndUserId();
         EndUserEntity userEntity = findById(currentUserId);
         SchoolEntity schoolEntity = schoolService.findById(schoolId);
         userEntity.getSchoolEntities().add(schoolEntity);
-        return save(userEntity);
+        return update(userEntity);
     }
     public EndUserEntity addMajorFavorite(Long majorID){
         Long currentUserId = getCurrentUser().getEndUserId();
         EndUserEntity userEntity = findById(currentUserId);
         MajorEntity majorEntity = majorService.findById(majorID);
         userEntity.getMajorEntities().add(majorEntity);
-        return save(userEntity);
+        return update(userEntity);
     }
 
     public void deleteCountryFavorite(Long countryId){

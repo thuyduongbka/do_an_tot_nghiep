@@ -3,65 +3,66 @@
 
     <el-container>
       <el-aside>
-        <el-form :model="formData" status-icon ref="formData" class="register-form">
-          <el-form-item prop="listCountryId">
-            <div>Quốc gia </div>
-            <el-select clearable multiple v-model="formData.listCountryId" filterable placeholder="Select">
-              <el-option
-                v-for="item in listCountry"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item prop="listMajorId">
-            <div>Ngành học</div>
-            <el-select clearable v-model="formData.majorId" filterable placeholder="Khoa học máy tính">
-              <el-option
-                v-for="item in listMajor"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item prop="listSchoolId">
-            <div>Trường học</div>
-            <el-select clearable multiple v-model="formData.listSchoolId" filterable placeholder="Select">
-              <el-option
-                v-for="item in listSchool"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item prop="listMajorId">
-            <div>Bậc học</div>
-            <el-select clearable v-model="formData.levelName" filterable placeholder="Thạc sỹ">
-              <el-option
-                v-for="item in listLevel"
-                :key="item"
-                :label="item"
-                :value="item">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item prop="dueDate">
-            <div>Thời hạn</div>
-            <el-date-picker
-              v-model="formData.dueDate"
-              type="date"
-              placeholder="Pick a day"
-              format="dd/MM/yyyy">
-            </el-date-picker>
-          </el-form-item>
-          <el-button class="btn btn-blue" round @click="search()">Tìm kiếm</el-button>
-        </el-form>
+        <el-card class="box-card">
+          <el-form ref="formData" :model="formData" class="form" status-icon>
+            <el-form-item prop="listCountryId">
+              <div>Quốc gia</div>
+              <el-select v-model="formData.listCountryId" clearable filterable multiple placeholder="Select">
+                <el-option
+                  v-for="item in listCountry"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item v-if="isUser" prop="listMajorId">
+              <div>Ngành học</div>
+              <el-select v-model="formData.majorId" clearable filterable placeholder="Khoa học máy tính">
+                <el-option
+                  v-for="item in listMajor"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item v-if="isUser" prop="listSchoolId">
+              <div>Trường học</div>
+              <el-select v-model="formData.listSchoolId" clearable filterable multiple placeholder="Select">
+                <el-option
+                  v-for="item in listSchool"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item prop="listMajorId">
+              <div>Bậc học</div>
+              <el-select v-model="formData.levelName" clearable filterable placeholder="Thạc sỹ">
+                <el-option
+                  v-for="item in listLevel"
+                  :key="item"
+                  :label="item"
+                  :value="item">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item v-if="isUser" prop="dueDate">
+              <div>Thời hạn</div>
+              <el-date-picker
+                v-model="formData.dueDate"
+                format="dd/MM/yyyy"
+                placeholder="Pick a day"
+                type="date">
+              </el-date-picker>
+            </el-form-item>
+            <el-button class="btn btn-blue" round @click="search()">Tìm kiếm</el-button>
+          </el-form>
+        </el-card>
       </el-aside>
       <el-main style="margin-top: 0px; padding: 5px;">
-        <h1>TÌM KIẾM HỌC BỔNG</h1>
         <search-result :result="result" @search="search()" :pageParam="pageParam"></search-result>
       </el-main>
     </el-container>
@@ -69,38 +70,43 @@
   </div>
 </template>
 <script>
-  import CountryApi from "@/api/CountryApi";
-  import AlertService from "@/services/AlertService";
-  import SchoolApi from "@/api/SchoolApi";
-  import MajorApi from "@/api/MajorApi";
-  import LevelApi from "@/api/LevelApi";
-  import ScholarshipApi from "@/api/ScholarshipApi";
-  import SearchResult from "@/views/user/search/SearchResult";
-  export default {
-    name: "Search",
-    components: {SearchResult},
-    created() {
-      this.getData();
-    },
-    data() {
-      return {
-        formData: {
-          listCountryId: [],
-          listSchoolId: [],
+import CountryApi from "@/api/CountryApi";
+import AlertService from "@/services/AlertService";
+import SchoolApi from "@/api/SchoolApi";
+import MajorApi from "@/api/MajorApi";
+import LevelApi from "@/api/LevelApi";
+import ScholarshipApi from "@/api/ScholarshipApi";
+import SearchResult from "@/views/user/search/SearchResult";
+import Auth from "@/security/Authentication";
+import Roles from "@/security/Roles";
+
+export default {
+  name: "Search",
+  components: {SearchResult},
+  created() {
+    this.getData();
+    this.search();
+  },
+  data() {
+    return {
+      formData: {
+        listCountryId: [],
+        listSchoolId: [],
           majorId: null,
           levelName: null,
           dueDate: null
-        },
-        listSchool: [],
-        listCountry: [],
-        listMajor: [],
-        listLevel: [],
-        pageParam: {
-          page: 1,
-          pageSize: 10,
-        },
-        result: null,
-      }
+      },
+      listSchool: [],
+      listCountry: [],
+      listMajor: [],
+      listLevel: [],
+      pageParam: {
+        page: 1,
+        pageSize: 10,
+      },
+      result: null,
+      isUser: Auth.getCurrentRole() === Roles.ROLE_END_USER,
+    }
     },
     methods: {
       resetForm(formName) {
@@ -148,6 +154,19 @@
     }
   }
 </script>
-<style>
-
+<style scoped>
+.box-card {
+  width: 90%;
+  background-color: #b69de5;
+}
+.form div {
+ color: #FFFFFF;
+  font-weight: bold;
+}
+.form > * {
+  margin-bottom: 0px;
+}
+.btn {
+  margin-top: 10px;
+}
 </style>

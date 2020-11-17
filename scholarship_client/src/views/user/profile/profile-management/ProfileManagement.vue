@@ -1,5 +1,5 @@
 <template>
-  <el-card class="box-card" shadow="always">
+  <el-card v-if="formData" class="box-card" shadow="always">
     <el-form ref="formData" :model="formData" :rules="rules" class="form" status-icon>
       <el-form-item prop="email">
         <div>Địa chỉ email</div>
@@ -29,7 +29,7 @@
           v-model="formData.birthday"
           format="dd/MM/yyyy"
           placeholder="Pick a day"
-          type="date">
+          type="datetime">
         </el-date-picker>
       </el-form-item>
 
@@ -56,80 +56,35 @@
           v-model="formData.graduationDate"
           format="dd/MM/yyyy"
           placeholder="Pick a day"
-          type="date">
+          type="datetime">
         </el-date-picker>
       </el-form-item>
 
       <el-form-item style="text-align: center; margin-top: 60px;">
         <el-button class="btn btn-white" round @click="reset">Reset</el-button>
-        <el-button class="btn btn-blue" round @click="submitForm('formData')">Sửa đổi</el-button>
+        <el-button class="btn btn-blue" round @click="submitForm()">Sửa đổi</el-button>
       </el-form-item>
     </el-form>
   </el-card>
 </template>
 <script>
-import Auth from "@/security/Authentication";
-import EndUserApi from "@/api/EndUserApi";
-import AlertService from "@/services/AlertService";
-import router from "@/router";
-import Pages from "@/router/Pages";
 
 export default {
   name: "ProfileManagement",
+  props: ["formData"],
   data() {
     return {
-      formData: {
-        username: '',
-        name: '',
-        gender: null,
-        phone: '',
-        birthday: null,
-        graduationDate: null,
-        level: '',
-      },
-      changePassword: {
-        password: '',
-        checkPassword: '',
-      },
       optionsGender: ["Nam", "Nữ", "Khác"],
       optionsLevel: ["THCS","THPT","Cử nhân", "Thạc sỹ", "Tiến sỹ"],
       rules: {}
     }
   },
-  created() {
-    this.getData();
-  },
   methods: {
-    async getData(){
-      let userId = Auth.getCurrentUser().endUserId;
-      await EndUserApi.get(userId).then(result => {
-        this.changeToForm(result);
-      }).catch(e => {
-        AlertService.error(e);
-      })
-    },
     reset(){
-      this.getData();
-    },
-    changeToForm(result){
-      this.formData.accountId = result.accountEntity.id;
-      this.formData.username = result.accountEntity.username;
-      this.formData.name = result.name;
-      this.formData.birthday = result.birthday;
-      this.formData.level = result.level;
-      this.formData.phone = result.phone;
-      this.formData.graduationDate = result.graduationDate;
-      this.formData.gender = result.gender;
+      this.$emit("reset");
     },
     async submitForm(){
-      try {
-        await EndUserApi.update(this.formData).then(result => {
-          AlertService.success("Cập nhật thành công");
-          this.changeToForm(result);
-        })
-      } catch (e) {
-        AlertService.error("Thất bại :  " + e)
-      }
+      this.$emit("submitForm");
     },
 
   }
@@ -159,6 +114,8 @@ export default {
   width: 90%;
   display: flex;
   justify-content: center;
+  margin: auto;
+  margin-bottom: 20px;
 }
 
 .form {

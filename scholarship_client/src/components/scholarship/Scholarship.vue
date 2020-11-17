@@ -47,12 +47,12 @@
 </script>
 <style>
   .card {
-    margin: 30px;
+    margin: 10px;
     width: 90%;
     max-width: 250px;
     height: 100%;
-    border-radius: 15px;
-    border: 1px solid var(--primary-color);
+    border-radius: 10px;
+    /*border: 1px solid var(--primary-color);*/
     box-shadow: rgba(148, 149, 174, 0.2) 8px 10px 8px 0px, rgba(148, 149, 174, 0.14) 0px 3px 4px 0px, rgba(148, 149, 174, 0.12) 0px 3px 3px -2px;
     display: block;
     position: relative;

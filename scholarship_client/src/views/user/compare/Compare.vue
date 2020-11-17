@@ -1,85 +1,90 @@
 <template>
-  <div>
+  <div style="height: 100%; min-height: 500px;">
     <h1>So sánh học bổng</h1>
-    <table style="width:100%">
-      <tr>
-        <th></th>
-        <td width="45%">
-          <div>
-            <el-select style=" width:100%;" v-model="scholarshipId1" filterable placeholder="Select">
-              <el-option
-                v-for="item in allScholarship"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id">
-                <span style="float: left">{{ item.name }}</span>
-              </el-option>
-            </el-select>
-          </div>
-        </td>
-        <td width="45%">
-          <div>
-            <el-select style=" width:100%;" v-model="scholarshipId2" filterable placeholder="Select">
-              <el-option
-                v-for="item in allScholarship"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id">
-              </el-option>
-            </el-select>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <th>Tên</th>
-        <td v-if="scholarship1"><span @click="detail(scholarshipId1)"
-                                      style="text-decoration: underline; cursor: pointer">{{ scholarship1.name }}</span></td>
-        <td v-if="scholarship2"><span @click="detail(scholarshipId2)"
-                                      style="text-decoration: underline; cursor: pointer">{{ scholarship2.name }}</span></td>
-      </tr>
-      <tr>
-        <th>Quốc gia</th>
-        <td v-if="scholarship1">{{ scholarship1.countryEntity.name }}</td>
-        <td v-if="scholarship2">{{ scholarship2.countryEntity.name }}</td>
-      </tr>
-      <tr>
-        <th>Trường</th>
-        <td v-if="scholarship1">{{ scholarship1.schoolEntity ? scholarship1.schoolEntity.name : "" }}</td>
-        <td v-if="scholarship2">{{ scholarship2.schoolEntity ? scholarship2.schoolEntity.name : "" }}</td>
-      </tr>
-      <tr>
-        <th>Cấp học</th>
-        <td v-if="scholarship1">
-          <ul>
-            <li v-for="level in scholarship1.levelEntities" :key="level.id">{{ level.name }}</li>
-          </ul>
-        </td>
-        <td v-if="scholarship2">
-          <ul>
-            <li v-for="level in scholarship2.levelEntities" :key="level.id">{{ level.name }}</li>
-          </ul>
-        </td>
-      </tr>
-      <tr>
-        <th>Ngành học</th>
-        <td v-if="scholarship1">
-          <ul>
-            <li v-for="major in scholarship1.majorEntities" :key="major.id">{{ major.name }}</li>
-          </ul>
-        </td>
-        <td v-if="scholarship2">
-          <ul>
-            <li v-for="major in scholarship2.majorEntities" :key="major.id">{{ major.name }}</li>
-          </ul>
-        </td>
-      </tr>
-      <tr>
-        <th>Thời hạn</th>
-        <td v-if="scholarship1">{{ formatDate(scholarship1.time) }}</td>
-        <td v-if="scholarship2">{{ formatDate(scholarship2.time) }}</td>
-      </tr>
-    </table>
-
+    <el-card class="card" style="height: 100%; min-height: 500px;">
+      <table style="width:100%">
+        <tr class="first">
+          <th></th>
+          <td width="45%">
+            <div>
+              <el-select v-model="scholarshipId1" filterable placeholder="Select" style=" width:100%;">
+                <el-option
+                  v-for="item in allScholarship"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+                  <span style="float: left">{{ item.name }}</span>
+                </el-option>
+              </el-select>
+            </div>
+          </td>
+          <td width="45%">
+            <div>
+              <el-select v-model="scholarshipId2" filterable placeholder="Select" style=" width:100%;">
+                <el-option
+                  v-for="item in allScholarship"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+            </div>
+          </td>
+        </tr>
+        <tr v-if="scholarshipId1 || scholarshipId2">
+          <th>Tên</th>
+          <td v-if="scholarship1"><span style="text-decoration: underline; cursor: pointer"
+                                        @click="detail(scholarshipId1)">{{
+              scholarship1.name
+            }}</span></td>
+          <td v-if="scholarship2"><span style="text-decoration: underline; cursor: pointer"
+                                        @click="detail(scholarshipId2)">{{
+              scholarship2.name
+            }}</span></td>
+        </tr>
+        <tr v-if="scholarshipId1 || scholarshipId2">
+          <th>Quốc gia</th>
+          <td v-if="scholarship1">{{ scholarship1.countryEntity.name }}</td>
+          <td v-if="scholarship2">{{ scholarship2.countryEntity.name }}</td>
+        </tr>
+        <tr v-if="scholarshipId1 || scholarshipId2">
+          <th>Trường</th>
+          <td v-if="scholarship1">{{ scholarship1.schoolEntity ? scholarship1.schoolEntity.name : "" }}</td>
+          <td v-if="scholarship2">{{ scholarship2.schoolEntity ? scholarship2.schoolEntity.name : "" }}</td>
+        </tr>
+        <tr v-if="scholarshipId1 || scholarshipId2">
+          <th>Cấp học</th>
+          <td v-if="scholarship1">
+            <ul>
+              <li v-for="level in scholarship1.levelEntities" :key="level.id">{{ level.name }}</li>
+            </ul>
+          </td>
+          <td v-if="scholarship2">
+            <ul>
+              <li v-for="level in scholarship2.levelEntities" :key="level.id">{{ level.name }}</li>
+            </ul>
+          </td>
+        </tr>
+        <tr v-if="scholarshipId1 || scholarshipId2">
+          <th>Ngành học</th>
+          <td v-if="scholarship1">
+            <ul>
+              <li v-for="major in scholarship1.majorEntities" :key="major.id">{{ major.name }}</li>
+            </ul>
+          </td>
+          <td v-if="scholarship2">
+            <ul>
+              <li v-for="major in scholarship2.majorEntities" :key="major.id">{{ major.name }}</li>
+            </ul>
+          </td>
+        </tr>
+        <tr v-if="scholarshipId1 || scholarshipId2">
+          <th>Thời hạn</th>
+          <td v-if="scholarship1">{{ formatDate(scholarship1.time) }}</td>
+          <td v-if="scholarship2">{{ formatDate(scholarship2.time) }}</td>
+        </tr>
+      </table>
+    </el-card>
   </div>
 </template>
 <script>
@@ -164,8 +169,16 @@ export default {
 }
 </script>
 <style scoped>
+.card {
+  color: #6637EB;
+}
+
 th, td {
-  border-bottom: solid 1px;
+  border-bottom: solid .5px;
+}
+
+.first th, .first td {
+  border-bottom: none;
 }
 
 th, td {

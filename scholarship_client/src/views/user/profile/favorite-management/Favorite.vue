@@ -10,19 +10,19 @@
         <el-tab-pane>
           <span slot="label"> Quốc gia yêu thích</span>
           <div class="content">
-            <country-favorite></country-favorite>
+            <country-favorite :list-favorite="favoriteList.countryFavorite" @reset="reset"></country-favorite>
           </div>
         </el-tab-pane>
         <el-tab-pane>
           <span slot="label"> Trường học yêu thích</span>
           <div class="content">
-            <school-favorite></school-favorite>
+            <school-favorite :list-favorite="favoriteList.schoolFavorite" @reset="reset"></school-favorite>
           </div>
         </el-tab-pane>
         <el-tab-pane>
           <span slot="label">Ngành học yêu thích</span>
           <div class="content">
-            <major-favorite></major-favorite>
+            <major-favorite :list-favorite="favoriteList.majorFavorite" @reset="reset"></major-favorite>
           </div>
         </el-tab-pane>
       </el-tabs>
@@ -37,11 +37,17 @@ import SchoolFavorite from "@/views/user/profile/favorite-management/SchoolFavor
 import MajorFavorite from "@/views/user/profile/favorite-management/MajorFavorite";
 export default {
   name: "Favorite",
+  props: ["favoriteList"],
   components: {
     SchoolFavorite,
     ScholarshipFavorite,
     CountryFavorite,
     MajorFavorite
+  },
+  methods: {
+    reset(){
+      this.$emit("reset");
+    }
   }
 }
 </script>

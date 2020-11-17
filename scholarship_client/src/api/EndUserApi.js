@@ -24,5 +24,33 @@ export default {
         "Content-Type": "application/json"
       }
     })
+  },
+  addCountryFavorite(countryId){
+    return userRequest.get(baseUrl + "/addCountryFavorite?countryId=" + countryId);
+  },
+  addSchoolFavorite(schoolId){
+    return userRequest.get(baseUrl + "/addSchoolFavorite?schoolId=" + schoolId);
+  },
+  addMajorFavorite(majorId){
+    return userRequest.get(baseUrl + "/addMajorFavorite?majorId=" + majorId);
+  },
+  deleteCountryFavorite(countryId){
+    return userRequest.delete(baseUrl + "/deleteCountryFavorite?countryId=" + countryId);
+  },
+  deleteSchoolFavorite(schoolId){
+    return userRequest.delete(baseUrl + "/deleteSchoolFavorite?schoolId=" + schoolId);
+  },
+  deleteMajorFavorite(majorId){
+    return userRequest.delete(baseUrl + "/deleteMajorFavorite?majorId=" + majorId);
+  },
+  changePassword(changePass){
+    return userRequest({
+      url: baseUrl + "/changePassword",
+      method: "POST",
+      data: changePass,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
   }
 }

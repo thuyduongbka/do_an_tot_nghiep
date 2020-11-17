@@ -1,5 +1,5 @@
 <template>
-<div>
+<el-card class="box-card-search">
   <div v-if="!result">Chưa có học bổng nào</div>
   <div v-else>
     <div style="display:flex; flex-wrap: wrap; justify-content: center;">
@@ -17,8 +17,7 @@
       </el-pagination>
     </div>
   </div>
-
-</div>
+</el-card>
 </template>
 <script>
   import Scholarship from "@/components/scholarship/Scholarship";
@@ -41,5 +40,11 @@
   }
 </script>
 <style scoped>
+.box-card-search {
+  color: #513a92;
+  height: 100%;
+  max-height: 500px;
+  overflow: auto;
+}
 
 </style>

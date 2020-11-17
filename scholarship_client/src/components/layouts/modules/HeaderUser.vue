@@ -8,7 +8,7 @@
       </div>
       <div class="header-el float-right">
         <a v-if="isUser" href="/profile">{{ username }}</a>
-        <a v-if="isUser" @click="logout()" href="/login" >
+        <a v-if="isUser" @click="logout()"  >
           <button class="btn btn-blue" round>Đăng Xuất</button>
         </a>
         <a v-if="!isUser" href="/login">
@@ -36,7 +36,8 @@
     },
     methods: {
       logout(){
-        this.isUser = false;
+        Auth.logout();
+        location.reload();
       }
     }
   }

@@ -78,13 +78,13 @@ public class EndUserApi {
         return ResponseEntity.ok("ok");
     }
     @DeleteMapping("/deleteSchoolFavorite")
-    public ResponseEntity deleteSchoolFavorite(@RequestParam("countryId") Long countryId){
-        endUserService.deleteSchoolFavorite(countryId);
+    public ResponseEntity deleteSchoolFavorite(@RequestParam("schoolId") Long schoolId){
+        endUserService.deleteSchoolFavorite(schoolId);
         return ResponseEntity.ok("ok");
     }
     @DeleteMapping("/deleteMajorFavorite")
-    public ResponseEntity deleteMajorFavorite(@RequestParam("countryId") Long countryId){
-        endUserService.deleteMajorFavorite(countryId);
+    public ResponseEntity deleteMajorFavorite(@RequestParam("majorId") Long majorId){
+        endUserService.deleteMajorFavorite(majorId);
         return ResponseEntity.ok("ok");
     }
 }
