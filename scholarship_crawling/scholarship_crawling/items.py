@@ -21,4 +21,5 @@ class ScholarshipItem(scrapy.Item):
     urlImage = scrapy.Field()
     web = scrapy.Field()
     newMajor = scrapy.Field()
+    content = scrapy.Field()
     pass

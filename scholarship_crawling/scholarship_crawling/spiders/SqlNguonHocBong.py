@@ -56,6 +56,8 @@ class SqlNguonHocBongSpider(scrapy.Spider):
         if len(money) == 0: return
 
         time = self.getTime(scholarship["time"])
+        if time is None: return
+        print(time)
 
         school = self.getSchool(response)
 
@@ -66,7 +68,7 @@ class SqlNguonHocBongSpider(scrapy.Spider):
         item["major"] = scholarship["major"]
         item["level"] = scholarship["level"]
         item["money"] = money
-        item["time"] = datetime.strptime(time, '%d/%m/%Y').date()
+        item["time"] = time
         item["url"] = response.url.encode("utf-8")
         item["web"] = 3
         item["newMajor"] = False
@@ -100,14 +102,18 @@ class SqlNguonHocBongSpider(scrapy.Spider):
         return country.replace("Học bổng du học", "").strip()
     def getTime(self, time):
         if (time is None):
-            time = "05/08/2021"
+            return None
         else:
             time = time.split("/")
-            day = time[0]
-            month = time[1]
-            year = str(int(time[2]) + 3)
-            time = "/".join([day, month, year])
-        return time
+            day = int(time[0])
+            month = int(time[1])
+            year = int(time[2])
+            if (year < 2020): return None
+            date = datetime(year,12,30);
+            if date < datetime.now():
+                return None
+            return date
+
     def getSchool(self, response):
         return getSchool(response)
 

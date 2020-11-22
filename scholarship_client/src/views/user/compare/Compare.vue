@@ -1,7 +1,7 @@
 <template>
   <div style="height: 100%; min-height: 500px;">
     <h1>So sánh học bổng</h1>
-    <el-card class="card" style="height: 100%; min-height: 500px;">
+    <el-card class="card-compare" style="height: 100%; min-height: 500px;">
       <table style="width:100%">
         <tr class="first">
           <th></th>
@@ -169,7 +169,7 @@ export default {
 }
 </script>
 <style scoped>
-.card {
+.card-compare {
   color: #6637EB;
 }
 

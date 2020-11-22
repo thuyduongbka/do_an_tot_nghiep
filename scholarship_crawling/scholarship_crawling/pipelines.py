@@ -13,6 +13,8 @@ class ScholarshipCrawlingPipeline(object):
 
     def __init__(self):
         self.create_connection()
+        self.dropTable()
+        self.create_common()
         self.create_table_scholarship()
         self.create_table_major_scholarship()
         self.create_table_level()
@@ -26,7 +28,7 @@ class ScholarshipCrawlingPipeline(object):
             host='localhost',
             user='root',
             passwd='',
-            database='scholarship_db'
+            database='scholarship_english'
         )
         self.curr = self.conn.cursor(buffered=True)
 
@@ -34,8 +36,94 @@ class ScholarshipCrawlingPipeline(object):
         self.curr.close()
         self.curr = self.conn.cursor(buffered=True)
 
-    def create_table_scholarship(self):
+    def dropTable(self):
         self.curr.execute("""DROP TABLE IF EXISTS scholarship""")
+        self.curr.execute("""DROP TABLE IF EXISTS major_scholarship""")
+        self.curr.execute("""DROP TABLE IF EXISTS level""")
+        self.curr.execute("""DROP TABLE IF EXISTS money""")
+        self.curr.execute("""DROP TABLE IF EXISTS requirement""")
+        self.curr.execute("""DROP TABLE IF EXISTS country""")
+        self.curr.execute("""DROP TABLE IF EXISTS school""")
+        self.curr.execute("""DROP TABLE IF EXISTS comment""")
+        self.curr.execute("""DROP TABLE IF EXISTS country_favorite""")
+        self.curr.execute("""DROP TABLE IF EXISTS school_favorite""")
+        self.curr.execute("""DROP TABLE IF EXISTS major_favorite""")
+        self.curr.execute("""DROP TABLE IF EXISTS scholarship_interactive""")
+        self.curr.execute("""DROP TABLE IF EXISTS major""")
+
+    def create_common(self):
+        self.curr.execute("""CREATE TABLE IF NOT EXISTS comment(
+                            id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                            scholarship_id int NOT NULL,
+                            user_id int ,
+                            message text,
+                            created_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+                            updated_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+                            updated_by_user_id int(11) DEFAULT NULL,
+                            created_by_user_id int(11) DEFAULT NULL,
+                            is_deleted bit(1) DEFAULT b'0'           
+                )""")
+        self.curr.execute("""CREATE TABLE IF NOT EXISTS country_favorite(
+                                    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                                    scholarship_id int NOT NULL,
+                                    country_id int NOT NULL ,
+                                    created_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+                                    updated_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+                                    updated_by_user_id int(11) DEFAULT NULL,
+                                    created_by_user_id int(11) DEFAULT NULL,
+                                    is_deleted bit(1) DEFAULT b'0'           
+                        )""")
+        self.curr.execute("""CREATE TABLE IF NOT EXISTS school_favorite(
+                                            id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                                            scholarship_id int NOT NULL,
+                                            school_id int NOT NULL ,
+                                            created_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+                                            updated_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+                                            updated_by_user_id int(11) DEFAULT NULL,
+                                            created_by_user_id int(11) DEFAULT NULL,
+                                            is_deleted bit(1) DEFAULT b'0'           
+                                )""")
+        self.curr.execute("""CREATE TABLE IF NOT EXISTS major_favorite(
+                                            id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                                            scholarship_id int NOT NULL,
+                                            major_id int NOT NULL ,
+                                            created_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+                                            updated_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+                                            updated_by_user_id int(11) DEFAULT NULL,
+                                            created_by_user_id int(11) DEFAULT NULL,
+                                            is_deleted bit(1) DEFAULT b'0'           
+                                )""")
+        self.curr.execute("""CREATE TABLE IF NOT EXISTS scholarship_interactive(
+                                            id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                                            scholarship_id int NOT NULL,
+                                            user_id int NOT NULL ,
+                                            is_liked bit(1) DEFAULT b'0',     
+                                            rating int(11) NOT NULL DEFAULT '0',
+                                            is_in_list_favorite bit(1) DEFAULT b'0',      
+                                            number_seen int(11) NOT NULL DEFAULT '0',
+                                            number_share int(11) NOT NULL DEFAULT '0',
+                                            number_comment int(11) NOT NULL DEFAULT '0',
+                                            number_click_contact int(11) NOT NULL DEFAULT '0',
+                                            number_compare int(11) NOT NULL DEFAULT '0',
+                                            created_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+                                            updated_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+                                            updated_by_user_id int(11) DEFAULT NULL,
+                                            created_by_user_id int(11) DEFAULT NULL,
+                                            is_deleted bit(1) DEFAULT b'0'           
+                                )""")
+        self.curr.execute("""CREATE TABLE IF NOT EXISTS major(
+                            id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                            parent_id int NOT NULL,
+                            name varchar(200),
+                            level int(11) NOT NULL DEFAULT '0',
+                            created_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+                            updated_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+                            updated_by_user_id int(11) DEFAULT NULL,
+                            created_by_user_id int(11) DEFAULT NULL,
+                            is_deleted bit(1) DEFAULT b'0'           
+        )""")
+
+    def create_table_scholarship(self):
         self.curr.execute("""CREATE TABLE IF NOT EXISTS scholarship(
             id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
             web_id INT NOT NULL,
@@ -57,10 +145,9 @@ class ScholarshipCrawlingPipeline(object):
         )""")
 
     def create_table_major_scholarship(self):
-        self.curr.execute("""DROP TABLE IF EXISTS major_scholarship""")
         self.curr.execute("""CREATE TABLE IF NOT EXISTS major_scholarship(
                     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                    scholarship_id varchar(200) NOT NULL,
+                    scholarship_id int NOT NULL,
                     major_id int ,
                     created_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
                     updated_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -70,10 +157,9 @@ class ScholarshipCrawlingPipeline(object):
         )""")
 
     def create_table_level(self):
-        self.curr.execute("""DROP TABLE IF EXISTS level""")
         self.curr.execute("""CREATE TABLE IF NOT EXISTS level(
                     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                    scholarship_id varchar(200) NOT NULL,
+                    scholarship_id int NOT NULL,
                     name text,
                     created_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
                     updated_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -83,10 +169,9 @@ class ScholarshipCrawlingPipeline(object):
         )""")
 
     def create_table_money(self):
-        self.curr.execute("""DROP TABLE IF EXISTS money""")
         self.curr.execute("""CREATE TABLE IF NOT EXISTS money(
                     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                    scholarship_id varchar(200) NOT NULL,
+                    scholarship_id int NOT NULL,
                     value text,
                     created_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
                     updated_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -96,10 +181,9 @@ class ScholarshipCrawlingPipeline(object):
         )""")
 
     def create_table_requirement(self):
-        self.curr.execute("""DROP TABLE IF EXISTS requirement""")
         self.curr.execute("""CREATE TABLE IF NOT EXISTS requirement(
                     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                    scholarship_id varchar(200) NOT NULL,
+                    scholarship_id int NOT NULL,
                     name text,
                     value text,
                     created_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -110,7 +194,6 @@ class ScholarshipCrawlingPipeline(object):
         )""")
 
     def create_table_country(self):
-        self.curr.execute("""DROP TABLE IF EXISTS country""")
         self.curr.execute("""CREATE TABLE IF NOT EXISTS country(
                     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                     name varchar(50),
@@ -123,10 +206,10 @@ class ScholarshipCrawlingPipeline(object):
         )""")
 
     def create_table_school(self):
-        self.curr.execute("""DROP TABLE IF EXISTS school""")
         self.curr.execute("""CREATE TABLE IF NOT EXISTS school(
                     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                     name varchar(100),
+                    country_id int,
                     created_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
                     updated_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
                     updated_by_user_id int(11) DEFAULT NULL,
@@ -144,21 +227,21 @@ class ScholarshipCrawlingPipeline(object):
             return self.getCountryId(country)
         return country_id[0]
 
-    def getSchoolId(self, school):
+    def getSchoolId(self, school, country_id):
         self.curr.execute("SELECT id FROM school WHERE name like %s", ('%' + school + '%',))
         school_id = self.curr.fetchone()
         if (school_id is None):
-            self.curr.execute("""INSERT INTO school(name) VALUES (%s)""", (school,))
+            self.curr.execute("""INSERT INTO school(name, country_id) VALUES (%s,%s)""", (school,country_id))
             self.conn.commit()
             self.restart()
-            return self.getSchoolId(school)
+            return self.getSchoolId(school, country_id)
         return school_id[0]
 
     def store_db(self, item):
         country_id = self.getCountryId(item["country"])
         school_id = None
         if item["school"] is not None:
-            school_id = self.getSchoolId(item["school"])
+            school_id = self.getSchoolId(item["school"], country_id)
 
         if (item['newMajor'] == True):
             self.store_db_scholarship_major(item["url"], item["major"]);
@@ -171,7 +254,7 @@ class ScholarshipCrawlingPipeline(object):
                 item['time'],
                 item['url'],
                 item['web'],
-                item['country'],
+                item['content'],
                 country_id,
                 school_id
             ))
@@ -179,10 +262,21 @@ class ScholarshipCrawlingPipeline(object):
         self.restart()
         self.store_db_attribute(item)
 
+    def store_new_major(self, major):
+        self.curr.execute("""INSERT INTO major(name) VALUES (%s)""", (
+            major,
+        ))
+        self.conn.commit()
+        self.restart()
+
     def store_db_major_scholarship(self, scholarship_id, major):
         self.curr.execute("SELECT id FROM major WHERE name like %s", ('%' + major + '%',))
         major_id = self.curr.fetchone()
-        if major_id is None: return
+        if major_id is None:
+            self.store_new_major(major)
+            self.curr.execute("SELECT id FROM major WHERE name like %s", ('%' + major + '%',))
+            major_id = self.curr.fetchone()
+
         self.curr.execute("""INSERT INTO major_scholarship(major_id,scholarship_id) VALUES (%s,%s)""", (
             major_id[0],
             scholarship_id

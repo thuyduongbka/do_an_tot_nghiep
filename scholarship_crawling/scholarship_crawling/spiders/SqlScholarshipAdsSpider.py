@@ -3,8 +3,7 @@ import json
 from ..items import ScholarshipItem
 import re
 from datetime import datetime
-from ..utils_custom import getSchool
-
+from ..utils_custom import getSchool, transToEng
 
 class SqlNguonHocBongSpider(scrapy.Spider):
     name = "sqlscholarshipads"
@@ -12,6 +11,7 @@ class SqlNguonHocBongSpider(scrapy.Spider):
         'https://www.scholarshipsads.com/category/tags/vietnam/',
     ]
     listScholarship = {}
+    listImage = {}
 
     def start_requests(self):
         for url in self.startUrls:
@@ -28,67 +28,69 @@ class SqlNguonHocBongSpider(scrapy.Spider):
             yield scrapy.Request(url=url, callback=self.getScholarship, dont_filter=True)
 
     def getScholarship(self, response):
-        listPosts = response.xpath("//div[@class='card-warp']")
-        print(listPosts)
+        listPosts = response.xpath("//div[@class='scholarship-card']")
+
+        #test
+        #yield scrapy.Request(url="https://www.scholarshipsads.com/uwa-winthrop-scholarship-australia/", callback=self.getDetailScholarship)
+        #return
+        ##
+
         for post in listPosts:
-            urlPost = post.xpath("./div[@class='card-img']").get()
-            print(urlPost)
-            # yield scrapy.Request(url=urlPost, callback=self.getDetailScholarship)    #add content
+            urlImage = post.xpath("./div[@class='card-warp']/div[contains(@class, 'card-img')]/img/@src").get()
+            urlPost = post.xpath("./div[@class='card-more']/a/@href").get()
+            self.listImage[urlPost] = urlImage;
+            yield scrapy.Request(url=urlPost, callback=self.getDetailScholarship)
 
     def getDetailScholarship(self, response):
-        name = response.xpath("//div[@class='title-heading']/text()")
-        print(name)
-        return
         item = ScholarshipItem()
-        item["name"] = name
-        item["school"] = school
-        item["country"] = country
-        item["major"] = scholarship["major"]
-        item["level"] = scholarship["level"]
-        item["money"] = money
-        item["time"] = datetime.strptime(time, '%d/%m/%Y').date()
-        item["url"] = response.url.encode("utf-8")
-        item["web"] = 3
+        item["name"] = response.xpath("//div[@class='title-heading']/h1/text()").get()
+        listLi = response.xpath("//div[contains(@class, 'card-info')]/ul/li")
+        for li in listLi:
+            liName = li.xpath("./i/@class").get()
+            liValue = li.xpath("./text()").getall()[1].strip()
+            if liValue is None: return
+
+            if (liName == 'icon-dollor'):
+                if (liValue == 'Fully Funded'):
+                    money = 'Toàn phần'
+                elif (liValue == 'Partial Funding'):
+                    money = 'Bán phần'
+                else: money = liValue
+                item["money"] = [money]
+
+            if (liName == 'icon-place'):
+                if (',' in liValue or liValue == '') : return
+                item["school"] = liValue
+
+            if (liName == 'icon-Bachelor2'):
+                item["level"] = liValue.split(", ")
+
+            if (liName == 'icon-map'):
+                item["country"] = liValue
+
+            if (liName == 'icon-calendar'):
+                time = liValue
+                item["time"] = datetime.strptime(time, '%m/%d/%Y').date()
+
+            if (liName == 'icon-book'):
+                liMore = li.xpath("./span/text()").get()
+                if liMore is not None:
+                    major = liValue + liMore
+                else:
+                    major = liValue;
+
+                if major == "All Subjects" : return
+                item["major"] = re.split(',|and |And ', major)
+
+        if 'time' not in locals() or 'money' not in locals() : return
+        content = ' '.join(response.xpath("///div[@class='scholarship-item']").getall())
+        url = response.url
+        item["url"] = url.encode("utf-8")
+        item["content"] = content
+        item["web"] = 4
         item["newMajor"] = False
-        item["urlImage"] = scholarship["urlImage"]
+        item["urlImage"] = self.listImage[url]
         return item
 
-    def getMoney(self,txt):
-        result = []
-        x1 = re.findall("[0-9]*\,*[0-9]+.?[\$|\£|\€|\¥]", txt)
-        x4 = re.findall("[HK|US]*[\$|\£|\€|\¥|\₫][0-9]*\,*[0-9]+", txt)
-        x2 = re.findall("toàn phần|bán phần", txt.lower())
-        x3 = re.findall("[0-9]+\%", txt)
-        x5 = re.findall("[0-9]*\,*[0-9]+.[bảng|eur]+", txt.lower())
-
-        if len(x2) > 0:
-            x2 = set(x2)
-            result.extend(x2)
-            return result
-        if len(x3) > 0:
-            x3 = set(x3)
-            result.extend(x3)
-            return result
-        if len(x1) > 0 or len(x4) > 0 or len(x5) > 0:
-            return ['bán phần']
-
-        return result;
-
-    def getCountry(self, country):
-        if country is None or country.lower() == "khác":
-            return None
-        return country.replace("Học bổng du học", "").strip()
-    def getTime(self, time):
-        if (time is None):
-            time = "05/08/2021"
-        else:
-            time = time.split("/")
-            day = time[0]
-            month = time[1]
-            year = str(int(time[2]) + 3)
-            time = "/".join([day, month, year])
-        return time
-    def getSchool(self, response):
-        return getSchool(response)
 
 

@@ -1,0 +1,55 @@
+CREATE TABLE end_user(
+    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    account_id INT(11),
+    access_token varchar(255),
+    name varchar(100),
+    phone varchar(20),
+    gender varchar(50),
+    level varchar(100),
+    country varchar(100),
+    birthday varchar(100),
+    graduation_date varchar(100),
+    created_time TIMESTAMP,
+    updated_time TIMESTAMP,
+    updated_by_user_id int(11),
+    created_by_user_id int(11),
+    is_deleted boolean
+)
+CREATE TABLE admin(
+    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    account_id INT(11),
+    last_login TIMESTAMP,
+    created_time TIMESTAMP,
+    updated_time TIMESTAMP,
+    updated_by_user_id int(11),
+    created_by_user_id int(11),
+    is_deleted boolean
+)
+CREATE TABLE `auth_token` (
+  `id` int(11) NOT NULL,
+  `code` binary(16) DEFAULT NULL,
+  `token` varchar(500) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  `account_id` int(11) DEFAULT NULL,
+  `created_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_by_user_id` int(11) DEFAULT NULL,
+  `created_by_user_id` int(11) DEFAULT NULL,
+  `is_deleted` bit(1) DEFAULT b'0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `auth_token`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `code` (`code`),
+  ADD UNIQUE KEY `token_unique` (`token`),
+  ADD KEY `account_id_index` (`account_id`,`type`);
+
+--
+-- AUTO_INCREMENT cho các bảng đã đổ
+--
+
+--
+-- AUTO_INCREMENT cho bảng `auth_token`
+--
+ALTER TABLE `auth_token`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;

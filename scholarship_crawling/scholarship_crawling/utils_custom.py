@@ -1,12 +1,9 @@
 import re
 from googletrans import Translator
-translator = Translator()
 
-def translateText(text):
-    language = translator.detect(text)
-    if language != 'vi':
-        return translator.translate(text, src=language, dest='vi')
-    return text
+def transToEng(text):
+    translator = Translator()
+    return translator.translate(text, src='en', dest='vi').text
 
 def getSchool(response):
     strongTags = response.xpath("//strong")
