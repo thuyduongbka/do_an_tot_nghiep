@@ -13,7 +13,7 @@ class ScholarshipCrawlingPipeline(object):
 
     def __init__(self):
         self.create_connection()
-        self.dropTable()
+        #self.dropTable()
         self.create_common()
         self.create_table_scholarship()
         self.create_table_major_scholarship()
@@ -98,7 +98,7 @@ class ScholarshipCrawlingPipeline(object):
                                             scholarship_id int NOT NULL,
                                             user_id int NOT NULL ,
                                             is_liked bit(1) DEFAULT b'0',     
-                                            rating int(11) NOT NULL DEFAULT '0',
+                                            rating float(5) NOT NULL DEFAULT '0',
                                             is_in_list_favorite bit(1) DEFAULT b'0',      
                                             number_seen int(11) NOT NULL DEFAULT '0',
                                             number_share int(11) NOT NULL DEFAULT '0',
@@ -133,6 +133,8 @@ class ScholarshipCrawlingPipeline(object):
             time date CHECK (time >= CURDATE()),
             content text,
             url text,
+            rating float(5) NOT NULL DEFAULT '0',
+            number_rating int DEFAULT 0,
             number_seen int DEFAULT 0,
             number_share int DEFAULT 0,
             number_comment int DEFAULT 0,

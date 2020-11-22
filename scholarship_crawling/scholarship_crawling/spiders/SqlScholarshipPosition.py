@@ -3,7 +3,7 @@ import json
 from ..items import ScholarshipItem
 import re
 from datetime import datetime
-from ..utils_custom import getSchool, transToEng
+from ..utils_custom import getSchool, transToEng, getListLevel, getListMajor, getCountry
 
 
 class SqlNguonHocBongSpider(scrapy.Spider):
@@ -19,7 +19,7 @@ class SqlNguonHocBongSpider(scrapy.Spider):
             yield scrapy.Request(url=url, callback=self.getPage)
 
     def getPage(self, response):
-        numOfPages = 10
+        numOfPages = 20
         linkPageDemo = "https://scholarship-positions.com/blog/"
         for index in range(numOfPages):
             if (index == 0):
@@ -52,16 +52,24 @@ class SqlNguonHocBongSpider(scrapy.Spider):
             item["time"] = datetime.strptime(time.replace(':', '').strip(), '%B %d, %Y').date()
             school = response.xpath("//li[contains(strong/text(),'University or Organization')]/text()").get()
             item["school"] = school.replace(':', '').strip();
+
             major = response.xpath("//li[contains(strong/text(),'Departmen')]/text()").get()
-            item["major"] = major.replace(':', '').strip().split(',');
-            level = response.xpath("//li[contains(strong/text(),'Course Level')]/text()").get()
-            item["level"] = re.split(',|and ', level.replace(':', '').strip());
+            item["major"] = getListMajor(major.replace(':', '').strip())
+
+            level = response.xpath("//li[contains(strong/text(),'Course Level')]/a/text()").get()
+            if level is None:
+                level = response.xpath("//li[contains(strong/text(),'Course Level')]/text()").get()
+            item["level"] = getListLevel(re.split(',|and ', level.replace(':', '').strip()))
+
             money = response.xpath("//li[contains(strong/text(),'Award')]/text()").get()
             item["money"] = money.replace(':', '').strip().split('+');
+
             country = response.xpath("//li[contains(strong/text(),'The award can be taken in')]/a/strong/text()").get()
             if country is None:
+                country = response.xpath("//li[contains(strong/text(),'The award can be taken in')]/a/text()").get()
+            if country is None:
                 country = response.xpath("//li[contains(strong/text(),'The award can be taken in')]/text()").get()
-            item["country"] = country.replace(':', '').strip()
+            item["country"] = getCountry(country.replace(':', '').strip())
 
             content = response.xpath("//div[@class='entry-content']").get()
             item["content"] = content
@@ -70,3 +78,7 @@ class SqlNguonHocBongSpider(scrapy.Spider):
             return item
         except:
             return
+
+
+
+

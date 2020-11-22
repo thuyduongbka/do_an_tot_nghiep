@@ -3,7 +3,7 @@ import json
 from ..items import ScholarshipItem
 import re
 from datetime import datetime
-from ..utils_custom import getSchool, transToEng
+from ..utils_custom import getSchool, transToEng, getListLevel, getCountry
 
 class SqlNguonHocBongSpider(scrapy.Spider):
     name = "sqlscholarshipads"
@@ -51,11 +51,10 @@ class SqlNguonHocBongSpider(scrapy.Spider):
             if liValue is None: return
 
             if (liName == 'icon-dollor'):
-                if (liValue == 'Fully Funded'):
-                    money = 'Toàn phần'
-                elif (liValue == 'Partial Funding'):
-                    money = 'Bán phần'
-                else: money = liValue
+                if (liValue == 'Fully Funded' or liValue == 'Full tuition fee'):
+                    money = 'Fully Funded'
+                else:
+                    money = 'Partial Funding'
                 item["money"] = [money]
 
             if (liName == 'icon-place'):
@@ -63,10 +62,10 @@ class SqlNguonHocBongSpider(scrapy.Spider):
                 item["school"] = liValue
 
             if (liName == 'icon-Bachelor2'):
-                item["level"] = liValue.split(", ")
+                item["level"] = getListLevel(liValue.split(", "))
 
             if (liName == 'icon-map'):
-                item["country"] = liValue
+                item["country"] = getCountry(liValue)
 
             if (liName == 'icon-calendar'):
                 time = liValue

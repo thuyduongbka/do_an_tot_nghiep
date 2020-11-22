@@ -40,7 +40,7 @@ public class ScholarshipInteractiveEntity extends BaseEntity {
     public ScholarshipInteractiveEntity(Long scholarshipId, Long userId){
         this.scholarshipId = scholarshipId;
         this.userId = userId;
-        
+        this.rating = Float.valueOf(0);
     }
     
     
