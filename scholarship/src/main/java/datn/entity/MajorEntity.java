@@ -1,37 +1,23 @@
 package datn.entity;
 
 import datn.base.BaseEntity;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity
 @Table(name="major")
 public class MajorEntity extends BaseEntity {
     private Long parentId;
     private String name;
-    private Long level;
-   
-    public Long getParentId() {
-        return parentId;
-    }
-    
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-    
-    public String getName() {
-        return name;
-    }
-    
-    public void setName(String name) {
+    private String child;
+    private String note;
+
+    public MajorEntity(){}
+    public MajorEntity(String name){
         this.name = name;
-    }
-    
-    public Long getLevel() {
-        return level;
-    }
-    
-    public void setLevel(Long level) {
-        this.level = level;
     }
 }

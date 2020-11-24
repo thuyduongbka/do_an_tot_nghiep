@@ -65,7 +65,7 @@ class ScholarshipCrawlingPipeline(object):
                 )""")
         self.curr.execute("""CREATE TABLE IF NOT EXISTS country_favorite(
                                     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                                    scholarship_id int NOT NULL,
+                                    user_id int NOT NULL,
                                     country_id int NOT NULL ,
                                     created_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
                                     updated_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -75,7 +75,7 @@ class ScholarshipCrawlingPipeline(object):
                         )""")
         self.curr.execute("""CREATE TABLE IF NOT EXISTS school_favorite(
                                             id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                                            scholarship_id int NOT NULL,
+                                            user_id int NOT NULL,
                                             school_id int NOT NULL ,
                                             created_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
                                             updated_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -85,7 +85,7 @@ class ScholarshipCrawlingPipeline(object):
                                 )""")
         self.curr.execute("""CREATE TABLE IF NOT EXISTS major_favorite(
                                             id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                                            scholarship_id int NOT NULL,
+                                            user_id int NOT NULL,
                                             major_id int NOT NULL ,
                                             created_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
                                             updated_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -113,9 +113,10 @@ class ScholarshipCrawlingPipeline(object):
                                 )""")
         self.curr.execute("""CREATE TABLE IF NOT EXISTS major(
                             id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                            parent_id int NOT NULL,
+                            parent_id int,
                             name varchar(200),
-                            level int(11) NOT NULL DEFAULT '0',
+                            child varchar(200) DEFAULT '',
+                            note varchar(200) DEFAULT '',
                             created_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
                             updated_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
                             updated_by_user_id int(11) DEFAULT NULL,
@@ -220,7 +221,7 @@ class ScholarshipCrawlingPipeline(object):
         )""")
 
     def getCountryId(self, country):
-        self.curr.execute("SELECT id FROM country WHERE name like %s", ('%' + country + '%',))
+        self.curr.execute("SELECT id FROM country WHERE name = %s", (country,))
         country_id = self.curr.fetchone()
         if (country_id is None):
             self.curr.execute("""INSERT INTO country(name) VALUES (%s)""", (country,))
@@ -229,8 +230,14 @@ class ScholarshipCrawlingPipeline(object):
             return self.getCountryId(country)
         return country_id[0]
 
+    def checkUrl(self,url):
+        self.curr.execute("SELECT id FROM scholarship WHERE url = %s", (url,))
+        id = self.curr.fetchone()
+        if id is not None: return True
+        return False
+
     def getSchoolId(self, school, country_id):
-        self.curr.execute("SELECT id FROM school WHERE name like %s", ('%' + school + '%',))
+        self.curr.execute("SELECT id FROM school WHERE name = %s", (school,))
         school_id = self.curr.fetchone()
         if (school_id is None):
             self.curr.execute("""INSERT INTO school(name, country_id) VALUES (%s,%s)""", (school,country_id))
@@ -260,6 +267,7 @@ class ScholarshipCrawlingPipeline(object):
                 country_id,
                 school_id
             ))
+        self.curr.execute("UPDATE web SET last_crawled=now() WHERE id = %s", (item["web"],))
         self.conn.commit()
         self.restart()
         self.store_db_attribute(item)
@@ -317,6 +325,6 @@ class ScholarshipCrawlingPipeline(object):
                 self.conn.commit()
 
     def process_item(self, item, spider):
-        # self.translate(item)
+        if self.checkUrl(item["url"]) == True: return
         self.store_db(item)
         return item

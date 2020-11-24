@@ -31,7 +31,7 @@ def getLevel(level):
             or "essay" in levelLower:
         return "Fellowship"
 
-    return level
+    return level.strip()
 
 def getSchool(response):
     strongTags = response.xpath("//strong")
@@ -60,7 +60,7 @@ def getSchool(response):
 def getListMajor(major):
     import re
     if major == "N/A" or major == "NA": return ["N/A"]
-    list = re.split(', | and | or ', major)
+    list = re.split(', | and | or |And ', major)
     re = []
     for m in list:
         re.append(getMajor(m))
@@ -68,8 +68,8 @@ def getListMajor(major):
 
 def getMajor(name):
     of = name.rfind("of")
-    if of == -1: return name
-    return name[of + 3:]
+    if of == -1: return name.strip()
+    return name[of + 3:].strip()
 
 def getCountry(name):
     nameLower = name.lower()
@@ -79,4 +79,4 @@ def getCountry(name):
         return "US"
     if "thailand" in nameLower:
         return "Thailand"
-    return name
+    return name.strip()

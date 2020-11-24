@@ -1,0 +1,1 @@
+call scrapy crawl sqlscholarshipposition

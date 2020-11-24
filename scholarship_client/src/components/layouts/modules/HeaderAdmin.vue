@@ -13,7 +13,6 @@
       name: "HeaderAdmin",
       computed: {
         getUser(){
-          console.log(Auth.getCurrentUser())
           return Auth.getCurrentUser();
         }
       }

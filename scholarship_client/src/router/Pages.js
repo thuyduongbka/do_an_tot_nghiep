@@ -19,7 +19,8 @@ let Pages = {
   /** admin page **/
   homeAdmin: {name: "home-admin", path: ""},
   loginAdmin: {name: "login-admin", path: "/login/admin"},
-  adminManagement: {name: "admin-management", path: "admin-management"}
+  adminManagement: {name: "admin-management", path: "admin-management"},
+  majorManagement: {name: "major-management", path: "major-management"}
 }
 
 export default Pages;

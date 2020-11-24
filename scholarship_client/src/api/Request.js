@@ -49,7 +49,7 @@ let createRequest = (baseURL, loginURL) => {
     return request;
 };
 
-const server =  "http://localhost:8085";
+const server =  "http://192.168.1.3:8085";
 const AdminRequest = createRequest(server, Pages.loginAdmin.path);
 const UserRequest = createRequest(server, Pages.loginUser.path);
 export {AdminRequest, UserRequest};

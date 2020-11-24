@@ -20,15 +20,9 @@ def read_root(q: Optional[str] = None):
 @app.get("/crawl")
 def read_crawl(url: Optional[str] = None):
     try:
-        if url == "scholarshipplanet.info":
-            return url
-            # subprocess.call([r'F:\DO_AN\do_an_tot_nghiep\scholarship_crawling\scholarshipplanet.bat'])
-        elif url == "sanhocbong.net":
-            return url
-            # subprocess.call([r'F:\DO_AN\do_an_tot_nghiep\scholarship_crawling\sanhocbong.bat'])
-        elif url == "nguonhocbong.com":
-            return url
-            # subprocess.call([r'F:\DO_AN\do_an_tot_nghiep\scholarship_crawling\nguonhocbong.bat'])
-        return True
+        if url == "scholarship-positions.com":
+            subprocess.call([r'F:\DO_AN\do_an_tot_nghiep\scholarship_crawling\sqlscholarshipposition.bat'])
+        elif url == "www.scholarshipsads.com":
+            subprocess.call([r'F:\DO_AN\do_an_tot_nghiep\scholarship_crawling\sqlscholarshipads.bat'])
     except (RuntimeError, TypeError, NameError, OSError, ValueError):
         return False

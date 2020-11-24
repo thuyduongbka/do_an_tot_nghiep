@@ -2,131 +2,143 @@
   <el-container v-if="scholarship != null" style="margin: 50px">
     <el-container>
       <el-header class="header">
-        <h2> {{scholarship.name}} </h2>
-        <p v-if="scholarship.schoolEntity">{{scholarship.schoolEntity.name}}</p>
+        <h2> {{ scholarship.name }} </h2>
+        <p v-if="scholarship.schoolEntity">{{ scholarship.schoolEntity.name }}</p>
       </el-header>
-      <el-main class="content">
-        <div class="rating">
-          <div class="block">
-            <el-rate
-              :allow-half="true"
-              v-model="rating"
-              :colors="['#6637EB','#F7BA2A','#FF275A']">
-            </el-rate>
+      <el-main>
+        <div class="content">
+          <div>
+            <div class="rating">
+              <div class="block">
+                <el-rate
+                  v-model="rating"
+                  :allow-half="true"
+                  :colors="['#6637EB','#F7BA2A','#FF275A']">
+                </el-rate>
+              </div>
+            </div>
+            <div v-if="scholarship.countryEntity" class="content-field">
+              <i class="icon el-icon-location"></i>
+              <span class="label">Quốc gia: </span>
+              <span class="value">{{ scholarship.countryEntity.name }}</span>
+            </div>
+            <div class="content-field">
+              <i class="icon el-icon-school"></i>
+              <span class="label">Ngành học: </span>
+              <ul>
+                <li v-for="major in scholarship.majorEntities" :key="major.id">{{ major.name }}</li>
+              </ul>
+            </div>
+            <div class="content-field">
+              <i class="icon el-icon-trophy"></i>
+              <span class="label">Bằng cấp: </span>
+              <ul>
+                <li v-for="level in scholarship.levelEntities" :key="level.id">{{ level.name }}</li>
+              </ul>
+            </div>
+            <div class="content-field">
+              <i class="icon el-icon-time"></i>
+              <span class="label">Thời hạn: </span>
+              <span class="value">{{ scholarship.time }}</span>
+            </div>
+            <div v-if="scholarship.requirementEntities.length > 0" class="content-field">
+              <i class="icon el-icon-collection-tag"></i>
+              <span class="label">Yêu cầu: </span>
+              <ul>
+                <li v-for="requirement in scholarship.requirementEntities" :key="requirement.id">{{ requirement }}</li>
+              </ul>
+            </div>
           </div>
-        </div>
-        <div class="content-field" v-if="scholarship.countryEntity">
-          <i class="icon el-icon-location"></i>
-          <span class="label">Quốc gia: </span>
-          <span class="value">{{scholarship.countryEntity.name}}</span>
-        </div>
-        <div class="content-field">
-          <i class="icon el-icon-school"></i>
-          <span class="label">Ngành học: </span>
-          <ul>
-            <li v-for="major in scholarship.majorEntities" :key="major.id">{{major.name}}</li>
-          </ul>
-        </div>
-        <div class="content-field">
-          <i class="icon el-icon-trophy"></i>
-          <span class="label">Bằng cấp: </span>
-          <ul>
-            <li v-for="level in scholarship.levelEntities" :key="level.id">{{level.name}}</li>
-          </ul>
-        </div>
-        <div class="content-field">
-          <i class="icon el-icon-time"></i>
-          <span class="label">Thời hạn: </span>
-          <span class="value">{{scholarship.time}}</span>
-        </div>
-        <div class="content-field" v-if="scholarship.requirementEntities.length > 0">
-          <i class="icon el-icon-collection-tag"></i>
-          <span class="label">Yêu cầu: </span>
-          <ul>
-            <li v-for="requirement in scholarship.requirementEntities" :key="requirement.id">{{requirement}}</li>
-          </ul>
+
         </div>
 
+        <div class="content" v-html="scholarship.content"></div>
       </el-main>
     </el-container>
-    <el-aside class="interactive" width="300px">
-
-      <h2> {{scholarship.moneyEntities[0].value}}</h2>
-      <button v-if="!interactive || !interactive.isInListFavorite" @click="addFavorite()" class="btn btn-pink">
-        <span class="icon">&#10084;</span>
-        <span >Thêm vào danh sách</span>
-      </button>
-      <button v-if="interactive && interactive.isInListFavorite" class="btn btn-white-pink">
-        <span class="icon">&#10084;</span>
-        <span >Đã thêm vào danh sách</span>
-      </button>
-      <button class="btn btn-pink" @click="countClickContact()">
-        &#9742;
-        <span>Liên hệ</span>
-      </button>
-      <button @click="countCompare()" class="btn btn-pink">
-        &#8651;
-        <span>So sánh</span>
-      </button>
-      <div style="text-align: left; margin: 20px;">
-        <div class="react">
-          <span class="icon">&#128065;</span>
-          <span class="value">{{scholarship ? scholarship.numberSeen: 0}} Lượt xem</span>
-        </div>
-        <div class="react">
-          <span class="icon">&#9734;</span>
-          <span class="value">{{scholarship? scholarship.rating + "/" + scholarship.numberRating : 0}} Đánh giá</span>
-        </div>
-        <div class="react">
-          <span class="icon"><i class="el-icon-share"></i></span>
-          <span class="value">{{scholarship? scholarship.numberShare :0}} Lượt chia sẻ</span>
-        </div>
-        <div class="react">
-          <span class="icon"><i class="el-icon-chat-square"></i> </span>
-          <span class="value">{{scholarship? scholarship.numberComment: 0}} Lượt bình luận</span>
-        </div>
-        <div class="content-field" >
-          <div style="margin: 10px" v-for="mess in scholarship.commentEntities" :key="mess.id">
-            <div v-if="mess.userEntity" style="font-size: 14px; font-weight: normal; "><i class="el-icon-chat-square"/> {{mess.userEntity.name}}</div>
-            <div style="font-size: 14px; font-weight: normal; color: #6637EB;">{{mess.message}}</div>
+    <el-aside width="300px">
+      <div class="interactive">
+        <h2> {{ scholarship.moneyEntities[0].value }}</h2>
+        <button v-if="!interactive || !interactive.isInListFavorite" class="btn btn-pink" @click="addFavorite()">
+          <span class="icon">&#10084;</span>
+          <span>Thêm vào danh sách</span>
+        </button>
+        <button v-if="interactive && interactive.isInListFavorite" class="btn btn-white-pink">
+          <span class="icon">&#10084;</span>
+          <span>Đã thêm vào danh sách</span>
+        </button>
+        <button class="btn btn-pink" @click="countClickContact()">
+          &#9742;
+          <span>Liên hệ</span>
+        </button>
+        <button class="btn btn-pink" @click="countCompare()">
+          &#8651;
+          <span>So sánh</span>
+        </button>
+        <div style="text-align: left; margin: 20px;">
+          <div class="react">
+            <span class="icon">&#128065;</span>
+            <span class="value">{{ scholarship ? scholarship.numberSeen : 0 }} Lượt xem</span>
           </div>
-          <el-input size="small" placeholder="câu hỏi ..." v-model="newComment" @keyup.enter.native="createComment"></el-input>
+          <div class="react">
+            <span class="icon">&#9734;</span>
+            <span
+              class="value">{{ scholarship ? scholarship.rating + "/" + scholarship.numberRating : 0 }} Đánh giá</span>
+          </div>
+          <div class="react">
+            <span class="icon"><i class="el-icon-share"></i></span>
+            <span class="value">{{ scholarship ? scholarship.numberShare : 0 }} Lượt chia sẻ</span>
+          </div>
+          <div class="react">
+            <span class="icon"><i class="el-icon-chat-square"></i> </span>
+            <span class="value">{{ scholarship ? scholarship.numberComment : 0 }} Lượt bình luận</span>
+          </div>
+          <div class="content-field">
+            <div v-for="mess in scholarship.commentEntities" :key="mess.id" style="margin: 10px">
+              <div v-if="mess.userEntity" style="font-size: 14px; font-weight: normal; "><i
+                class="el-icon-chat-square"/> {{ mess.userEntity.name }}
+              </div>
+              <div style="font-size: 14px; font-weight: normal; color: #6637EB;">{{ mess.message }}</div>
+            </div>
+            <el-input v-model="newComment" placeholder="câu hỏi ..." size="small"
+                      @keyup.enter.native="createComment"></el-input>
+          </div>
         </div>
       </div>
+
     </el-aside>
   </el-container>
 </template>
 <script>
 
 
-  import ScholarshipApi from "@/api/ScholarshipApi";
-  import AlertService from "@/services/AlertService";
-  import Auth from "@/security/Authentication";
-  import ScholarshipInteractiveApi from "@/api/ScholarshipInteractiveApi";
-  import CommentApi from "@/api/CommentApi";
-  import Pages from "@/router/Pages";
+import ScholarshipApi from "@/api/ScholarshipApi";
+import AlertService from "@/services/AlertService";
+import Auth from "@/security/Authentication";
+import ScholarshipInteractiveApi from "@/api/ScholarshipInteractiveApi";
+import CommentApi from "@/api/CommentApi";
+import Pages from "@/router/Pages";
 
-  export default {
-    name: "Detail",
-    components: {},
-    data() {
-      return {
-        scholarship: null,
-        rating: 0,
-        newComment: "",
-        interactive: null,
-      }
-    },
-    created() {
-      this.getData();
-      this.countView();
-    },
-    watch: {
-      'rating'(value){
-        if (value>0)
-          this.changeRating();
-      }
-    },
+export default {
+  name: "Detail",
+  components: {},
+  data() {
+    return {
+      scholarship: null,
+      rating: 0,
+      newComment: "",
+      interactive: null,
+    }
+  },
+  created() {
+    this.getData();
+    this.countView();
+  },
+  watch: {
+    'rating'(value) {
+      if (value > 0)
+        this.changeRating();
+    }
+  },
     methods: {
       async getData() {
         try {
@@ -206,7 +218,6 @@
 </script>
 <style scoped>
   .header {
-    margin-bottom: 30px;
     text-align: left;
     height: auto !important;
   }
@@ -218,6 +229,7 @@
     font-size: 24px;
   }
   .content {
+    margin-top: 30px;
     padding: 10px;
     border-radius: 15px;
     border: 1px solid var(--primary-color);
