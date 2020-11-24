@@ -3,7 +3,7 @@ import json
 from ..items import ScholarshipItem
 import re
 from datetime import datetime
-from ..utils_custom import getSchool, transToEng, getListLevel, getCountry
+from ..utils_custom import getSchool, transToEng, getListLevel, getCountry, getListMajor
 
 class SqlNguonHocBongSpider(scrapy.Spider):
     name = "sqlscholarshipads"
@@ -78,8 +78,8 @@ class SqlNguonHocBongSpider(scrapy.Spider):
                 else:
                     major = liValue;
 
-                if major == "All Subjects" : return
-                item["major"] = re.split(',|and |And ', major)
+                if major == "All Subjects" : major = "N/A"
+                item["major"] = getListMajor(major)
 
         if 'time' not in locals() or 'money' not in locals() : return
         content = ' '.join(response.xpath("///div[@class='scholarship-item']").getall())
