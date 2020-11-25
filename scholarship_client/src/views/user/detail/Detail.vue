@@ -1,11 +1,11 @@
 <template>
-  <el-container v-if="scholarship != null" style="margin: 50px">
+  <el-container v-if="scholarship != null" style="margin: 50px" class="container">
     <el-container>
       <el-header class="header">
         <h2> {{ scholarship.name }} </h2>
         <p v-if="scholarship.schoolEntity">{{ scholarship.schoolEntity.name }}</p>
       </el-header>
-      <el-main>
+      <el-main style="padding: 0px;">
         <div class="content">
           <div>
             <div class="rating">
@@ -51,11 +51,10 @@
           </div>
 
         </div>
-
         <div class="content" v-html="scholarship.content"></div>
       </el-main>
     </el-container>
-    <el-aside width="300px">
+    <el-aside class="aside" style="width: 300px">
       <div class="interactive">
         <h2> {{ scholarship.moneyEntities[0].value }}</h2>
         <button v-if="!interactive || !interactive.isInListFavorite" class="btn btn-pink" @click="addFavorite()">
@@ -104,7 +103,6 @@
           </div>
         </div>
       </div>
-
     </el-aside>
   </el-container>
 </template>
@@ -229,7 +227,7 @@ export default {
     font-size: 24px;
   }
   .content {
-    margin-top: 30px;
+    margin-bottom: 30px;
     padding: 10px;
     border-radius: 15px;
     border: 1px solid var(--primary-color);
@@ -253,6 +251,9 @@ export default {
   .content-field .icon {
     font-weight: bold;
     font-size: x-large;
+  }
+  .aside {
+    width: 300px;
   }
 
   .btn {
@@ -282,5 +283,17 @@ export default {
 
   .react .value {
     text-decoration: underline;
+  }
+
+  @media only screen and (max-width: 450px) {
+    .container{
+      display: contents;
+    }
+    .content {
+      margin-right: 0px;
+    }
+    .aside {
+      width: auto !important;
+    }
   }
 </style>

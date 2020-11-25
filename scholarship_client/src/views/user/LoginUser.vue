@@ -1,9 +1,9 @@
 <template>
-  <el-row :gutter="60" style="width: 100%" v-loading="loading">
-    <el-col :span="12">
+  <el-row :gutter="60" style="width: 100%; text-align: center" v-loading="loading">
+    <el-col :span="12" :xs="24">
       <img width="80%" src="@/assets/register-1.svg" alt="register">
     </el-col>
-    <el-col :span="12">
+    <el-col :span="12" :xs="24">
       <h1>xin chào, </h1>
       <h3>đăng nhập để xem nhiều học bổng hơn.</h3>
       <el-form :model="formData" status-icon :rules="rules" ref="formData" class="register-form">

@@ -26,3 +26,5 @@ def read_crawl(url: Optional[str] = None):
             subprocess.call([r'F:\DO_AN\do_an_tot_nghiep\scholarship_crawling\sqlscholarshipads.bat'])
     except (RuntimeError, TypeError, NameError, OSError, ValueError):
         return False
+    else:
+        return True

@@ -89,11 +89,14 @@
   @media only screen and (max-width: 900px) {
     .btn {
       font-size: 12px;
+      padding: 4px 7px 4px 7px;
     }
+
   }
-  @media only screen and (max-width: 400px) {
+  @media only screen and (max-width: 500px) {
     .btn {
-      font-size: 10px;
+      font-size: 12px;
+      padding: 4px 7px 4px 7px;
     }
   }
 </style>

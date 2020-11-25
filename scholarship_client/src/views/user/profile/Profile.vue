@@ -129,4 +129,9 @@ export default {
   justify-content: center;
   flex-direction: column;
 }
+@media only screen and (max-width: 450px) {
+  .profile {
+    display: grid;
+  }
+}
 </style>

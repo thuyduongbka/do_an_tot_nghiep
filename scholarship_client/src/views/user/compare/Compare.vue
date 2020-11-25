@@ -191,4 +191,11 @@ th, td {
 .el-select-dropdown, .el-popper {
   max-width: 500px;
 }
+
+@media only screen and (max-width: 450px) {
+  .card-compare {
+    width: 500px;
+    overflow-x: auto;
+  }
+}
 </style>

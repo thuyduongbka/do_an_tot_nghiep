@@ -1,9 +1,9 @@
 <template>
   <el-row :gutter="60" style="width: 100%">
-    <el-col :span="12">
+    <el-col :span="12" :xs="24">
       <img width="80%" src="@/assets/register-1.svg" alt="register">
     </el-col>
-    <el-col :span="12">
+    <el-col :span="12" :xs="24">
       <h1>ĐĂNG KÝ TÀI KHOẢN</h1>
       <el-form :model="formData" status-icon :rules="rules" ref="formData" class="register-form">
         <el-form-item prop="username">

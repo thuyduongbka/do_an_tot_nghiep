@@ -133,5 +133,9 @@ export default {
 .btn {
   padding: 8px 20px 8px 20px;
 }
-
+@media only screen and (max-width: 450px) {
+  .box-card {
+    width: 90%;
+  }
+}
 </style>

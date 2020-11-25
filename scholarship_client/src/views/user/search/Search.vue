@@ -1,8 +1,8 @@
 <template>
   <div class="search">
 
-    <el-container>
-      <el-aside>
+    <el-container class="container">
+      <el-aside class="search" style="width: 300px">
         <el-card class="box-card">
           <el-form ref="formData" :model="formData" class="form" status-icon>
             <el-form-item prop="listCountryId">
@@ -62,7 +62,7 @@
           </el-form>
         </el-card>
       </el-aside>
-      <el-main style="margin-top: 0px; padding: 5px;">
+      <el-main style="margin-top: 0px; padding: 0px;">
         <search-result :result="result" @search="search()" :pageParam="pageParam"></search-result>
       </el-main>
     </el-container>
@@ -168,5 +168,25 @@ export default {
 }
 .btn {
   margin-top: 10px;
+}
+/deep/
+.el-date-editor.el-input, .el-date-editor.el-input__inner {
+  width: auto;
+}
+.search {
+  width: 230px;
+}
+@media only screen and (max-width: 450px) {
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+  }
+  .search {
+    width: 100% !important;
+  }
+  .box-card {
+    width: 100%;
+  }
 }
 </style>

@@ -1,17 +1,17 @@
 <template>
   <el-row :gutter="60" style="width: 100%">
-    <el-col :span="12">
+    <el-col :span="12" :xs="24">
       <h1>XIN CHÀO</h1>
       <h4>hãy cho chúng tôi biết thêm về bạn ...</h4>
       <el-form :model="formData" status-icon :rules="rules" ref="formData" class="register-form">
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col :span="12" :xs="24">
             <el-form-item prop="name">
               <span>Họ và tên</span>
               <el-input v-model="formData.name"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="12" :xs="24">
             <el-form-item prop="gender">
               <span>Giới tính</span>
               <el-select v-model="formData.gender" placeholder="Select">
@@ -26,13 +26,13 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col :span="12" :xs="24">
             <el-form-item prop="phone">
               <span>Số điện thoại</span>
               <el-input v-model="formData.phone"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="12" :xs="24">
             <el-form-item prop="level">
               <span>Cấp bậc</span>
               <el-select v-model="formData.level" placeholder="Select">
@@ -48,20 +48,18 @@
 
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="12">
-            <el-col :span="12">
-              <el-form-item prop="graduationDate">
-                <span>Ngày tốt nghiệp</span>
-                <el-date-picker
-                  v-model="formData.graduationDate"
-                  type="date"
-                  placeholder="Pick a day"
-                  format="dd/MM/yyyy">
-                </el-date-picker>
-              </el-form-item>
-            </el-col>
+          <el-col :span="12" :xs="24">
+            <el-form-item prop="graduationDate">
+              <span>Ngày tốt nghiệp</span>
+              <el-date-picker
+                v-model="formData.graduationDate"
+                format="dd/MM/yyyy"
+                placeholder="Pick a day"
+                type="date">
+              </el-date-picker>
+            </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="12" :xs="24">
             <el-form-item prop="birthday">
               <span>Ngày sinh</span>
               <el-date-picker
@@ -73,6 +71,7 @@
             </el-form-item>
           </el-col>
 
+
         </el-row>
         <el-form-item style="text-align: center">
           <el-button class="btn btn-white" round @click="back">Trở lại</el-button>
@@ -80,25 +79,25 @@
         </el-form-item>
       </el-form>
     </el-col>
-    <el-col :span="12">
+    <el-col :span="12" :xs="24">
       <img width="80%" src="@/assets/register-2.svg" alt="register">
     </el-col>
   </el-row>
 </template>
 <script>
-  import AlertService from "@/services/AlertService";
+import AlertService from "@/services/AlertService";
 
-  export default {
-    name: "RegisterOne",
-    props: ["formData"],
-    data() {
-      const checkEmail = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('Please input the email'));
-        }
-        callback();
-      };
-      const validatePass = (rule, value, callback) => {
+export default {
+  name: "RegisterOne",
+  props: ["formData"],
+  data() {
+    const checkEmail = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('Please input the email'));
+      }
+      callback();
+    };
+    const validatePass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('Please input the password'));
         } else {

@@ -46,5 +46,9 @@
   max-height: 500px;
   overflow: auto;
 }
-
+@media only screen and (max-width: 450px) {
+  .box-card-search {
+    border: 1px solid #513a92;
+  }
+}
 </style>

@@ -1,8 +1,9 @@
 <template>
   <el-header class="header">
       <div class="header-el float-left">
-        <img style="width: 60px" src="@/assets/logo.png"/>
-        <a v-if="isUser" class="header-el-link" href="/">TRANG CHỦ</a>
+        <a class="header-el-link" href="/">
+          <img style="width: 150px" src="@/assets/logo-2.png">
+        </a>
         <a class="header-el-link" href="/search">TÌM KIẾM</a>
         <a v-if="isUser" class="header-el-link" href="/compare">SO SÁNH</a>
       </div>
@@ -65,17 +66,12 @@
     color: #6637EB;
   }
 
-  @media only screen and (max-width: 450px) {
-    .header {
-      font-size: 12px;
-    }
-  }
-
-  @media only screen and (max-width: 450px) {
+  @media only screen and (max-width: 500px) {
 
     .header {
       font-size: 10px;
       min-height: 80px !important;
+      display: flex;
     }
 
     .header-el > * {
