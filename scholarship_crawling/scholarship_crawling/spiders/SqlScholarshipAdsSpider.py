@@ -5,7 +5,7 @@ import re
 from datetime import datetime
 from ..utils_custom import getSchool, transToEng, getListLevel, getCountry, getListMajor
 
-class SqlNguonHocBongSpider(scrapy.Spider):
+class SqlScholarshipAdsSpider(scrapy.Spider):
     name = "sqlscholarshipads"
     startUrls = [
         'https://www.scholarshipsads.com/category/tags/vietnam/',

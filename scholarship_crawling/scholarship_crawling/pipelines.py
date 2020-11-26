@@ -13,7 +13,7 @@ class ScholarshipCrawlingPipeline(object):
 
     def __init__(self):
         self.create_connection()
-        self.dropTable()
+        #self.dropTable()
         self.create_common()
         self.create_table_scholarship()
         self.create_table_major_scholarship()
