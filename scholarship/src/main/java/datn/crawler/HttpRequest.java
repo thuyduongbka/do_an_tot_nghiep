@@ -8,20 +8,20 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CrawlerRequest<R> {
+public class HttpRequest<R> {
 	private String url;
     private HttpMethod httpMethod;
     private Class<R> repsonseType;
     private Map<String, String> params = new HashMap<>();
     private Object body;
 
-    public CrawlerRequest(String url, HttpMethod method, Class<R> type) {
+    public HttpRequest(String url, HttpMethod method, Class<R> type) {
         this.url = url;
         this.httpMethod = method;
         this.repsonseType = type;
     }
 
-    public CrawlerRequest<R> addParam(String name, String value) {
+    public HttpRequest<R> addParam(String name, String value) {
         this.params.put(name, value);
         return this;
     }

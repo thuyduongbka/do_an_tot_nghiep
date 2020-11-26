@@ -1,5 +1,6 @@
 package datn.service;
 
+import datn.crawler.HttpService;
 import datn.entity.ScholarshipEntity;
 import datn.security.CurrentUserDetailsContainer;
 import datn.security.CustomUserDetails;
@@ -14,6 +15,9 @@ public class RecommendService {
     private ScholarshipService scholarshipService;
 
     @Autowired
+    private HttpService httpService;
+
+    @Autowired
     private CurrentUserDetailsContainer currentUserDetailsContainer;
 
     public CustomUserDetails getCurrentUser() {
@@ -22,6 +26,7 @@ public class RecommendService {
 
     public List<ScholarshipEntity> getRecommend(){
         Long userId = getCurrentUser().getEndUserId();
+        List<Long> listScholarshipRecommend = httpService.getRecommend(userId);
         return scholarshipService.findAll();
     }
 }

@@ -1,6 +1,6 @@
 package datn.service;
 
-import datn.crawler.CrawlerService;
+import datn.crawler.HttpService;
 import datn.entity.WebEntity;
 import datn.enums.TypeTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import java.util.List;
 public class CrawlerJobService {
     
     @Autowired
-    private CrawlerService crawlerService;
+    private HttpService httpService;
     
     @Autowired
     private WebService webService;
@@ -23,7 +23,7 @@ public class CrawlerJobService {
         List<WebEntity> listWeb = webService.getAll();
         for (WebEntity web : listWeb){
             if (web.getActive() && checkTimeCrawlBeforeNow(web)){
-                crawlerService.crawlerApi(web.getUrl());
+                httpService.crawlerApi(web.getUrl());
             }
         }
     }
