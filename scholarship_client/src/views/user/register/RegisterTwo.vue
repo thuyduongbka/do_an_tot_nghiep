@@ -34,8 +34,8 @@
           </el-col>
           <el-col :span="12" :xs="24">
             <el-form-item prop="level">
-              <span>Cấp bậc</span>
-              <el-select v-model="formData.level" placeholder="Select">
+              <span>Học bổng mong muốn</span>
+              <el-select multiple v-model="formData.level" placeholder="Select">
                 <el-option
                   v-for="item in optionsLevel"
                   :key="item"
@@ -117,8 +117,14 @@ export default {
         }
       };
       return {
-        optionsGender: ["Nam", "Nữ", "Khác"],
-        optionsLevel: ["THCS","THPT","Cử nhân", "Thạc sỹ", "Tiến sỹ"],
+        optionsGender: ["Male", "Female", "Other"],
+        optionsLevel: ["Bachelor",
+          "Fellowship",
+          "Master",
+          "PHD",
+          "Postdoctoral",
+          "Postgraduate",
+          "Research"],
         rules: {
           password: [
             {validator: validatePass, trigger: 'blur'}

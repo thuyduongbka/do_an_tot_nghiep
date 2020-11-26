@@ -32,6 +32,6 @@ async def read_crawl(url: Optional[str] = None):
 @app.get("/get-recommend")
 def get_recommend(userId: Optional[str] = None):
     service = ConnectDB()
-    service.getUserInfor(userId)
+    print(service.getUserInfor(userId))
     return [1]
 

@@ -39,8 +39,8 @@
       </el-form-item>
 
       <el-form-item prop="level">
-        <div>Cấp bậc</div>
-        <el-select v-model="formData.level" placeholder="Select">
+        <div>Cấp học bổng mong muốn</div>
+        <el-select multiple v-model="formData.level" placeholder="Select">
           <el-option
             v-for="item in optionsLevel"
             :key="item"
@@ -74,8 +74,14 @@ export default {
   props: ["formData"],
   data() {
     return {
-      optionsGender: ["Nam", "Nữ", "Khác"],
-      optionsLevel: ["THCS","THPT","Cử nhân", "Thạc sỹ", "Tiến sỹ"],
+      optionsGender: ["Male", "Female", "Other"],
+      optionsLevel: ["Bachelor",
+        "Fellowship",
+        "Master",
+        "PHD",
+        "Postdoctoral",
+        "Postgraduate",
+        "Research"],
       rules: {}
     }
   },

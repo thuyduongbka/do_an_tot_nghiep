@@ -1,4 +1,6 @@
 import mysql.connector
+from service.entity.scholarship import Scholarship
+from service.entity.user import User
 
 class ConnectDB:
     def __init__(self):
@@ -17,8 +19,58 @@ class ConnectDB:
         self.curr.close()
         self.curr = self.conn.cursor(buffered=True)
 
+    def majorToArray(self, majorAndParentAndChildList):
+        majorArray = set()
+        for majorAndParentAndChild in majorAndParentAndChildList:
+            majorId = str(majorAndParentAndChild[0])
+            majorParentId = majorAndParentAndChild[1].split(",")
+            majorChildId = majorAndParentAndChild[2].split(",")
+            majorArray.add(majorId)
+            majorArray.update(majorParentId[:-1],majorChildId[:-1])
+        return majorArray
+
     def getUserInfor(self, userId):
-        print("OK")
-        self.curr.execute("SELECT * FROM end_user WHERE id = %s", (userId,))
-        user = self.curr.fetchone()
-        print(user)
+        self.curr.execute("SELECT id, level, graduation_date FROM end_user WHERE id = %s", (userId,))
+        result = self.curr.fetchone()
+        id = result[0]
+        level = result[1]
+        time = result[2]
+        self.curr.execute(
+            "SELECT c.id FROM country_favorite f join country c on f.country_id = c.id WHERE user_id = %s ", (userId,))
+        countryFavorite = self.curr.fetchall()
+        self.curr.execute("SELECT c.id FROM school_favorite f join school c on f.school_id = c.id WHERE user_id = %s",
+                          (userId,))
+        schoolFavorite = self.curr.fetchall()
+        self.curr.execute(
+            "SELECT c.id, c.note, c.child FROM major_favorite f join major c on f.major_id = c.id WHERE user_id = %s", (userId,))
+        majorFavorite = self.majorToArray(self.curr.fetchall())
+
+        return User(id,countryFavorite, schoolFavorite, majorFavorite, level, [], time)
+
+    def getLevel(self, scholarshipId):
+        self.curr.execute("SELECT name FROM level WHERE scholarship_id = %s", (scholarshipId,))
+        return self.curr.fetchall()
+    def getMoney(self, scholarshipId):
+        self.curr.execute("SELECT value FROM money WHERE scholarship_id = %s", (scholarshipId,))
+        return self.curr.fetchall()
+    def getMajor(self, scholarshipId):
+        self.curr.execute("SELECT m.id, note, child FROM major m JOIN major_scholarship s ON s.major_id = m.id WHERE scholarship_id = %s", (scholarshipId,))
+        return self.curr.fetchall()
+
+    def getScholarship(self):
+        self.curr.execute(
+            "SELECT id, country_id, school_id, time FROM `scholarship` WHERE time >= now() ORDER BY `scholarship`.`time` ASC")
+        results = self.curr.fetchall();
+        listScholarship = []
+        for s in results:
+            id = s[1]
+            country = s[2]
+            school = s[3]
+            time = s[4]
+            level = self.getLevel(id)
+            money = self.getMoney(id)
+            major = self.majorToArray(self.getMajor(id))
+
+            scholarship = Scholarship(id,country,school,major,level,money,time)
+            listScholarship.append(scholarship)
+        return listScholarship

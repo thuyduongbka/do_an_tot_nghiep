@@ -1,5 +1,5 @@
 <template>
-  <div class="search">
+  <div>
 
     <el-container class="container">
       <el-aside class="search" style="width: 300px">

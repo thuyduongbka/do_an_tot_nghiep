@@ -61,21 +61,24 @@ export default {
     async getData() {
       let userId = Auth.getCurrentUser().endUserId;
       await EndUserApi.get(userId).then(result => {
-        this.changeToForm(result);
+        this.toForm(result);
         this.changeFavorite(result);
       }).catch(e => {
         AlertService.error(e);
       })
     },
-    changeToForm(result) {
+    toForm(result) {
       this.formData.accountId = result.accountEntity.id;
       this.formData.username = result.accountEntity.username;
       this.formData.name = result.name;
       this.formData.birthday = new Date(result.birthday);
-      this.formData.level = result.level;
+      this.formData.level = result.level.split(",");
       this.formData.phone = result.phone;
       this.formData.graduationDate = new Date(result.graduationDate);
       this.formData.gender = result.gender;
+    },
+    formToData(){
+      this.formData.level = this.formData.level.join(',');
     },
     changeFavorite(result) {
       this.favorite.countryFavorite = result.countryEntities;
@@ -83,10 +86,11 @@ export default {
       this.favorite.majorFavorite = result.majorEntities;
     },
     async submitForm() {
+      this.formToData();
       try {
         await EndUserApi.update(this.formData).then(result => {
           AlertService.success("Cập nhật thành công");
-          this.changeToForm(result);
+          this.toForm(result);
         })
       } catch (e) {
         AlertService.error("Thất bại :  " + e)

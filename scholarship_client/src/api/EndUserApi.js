@@ -6,6 +6,7 @@ export default {
     return userRequest.get(baseUrl + "/get?id=" + id);
   },
   save(data) {
+    data.level = data.level.join(',');
     return userRequest({
       url: baseUrl + "/save",
       method: "POST",
