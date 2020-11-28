@@ -8,9 +8,9 @@ class ConnectDB:
 
     def create_connection(self):
         self.conn = mysql.connector.connect(
-            host='localhost',
-            user='root',
-            passwd='',
+            host='192.168.1.3',
+            user='root_son',
+            passwd='empty258',
             database='scholarship_english'
         )
         self.curr = self.conn.cursor(buffered=True)
@@ -63,14 +63,14 @@ class ConnectDB:
         results = self.curr.fetchall();
         listScholarship = []
         for s in results:
-            id = s[1]
-            country = s[2]
-            school = s[3]
-            time = s[4]
+            id = s[0]
+            country = s[1]
+            school = s[2]
+            time = s[3]
             level = self.getLevel(id)
             money = self.getMoney(id)
             major = self.majorToArray(self.getMajor(id))
-
+            
             scholarship = Scholarship(id,country,school,major,level,money,time)
             listScholarship.append(scholarship)
         return listScholarship

@@ -5,7 +5,7 @@ from pydantic import BaseModel
 import subprocess
 
 from service.connect_db import *
-
+from service.recommend_system import *
 app = FastAPI()
 
 
@@ -32,6 +32,13 @@ async def read_crawl(url: Optional[str] = None):
 @app.get("/get-recommend")
 def get_recommend(userId: Optional[str] = None):
     service = ConnectDB()
-    print(service.getUserInfor(userId))
-    return [1]
+    listScholarship = service.getScholarship()
+    user = service.getUserInfor(userId)
+
+    # print('country {}, school {} , major {}, user {} , money {}, time {}'.format(uers.country, user.school, user.major, user.level, user.money, user.time))
+
+    list_scholarship_recommend =  recommend(user, listScholarship)
+    print(list_scholarship_recommend)
+
+    return list_scholarship_recommend
 
