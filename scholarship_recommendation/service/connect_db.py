@@ -34,6 +34,8 @@ class ConnectDB:
         result = self.curr.fetchone()
         id = result[0]
         level = result[1]
+        if level == '': level = []
+        else: level = level.split(",")
         time = result[2]
         self.curr.execute(
             "SELECT c.id FROM country_favorite f join country c on f.country_id = c.id WHERE user_id = %s ", (userId,))
@@ -44,8 +46,8 @@ class ConnectDB:
         self.curr.execute(
             "SELECT c.id, c.note, c.child FROM major_favorite f join major c on f.major_id = c.id WHERE user_id = %s", (userId,))
         majorFavorite = self.majorToArray(self.curr.fetchall())
-
-        return User(id,countryFavorite, schoolFavorite, majorFavorite, level, [], time)
+        print(majorFavorite)
+        return User(id,countryFavorite, schoolFavorite, majorFavorite, level, [], time, None)
 
     def getLevel(self, scholarshipId):
         self.curr.execute("SELECT name FROM level WHERE scholarship_id = %s", (scholarshipId,))

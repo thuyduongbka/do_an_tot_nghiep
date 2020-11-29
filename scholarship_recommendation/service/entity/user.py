@@ -1,6 +1,6 @@
 import yaml
 
-with open('config.yaml', 'r') as f:
+with open('config.yaml', 'r',  encoding="utf8") as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
 
 
@@ -14,12 +14,14 @@ class User():
         self.country = [c[0] for c in country]
         self.school = [s[0] for s in  school]
         self.major = [int(m) for m in major]
-        self.level = [config['list_level'].index(l) for l in level.split(',')]
+        self.level = [config['list_level'].index(l) for l in level]
         self.money = []
-        if scholarship:
-            self.time = self.create_time(time_)
 
-        self._add_scholarship(scholarship)
+        self.time = self.create_time(time_)
+
+
+        if scholarship is not None:
+            self._add_scholarship(scholarship)
         self.vector = None
 
     def _add_scholarship(self, scholarship):
@@ -30,10 +32,14 @@ class User():
         self.money += scholarship.money
 
     def create_time(self, time_):
-        t = time_.split(' ')[0]
-        y, m, d = [int(t_) for t_ in t.split('-')]
-        
-        return (y + m/12 + float(d)/365)
+        try:
+            t = time_.split(' ')[0]
+            y, m, d = [int(t_) for t_ in t.split('-')]
+
+            return (y + m/12 + float(d)/365)
+        except:
+            return -1
+
 
     def get_vector(self):
         # if self.vector:

@@ -1,9 +1,9 @@
 
 import yaml
 
-with open('config.yaml', 'r') as f:
+with open('config.yaml', 'r', encoding="utf8") as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
-    print(config)
+    #print(config)
 
 
 # class RecommendSystem():
@@ -38,14 +38,24 @@ def recommend(user, list_scholarship):
 
         scholarship_info = scholarship.get_vector()
 
-        cosine_similarity_country = cosine_similarity([user_info[0]], [scholarship_info[0]]) [0][0]
-        cosine_similarity_school = cosine_similarity([user_info[1]], [scholarship_info[1]])[0][0]
-        cosine_similarity_major = cosine_similarity([user_info[2]], [scholarship_info[2]])[0][0]
-        cosine_similarity_level = cosine_similarity([user_info[3]], [scholarship_info[3]])[0][0]
-        cosine_similarity_money = cosine_similarity([user_info[4]], [scholarship_info[4]])[0][0]
-        # cosine_similarity_time = cosine_similarity([user_info[5], [scholarship_info[5]])[0][0]
+        if sum(user_info[0]) == 0 : cosine_similarity_country = 0
+        else:
+            cosine_similarity_country = cosine_similarity([user_info[0]], [scholarship_info[0]]) [0][0]
+        if sum(user_info[1]) == 0: cosine_similarity_school = 0
+        else:
+            cosine_similarity_school = cosine_similarity([user_info[1]], [scholarship_info[1]])[0][0]
+        if sum(user_info[2]) == 0: cosine_similarity_major = 0
+        else:
+            cosine_similarity_major = cosine_similarity([user_info[2]], [scholarship_info[2]])[0][0]
+        if sum(user_info[3]) == 0: cosine_similarity_level = 0
+        else:
+            cosine_similarity_level = cosine_similarity([user_info[3]], [scholarship_info[3]])[0][0]
+        if sum(user_info[4]) == 0: cosine_similarity_money = 0
+        else:
+            cosine_similarity_money = cosine_similarity([user_info[4]], [scholarship_info[4]])[0][0]
 
-        if user_info[5][0] - scholarship_info[5][0] < 0.25:
+        # user_infor[5] = time
+        if 0<user_info[5][0] - scholarship_info[5][0] < 0.25:
 
             cosine_similarity_time = 1.0
         elif  0.25 < user_info[5][0] - scholarship_info[5][0] < 0.5:
@@ -66,7 +76,8 @@ def recommend(user, list_scholarship):
         if cosine_similarity_ > top_cosine_similarity:
             # top_cosine_similarity = cosine_similarity_
 
-            result.append([scholarship.id, cosine_similarity_])
+            result.append([scholarship.id, cosine_similarity_, cosine_similarity_country, cosine_similarity_school,
+                           cosine_similarity_major,  cosine_similarity_level, cosine_similarity_money, cosine_similarity_time])
             result = list(result)
 
             if len(result) == 10:
@@ -76,6 +87,6 @@ def recommend(user, list_scholarship):
             result.sort(key = lambda x: x[1])
             result = deque(result, num_scholarship_recommned)
 
-    # return [x[0] for x in list(result)]
-    return list(result)
+    return [x[0] for x in list(result)][::-1]
+    # return list(result)
 

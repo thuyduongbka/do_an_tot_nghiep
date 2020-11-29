@@ -1,6 +1,6 @@
 import yaml
 
-with open('config.yaml', 'r') as f:
+with open('config.yaml', 'r',  encoding="utf8") as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
     print(config)
 
@@ -9,7 +9,6 @@ class Scholarship:
     def __init__(self, id, country, school, major, level, money, time):
         #ountry 3, school 14, major {'12', '5', '8'}, level [('PHD',)], money [('$15,000',)], time 2020-11-29
         self.id = id
-
         self.country = [country]
         self.school = [school]
         self.major = [int(m) for m in major]
@@ -31,7 +30,6 @@ class Scholarship:
         self.vector = None
 
     def create_money(self, money):
-        print(money)
         m = money[0][0][1:].split(',')
         money = int(m[0])
         for m_ in m[1:]:

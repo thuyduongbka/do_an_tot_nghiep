@@ -2,8 +2,7 @@ num_country: 500
 num_school: 200
 num_major: 500
 num_level: 10
-list_level: ['Bachelor', 'Fellowship', 'Master', 'PHD', 
-              'Postdoctoral', 'Postgraduate', 'Research', 'Secondary school studies', 'Post-Secondary Education']
+list_level: ['Bachelor', 'Fellowship', 'Master', 'PHD', 'Postdoctoral', 'Postgraduate', 'Research', 'Secondary school studies', 'Post-Secondary Education']
 list_money: ['Partial Funding', 'Fully Funded' ]  # giá trị học bổng toàn phần hay bán phần
 max_year: 2022
 
@@ -14,5 +13,5 @@ weight_level: 0.2
 weight_money: 0.05
 weight_time: 0.05
 
-num_scholarship_recommned: 10
+num_scholarship_recommned: 6
 min_similarity: 0.
