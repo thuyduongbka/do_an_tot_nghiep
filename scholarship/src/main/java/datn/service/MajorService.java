@@ -17,21 +17,18 @@ public class MajorService extends BaseService<MajorEntity, MajorRepository> {
     @Transactional
     public MajorEntity updateParent(Long majorId,Long parentId){
         MajorEntity child = findById(majorId);
-        MajorEntity parent = findById(parentId);
         child.setParentId(parentId);
         child.setNote(child.getNote() + parentId + ",");
-        parent.setChild(parent.getChild() + majorId + ",");
-        update(parent);
+        repository.increaseChildMajor(parentId, majorId + "," );
         return update(child);
     }
     @Transactional
     public MajorEntity deleteParent(Long majorId,Long parentId){
         MajorEntity child = findById(majorId);
-        MajorEntity parent = findById(parentId);
 
         child.setParentId(null);
         child.setNote(child.getNote().replace(parentId + ",", ""));
-        parent.setNote(parent.getChild().replace(majorId + ",", ""));
+        repository.decreaseChildMajor(parentId,majorId + ",");
 
         return update(child);
     }

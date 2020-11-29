@@ -32,7 +32,7 @@ public class HttpService {
         return request.send();
     }
 
-    public List<Long> getRecommend(Long userId){
+    public List<Integer> getRecommend(Long userId){
         HttpRequest<List> request = new HttpRequest<>(getUrl(GET_RECOMMEND), HttpMethod.GET, List.class);
         request.addParam("userId", String.valueOf(userId));
         return request.send();

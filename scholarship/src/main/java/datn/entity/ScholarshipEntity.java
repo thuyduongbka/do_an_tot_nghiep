@@ -35,13 +35,13 @@ public class ScholarshipEntity extends BaseEntity {
     @JoinColumn(name = "country_id", referencedColumnName = "id")
     private CountryEntity countryEntity;
     @OneToMany
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "scholarship_id")
     private List<LevelEntity> levelEntities;
     @OneToMany
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "scholarship_id")
     private List<MoneyEntity> moneyEntities;
     @OneToMany
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "scholarship_id")
     private List<RequirementEntity> requirementEntities;
     
     @Transient

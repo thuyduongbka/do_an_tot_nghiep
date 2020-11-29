@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RecommendService {
@@ -26,7 +27,15 @@ public class RecommendService {
 
     public List<ScholarshipEntity> getRecommend(){
         Long userId = getCurrentUser().getEndUserId();
-        List<Long> listScholarshipRecommend = httpService.getRecommend(userId);
-        return scholarshipService.findAll();
+        List<Integer> listScholarshipIdRecommend = httpService.getRecommend(userId);
+        System.out.println(listScholarshipIdRecommend);
+
+        for (Integer id : listScholarshipIdRecommend){
+            System.out.println(id);
+        }
+
+        List<ScholarshipEntity> listScholarshipRecommend = listScholarshipIdRecommend.stream().map(id ->
+            scholarshipService.findById(Long.valueOf(id))).collect(Collectors.toList());
+        return listScholarshipRecommend;
     }
 }
