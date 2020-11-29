@@ -19,7 +19,10 @@
           <el-button circle style="color: #FF275A" >&#10084;</el-button>
         </div>
         <div class="card-react--item">
-          <el-button style="color: #6637EB" circle icon="el-icon-s-promotion" @click="detail()"></el-button>
+          <a :href="'/detail?id=' + scholarship.id">
+            <el-button style="color: #6637EB" circle icon="el-icon-s-promotion"></el-button>
+          </a>
+
         </div>
       </div>
     </div>
