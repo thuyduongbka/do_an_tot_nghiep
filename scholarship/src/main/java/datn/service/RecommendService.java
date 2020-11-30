@@ -28,14 +28,15 @@ public class RecommendService {
     public List<ScholarshipEntity> getRecommend(){
         Long userId = getCurrentUser().getEndUserId();
         List<Integer> listScholarshipIdRecommend = httpService.getRecommend(userId);
-        System.out.println(listScholarshipIdRecommend);
-
-        for (Integer id : listScholarshipIdRecommend){
-            System.out.println(id);
-        }
-
         List<ScholarshipEntity> listScholarshipRecommend = listScholarshipIdRecommend.stream().map(id ->
             scholarshipService.findById(Long.valueOf(id))).collect(Collectors.toList());
+        return listScholarshipRecommend;
+    }
+    public List<ScholarshipEntity> getRecommendByScholarship(Long scholarshipId){
+        Long userId = getCurrentUser().getEndUserId();
+        List<Integer> listScholarshipIdRecommend = httpService.getRecommend(userId, scholarshipId);
+        List<ScholarshipEntity> listScholarshipRecommend = listScholarshipIdRecommend.stream().map(id ->
+                scholarshipService.findById(Long.valueOf(id))).collect(Collectors.toList());
         return listScholarshipRecommend;
     }
 }

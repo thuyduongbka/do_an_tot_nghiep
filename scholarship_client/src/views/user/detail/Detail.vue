@@ -51,6 +51,14 @@
           </div>
 
         </div>
+        <div class="content recommend">
+          <el-carousel :interval="2000" type="card" height="350px" >
+            <el-carousel-item v-for="s in listRecommend" :key="s.id" >
+              <scholarship :scholarship="s"
+                           :show-image="true"></scholarship>
+            </el-carousel-item>
+          </el-carousel>
+        </div>
         <div class="content" v-html="scholarship.content"></div>
       </el-main>
     </el-container>
@@ -103,6 +111,7 @@
           </div>
         </div>
       </div>
+      <list-recommend :list-scholarship="listRecommend"></list-recommend>
     </el-aside>
   </el-container>
 </template>
@@ -115,16 +124,19 @@ import Auth from "@/security/Authentication";
 import ScholarshipInteractiveApi from "@/api/ScholarshipInteractiveApi";
 import CommentApi from "@/api/CommentApi";
 import Pages from "@/router/Pages";
+import ListRecommend from "@/components/scholarship/ListRecommend";
+import Scholarship from "@/components/scholarship/Scholarship";
 
 export default {
   name: "Detail",
-  components: {},
+  components: {ListRecommend, Scholarship},
   data() {
     return {
       scholarship: null,
       rating: 0,
       newComment: "",
       interactive: null,
+      listRecommend: []
     }
   },
   created() {
@@ -145,7 +157,8 @@ export default {
           await ScholarshipApi.get(userId,id).then(result => {
             this.scholarship = result.scholarshipEntity;
             this.interactive = result.interactiveEntity;
-            this.rating = this.interactive ? this.interactive.rating :0 ;
+            this.rating = this.interactive ? this.interactive.rating :0
+            this.listRecommend = result.listRecommend;
           })
         } catch (e) {
           AlertService.error(e)
@@ -284,6 +297,9 @@ export default {
   .react .value {
     text-decoration: underline;
   }
+  .el-carousel__container {
+    height: 400px;
+  }
 
   @media only screen and (max-width: 450px) {
     .container{
@@ -294,6 +310,9 @@ export default {
     }
     .aside {
       width: auto !important;
+    }
+    .recommend {
+      display: none;
     }
   }
 </style>

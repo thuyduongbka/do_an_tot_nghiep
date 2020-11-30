@@ -269,7 +269,7 @@ class ScholarshipCrawlingPipeline(object):
                 school_id,
                 item['urlImage']
             ))
-        self.curr.execute("UPDATE web SET last_crawled=now() WHERE id = %s", (item["web"],))
+
         self.conn.commit()
         self.restart()
         self.store_db_attribute(item)
@@ -327,6 +327,7 @@ class ScholarshipCrawlingPipeline(object):
                 self.conn.commit()
 
     def process_item(self, item, spider):
+        self.curr.execute("UPDATE web SET last_crawled=now() WHERE id = %s", (item["web"],))
         if self.checkUrl(item["url"]) == True: return
         self.store_db(item)
         return item

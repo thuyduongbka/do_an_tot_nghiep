@@ -1,17 +1,17 @@
 <template>
-  <div class="card">
+  <div class="card" :style="showInteractive?'':'margin: auto; margin-bottom: 20px;'">
     <div class="card-image" v-if="showImage">
       <img :src="scholarship.urlImage"/>
       <img v-if="!scholarship.urlImage" src="@/assets/example.png"/>
     </div>
     <div class="card-content">
       <span>{{formatDate(scholarship.time)}}</span>
-      <p style="font-weight: bold;">{{scholarship.name}}</p>
+      <p style="font-weight: bold;"><a :href="'/detail?id=' + scholarship.id">{{scholarship.name}}</a></p>
       <span>{{scholarship.schoolEntity? scholarship.schoolEntity.name : ""}}</span>
       <p>Quốc gia: {{scholarship.countryEntity.name}}</p>
     </div>
     <div class="card-footer">
-      <div class="card-react" >
+      <div class="card-react" v-if="showInteractive">
         <div class="card-react--item">
           <el-button circle icon="el-icon-close"></el-button>
         </div>
@@ -34,7 +34,7 @@ import Pages from "@/router/Pages";
 
 export default {
   name: "Scholarship",
-  props: ["scholarship", "showImage"],
+  props: ["scholarship", "showImage", "showInteractive"],
   methods: {
     formatDate(date) {
       return utils.formatDate(date);
@@ -57,6 +57,7 @@ export default {
     display: block;
     position: relative;
     font-size: 12px;
+    background-color: white;
   }
   .card-image {
     position: relative;

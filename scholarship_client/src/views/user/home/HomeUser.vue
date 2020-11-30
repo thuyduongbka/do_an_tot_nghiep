@@ -1,10 +1,10 @@
 <template>
   <div class="home">
     <div class="home-title">xin chào, dưới đây là học bổng dành cho bạn...</div>
-    <div class="home-scholarships">
+    <div class="home-scholarships" v-loading="loading">
       <div style="display:flex; flex-wrap: wrap; justify-content: center;">
         <scholarship v-for="scholarship in listScholarship" :key="scholarship.id" :scholarship="scholarship"
-                     :show-image="true"></scholarship>
+                     :show-image="true" :show-interactive="true"></scholarship>
       </div>
     </div>
   </div>
@@ -22,6 +22,7 @@ export default {
   data() {
     return {
       listScholarship: null,
+      loading: false,
     }
   },
   created() {
@@ -29,6 +30,7 @@ export default {
   },
   methods: {
     async getRecommend() {
+      this.loading = true;
       try {
         await RecommendApi.getRecommend().then(result => {
           this.listScholarship = result;
@@ -36,6 +38,7 @@ export default {
       } catch (e) {
         AlertService.error(e)
       }
+      this.loading = false;
     },
   }
 }

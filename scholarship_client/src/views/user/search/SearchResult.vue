@@ -2,8 +2,9 @@
 <el-card class="box-card-search">
   <div v-if="!result">Chưa có học bổng nào</div>
   <div v-else>
-    <div style="display:flex; flex-wrap: wrap; justify-content: center;">
-        <scholarship v-for="scholarship in result.content" :key="scholarship.id" :scholarship="scholarship" :show-image="false"></scholarship>
+    <div class="list">
+      <scholarship v-for="scholarship in result.content" :key="scholarship.id" :scholarship="scholarship"
+                   :show-image="false"></scholarship>
     </div>
     <div class="block">
       <el-pagination
@@ -20,18 +21,18 @@
 </el-card>
 </template>
 <script>
-  import Scholarship from "@/components/scholarship/Scholarship";
-  export default {
-    name: 'SearchResult',
-    components: {Scholarship},
-    props: ["result","pageParam"],
-    data(){
-      return {
-      }
-    },
-    methods: {
-      handleSizeChange(){
-        this.$emit("search");
+import Scholarship from "@/components/scholarship/Scholarship";
+
+export default {
+  name: 'SearchResult',
+  components: {Scholarship},
+  props: ["result", "pageParam"],
+  data() {
+    return {}
+  },
+  methods: {
+    handleSizeChange() {
+      this.$emit("search");
       },
       handleCurrentChange(){
         this.$emit("search");
@@ -45,6 +46,15 @@
   height: 100%;
   max-height: 500px;
   overflow: auto;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.list > * {
+  margin: 20px !important;
 }
 @media only screen and (max-width: 450px) {
   .box-card-search {

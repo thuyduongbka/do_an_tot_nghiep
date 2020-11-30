@@ -37,6 +37,12 @@ public class HttpService {
         request.addParam("userId", String.valueOf(userId));
         return request.send();
     }
+    public List<Integer> getRecommend(Long userId, Long scholarshipId){
+        HttpRequest<List> request = new HttpRequest<>(getUrl(GET_RECOMMEND), HttpMethod.GET, List.class);
+        request.addParam("userId", String.valueOf(userId));
+        request.addParam("scholarshipId", String.valueOf(scholarshipId));
+        return request.send();
+    }
     
     
     

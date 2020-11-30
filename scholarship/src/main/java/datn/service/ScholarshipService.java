@@ -31,6 +31,9 @@ public class ScholarshipService extends BaseService<ScholarshipEntity, Scholarsh
     
     @Autowired
     private ScholarshipInteractiveService interactiveService;
+
+    @Autowired
+    private RecommendService recommendService;
     
     public Page<ScholarshipEntity> getAll(ScholarshipFilterDto dto, PageRequest page){
         List<Long> listSchoolId = dto.getListSchoolId();
@@ -58,7 +61,8 @@ public class ScholarshipService extends BaseService<ScholarshipEntity, Scholarsh
         List<CommentEntity> commentEntities = commentService.getByScholarshipId(scholarshipId);
         scholarshipEntity.setCommentEntities(commentEntities);
         ScholarshipInteractiveEntity interactiveEntity =  interactiveService.findByScholarshipIdAndUserId(scholarshipId,userId);
-        return new UserScholarshipDto(interactiveEntity, scholarshipEntity);
+        List<ScholarshipEntity> listRecommend = recommendService.getRecommendByScholarship(scholarshipId);
+        return new UserScholarshipDto(interactiveEntity, scholarshipEntity, listRecommend);
     }
 
     public List<ScholarshipNameDto> findAllName(){

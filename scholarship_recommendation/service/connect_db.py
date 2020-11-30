@@ -29,7 +29,7 @@ class ConnectDB:
             majorArray.update(majorParentId[:-1],majorChildId[:-1])
         return majorArray
 
-    def getUserInfor(self, userId):
+    def getUserInfor(self, userId, scholarshipId):
         self.curr.execute("SELECT id, level, graduation_date FROM end_user WHERE id = %s", (userId,))
         result = self.curr.fetchone()
         id = result[0]
@@ -46,8 +46,11 @@ class ConnectDB:
         self.curr.execute(
             "SELECT c.id, c.note, c.child FROM major_favorite f join major c on f.major_id = c.id WHERE user_id = %s", (userId,))
         majorFavorite = self.majorToArray(self.curr.fetchall())
-        print(majorFavorite)
-        return User(id,countryFavorite, schoolFavorite, majorFavorite, level, [], time, None)
+
+        scholarship = None
+        if scholarshipId is not None:
+            scholarship = self.getScholarship(scholarshipId)
+        return User(id,countryFavorite, schoolFavorite, majorFavorite, level, [], time, scholarship)
 
     def getLevel(self, scholarshipId):
         self.curr.execute("SELECT name FROM level WHERE scholarship_id = %s", (scholarshipId,))
@@ -59,20 +62,30 @@ class ConnectDB:
         self.curr.execute("SELECT m.id, note, child FROM major m JOIN major_scholarship s ON s.major_id = m.id WHERE scholarship_id = %s", (scholarshipId,))
         return self.curr.fetchall()
 
-    def getScholarship(self):
+    def getScholarship(self, scholarshipId):
+        print("Recommend Same")
+        self.curr.execute(
+            "SELECT id, country_id, school_id, time FROM `scholarship`  WHERE id = %s", (scholarshipId,))
+        result = self.curr.fetchone();
+        return self.toEntity(result)
+
+    def getListScholarship(self):
         self.curr.execute(
             "SELECT id, country_id, school_id, time FROM `scholarship` WHERE time >= now() ORDER BY `scholarship`.`time` ASC")
         results = self.curr.fetchall();
         listScholarship = []
         for s in results:
-            id = s[0]
-            country = s[1]
-            school = s[2]
-            time = s[3]
-            level = self.getLevel(id)
-            money = self.getMoney(id)
-            major = self.majorToArray(self.getMajor(id))
-            
-            scholarship = Scholarship(id,country,school,major,level,money,time)
+            scholarship = self.toEntity(s)
             listScholarship.append(scholarship)
         return listScholarship
+
+    def toEntity(self,s):
+        id = s[0]
+        country = s[1]
+        school = s[2]
+        time = s[3]
+        level = self.getLevel(id)
+        money = self.getMoney(id)
+        major = self.majorToArray(self.getMajor(id))
+
+        return Scholarship(id, country, school, major, level, money, time)

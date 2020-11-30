@@ -63,7 +63,7 @@
         </el-card>
       </el-aside>
       <el-main style="margin-top: 0px; padding: 0px;">
-        <search-result :result="result" @search="search()" :pageParam="pageParam"></search-result>
+        <search-result :result="result" @search="search()" :pageParam="pageParam" v-loading="loading"></search-result>
       </el-main>
     </el-container>
 
@@ -106,6 +106,7 @@ export default {
       },
       result: null,
       isUser: Auth.getCurrentRole() === Roles.ROLE_END_USER,
+      loading: false
     }
     },
     methods: {
@@ -113,6 +114,7 @@ export default {
         this.$refs[formName].resetFields();
       },
       async search() {
+        this.loading = true;
         try {
           await ScholarshipApi.getAll(this.pageParam, this.formData).then(result => {
             this.result = result;
@@ -120,6 +122,7 @@ export default {
         } catch (e) {
           AlertService.error(e)
         }
+        this.loading = false;
       },
       async getData() {
         try {
