@@ -15,6 +15,9 @@ import java.util.List;
 public class ScholarshipInteractiveService extends BaseService<ScholarshipInteractiveEntity, ScholarshipInteractiveRepository> {
     @Autowired
     private ScholarshipService scholarshipService;
+
+    @Autowired
+    private EndUserService userService;
     
     public ScholarshipInteractiveEntity findByScholarshipIdAndUserId(Long scholarshipId, Long userId){
         return repository.findByScholarshipIdAndUserId(scholarshipId, userId);
@@ -31,6 +34,7 @@ public class ScholarshipInteractiveService extends BaseService<ScholarshipIntera
     }
     @Transactional
     public void countContact(Long userId, Long scholarshipId){
+        userService.updateUserByScholarship(scholarshipId);
         repository.increaseNumberClickContact(scholarshipId,userId);
     }
     @Transactional
@@ -48,7 +52,8 @@ public class ScholarshipInteractiveService extends BaseService<ScholarshipIntera
         repository.changeLike(scholarshipId,userId,isLiked);
     }
     @Transactional
-    public void addFavorite(Long userId, Long scholarshipId, Boolean addFavorite){
+    public void addFavorite(Long scholarshipId, Boolean addFavorite){
+        Long userId = getCurrentUser().getEndUserId();
         repository.changeFavorite(scholarshipId,userId,addFavorite);
     }
     @Transactional

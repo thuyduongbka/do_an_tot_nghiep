@@ -5,7 +5,7 @@ let baseUrl = "/api/scholarship";
 export default {
   getAll(pageParam, dataFilter ) {
     return userRequest({
-      url : baseUrl + "/getAll" + utils.createParam(pageParam),
+      url : "/api-public/end-user" + "/find-scholarship" + utils.createParam(pageParam),
       method: "POST",
       data: dataFilter,
       headers: {

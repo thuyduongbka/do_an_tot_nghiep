@@ -22,9 +22,13 @@ let createRequest = (baseURL, loginURL) => {
          *
          */
         if (error && error.response && (error.response.status == 401 || error.response.status == 403)) {
-            auth.logout(); // call logout to remove current user & token
-            router.push({path: loginURL});
-            AlertService.setDisabled(true);
+          auth.logout(); // call logout to remove current user & token
+          if (router.currentRoute.fullPath != "/" + loginURL) {
+            router.push({path: loginURL})
+          } else {
+            throw new Error("Error")
+          }
+          AlertService.setDisabled(true);
         }
         return Promise.reject(error);
     });

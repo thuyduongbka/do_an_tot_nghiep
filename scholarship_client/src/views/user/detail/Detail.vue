@@ -1,5 +1,5 @@
 <template>
-  <el-container v-if="scholarship != null" style="margin: 50px" class="container">
+  <el-container v-loading="loading" v-if="scholarship != null" style="margin: 50px" class="container">
     <el-container>
       <el-header class="header">
         <h2> {{ scholarship.name }} </h2>
@@ -52,12 +52,13 @@
 
         </div>
         <div class="content recommend">
-          <el-carousel :interval="2000" type="card" height="350px" >
-            <el-carousel-item v-for="s in listRecommend" :key="s.id" >
-              <scholarship :scholarship="s"
-                           :show-image="true"></scholarship>
-            </el-carousel-item>
-          </el-carousel>
+          <list-recommend-carousel :list-scholarship="listRecommend"></list-recommend-carousel>
+<!--          <el-carousel :interval="2000" type="card" height="350px" >-->
+<!--            <el-carousel-item v-for="s in listRecommend" :key="s.id" >-->
+<!--              <scholarship :scholarship="s"-->
+<!--                           :show-image="true"></scholarship>-->
+<!--            </el-carousel-item>-->
+<!--          </el-carousel>-->
         </div>
         <div class="content" v-html="scholarship.content"></div>
       </el-main>
@@ -126,17 +127,19 @@ import CommentApi from "@/api/CommentApi";
 import Pages from "@/router/Pages";
 import ListRecommend from "@/components/scholarship/ListRecommend";
 import Scholarship from "@/components/scholarship/Scholarship";
+import ListRecommendCarousel from "@/components/scholarship/ListRecommendCarousel";
 
 export default {
   name: "Detail",
-  components: {ListRecommend, Scholarship},
+  components: {ListRecommend, Scholarship, ListRecommendCarousel},
   data() {
     return {
       scholarship: null,
       rating: 0,
       newComment: "",
       interactive: null,
-      listRecommend: []
+      listRecommend: [],
+      loading: false
     }
   },
   created() {
@@ -151,6 +154,7 @@ export default {
   },
     methods: {
       async getData() {
+        this.loading = true;
         try {
           let id = this.$route.query.id;
           let userId = Auth.getCurrentUser().endUserId;
@@ -163,6 +167,7 @@ export default {
         } catch (e) {
           AlertService.error(e)
         }
+        this.loading = false;
       },
       async countView() {
         try {
@@ -174,7 +179,7 @@ export default {
         }
       },
       async countClickContact(){
-        window.location.href = this.scholarship.url;
+        // window.location.href = this.scholarship.url;
         try {
           let id = this.$route.query.id;
           let userId = Auth.getCurrentUser().endUserId;
@@ -201,8 +206,7 @@ export default {
       async addFavorite(){
         try {
           let id = this.$route.query.id;
-          let userId = Auth.getCurrentUser().endUserId;
-          await ScholarshipInteractiveApi.addFavorite(id, userId, true).then(result=>{
+          await ScholarshipInteractiveApi.addFavorite(id, true).then(result=>{
             this.getData();
           });
         } catch (e) {
@@ -297,9 +301,7 @@ export default {
   .react .value {
     text-decoration: underline;
   }
-  .el-carousel__container {
-    height: 400px;
-  }
+
 
   @media only screen and (max-width: 450px) {
     .container{

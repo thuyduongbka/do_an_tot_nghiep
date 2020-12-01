@@ -3,14 +3,20 @@ package datn.resource;
 import datn.custom.domain.EndUser;
 import datn.custom.dto.ChangePasswordDTO;
 import datn.custom.dto.ResponseCase;
+import datn.custom.dto.ScholarshipFilterDto;
 import datn.custom.dto.ServerResponseDTO;
 import datn.custom.exception.LoginFailureException;
 import datn.custom.exception.OldPasswordNotEqualException;
+import datn.entity.ScholarshipEntity;
 import datn.entity.user.EndUserEntity;
 import datn.service.EndUserService;
+import datn.service.ScholarshipService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +27,21 @@ public class EndUserApi {
     
     @Autowired
     private EndUserService endUserService;
+
+    @Autowired
+    private ScholarshipService scholarshipService;
+
+    @PostMapping("/find-scholarship")
+    public ResponseEntity<Page<ScholarshipEntity>> getAll(@RequestBody ScholarshipFilterDto scholarshipFilterDto,
+                                                          @RequestParam(value = "page", defaultValue = "1") int page,
+                                                          @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
+                                                          @RequestParam(value = "sortDirection", defaultValue = "DESC") String sortDirection,
+                                                          @RequestParam(value = "sortField", defaultValue = "createdTime") String sortField){
+        LOGGER.info("call /api/scholarship/find-scholarship");
+        Sort sort = Sort.by(Sort.Direction.valueOf(sortDirection), sortField);
+        PageRequest request = PageRequest.of(page - 1, pageSize, sort);
+        return ResponseEntity.ok(scholarshipService.getAll(scholarshipFilterDto,request));
+    }
     
     @PostMapping("/save")
     public ResponseEntity<EndUserEntity> save(@RequestBody EndUser endUser) throws Exception {

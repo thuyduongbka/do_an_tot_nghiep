@@ -12,8 +12,8 @@ export default {
   countCompare(scholarshipId, userId){
     return userRequest.get(baseUrl + "/countCompare?userId=" + userId + "&scholarshipId=" + scholarshipId );
   },
-  addFavorite(scholarshipId, userId, favorite){
-    return userRequest.get(baseUrl + "/addFavorite?userId=" + userId + "&scholarshipId=" + scholarshipId + "&isFavorite=" + favorite);
+  addFavorite(scholarshipId, favorite){
+    return userRequest.get(baseUrl + "/addFavorite?scholarshipId=" + scholarshipId + "&isFavorite=" + favorite);
   },
   like(scholarshipId, userId, like){
     return userRequest.get(baseUrl + "/like?userId=" + userId + "&scholarshipId=" + scholarshipId + "&isLiked=" + like );

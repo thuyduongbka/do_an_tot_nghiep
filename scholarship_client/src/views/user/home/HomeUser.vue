@@ -6,6 +6,7 @@
         <scholarship v-for="scholarship in listScholarship" :key="scholarship.id" :scholarship="scholarship"
                      :show-image="true" :show-interactive="true"></scholarship>
       </div>
+      <el-button style="background-color: #6637EB; color: #FFFFFF" icon="el-icon-arrow-down">Xem thêm</el-button>
     </div>
   </div>
 </template>

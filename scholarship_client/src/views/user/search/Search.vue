@@ -11,8 +11,8 @@
                 <el-option
                   v-for="item in listCountry"
                   :key="item.id"
-                  :label="item.name"
-                  :value="item.id">
+                  :label="item[1].name"
+                  :value="item[1].id">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -92,12 +92,12 @@ export default {
       formData: {
         listCountryId: [],
         listSchoolId: [],
-          majorId: null,
-          levelName: null,
-          dueDate: null
+        majorId: null,
+        levelName: null,
+        dueDate: null
       },
       listSchool: [],
-      listCountry: [],
+      listCountry: new Map(),
       listMajor: [],
       listLevel: [],
       pageParam: {
@@ -108,18 +108,50 @@ export default {
       isUser: Auth.getCurrentRole() === Roles.ROLE_END_USER,
       loading: false
     }
+  },
+  watch: {
+    'formData.listCountryId'(val) {
+      if (val.length != 0) {
+        this.listSchool = [];
+        let listSchoolId = []
+        for (let countryId of val) {
+          this.listSchool = this.listSchool.concat(this.listCountry.get(countryId).schoolEntities);
+          this.formData.listSchoolId.forEach(id => {
+            if (this.findCountryFromSchoolId(id) === countryId){
+              listSchoolId.push(id);
+            }
+          });
+        }
+        this.formData.listSchoolId = listSchoolId;
+      } else {
+        this.getData();
+      }
     },
-    methods: {
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      },
-      async search() {
-        this.loading = true;
-        try {
-          await ScholarshipApi.getAll(this.pageParam, this.formData).then(result => {
-            this.result = result;
-          })
-        } catch (e) {
+    'formData.listSchoolId'(val) {
+      if (val.length != 0) {
+        if (this.formData.listCountryId.length == 0) {
+          for (let schoolId of val) {
+            for (let school of this.listSchool) {
+              if (school.id === schoolId) {
+                this.formData.listCountryId.push(school.countryId);
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  methods: {
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
+    async search() {
+      this.loading = true;
+      try {
+        await ScholarshipApi.getAll(this.pageParam, this.formData).then(result => {
+          this.result = result;
+        })
+      } catch (e) {
           AlertService.error(e)
         }
         this.loading = false;
@@ -127,7 +159,9 @@ export default {
       async getData() {
         try {
           await CountryApi.getAll().then(result => {
-            this.listCountry = result;
+            for (let r of result) {
+              this.listCountry.set(r.id, r)
+            }
           })
         } catch (e) {
           AlertService.error(e)

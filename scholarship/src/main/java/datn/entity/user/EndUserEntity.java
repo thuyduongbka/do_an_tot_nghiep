@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -36,25 +37,25 @@ public class EndUserEntity extends BaseEntity {
                     joinColumns = @JoinColumn(name = "user_id"),
                     inverseJoinColumns = @JoinColumn(name = "country_id")
             )
-    private List<CountryEntity> countryEntities;
+    private Collection<CountryEntity> countryEntities;
     @ManyToMany
     @JoinTable(
             name = "school_favorite",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "school_id")
     )
-    private List<SchoolEntity> schoolEntities;
+    private Collection<SchoolEntity> schoolEntities;
     @ManyToMany
     @JoinTable(
             name = "major_favorite",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "major_id")
     )
-    private List<MajorEntity> majorEntities;
+    private Collection<MajorEntity> majorEntities;
     
     @OneToMany
     @JoinColumn(name = "id")
-    private List<ScholarshipInteractiveEntity> interactiveEntities;
+    private Collection<ScholarshipInteractiveEntity> interactiveEntities;
     
     public EndUserEntity(){}
     public EndUserEntity(EndUser dto){

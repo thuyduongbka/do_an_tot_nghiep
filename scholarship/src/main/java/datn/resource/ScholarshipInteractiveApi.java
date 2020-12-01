@@ -24,12 +24,11 @@ public class ScholarshipInteractiveApi {
     private ScholarshipInteractiveService service;
     
     @GetMapping("/addFavorite")
-    public ResponseEntity addFavorite(@RequestParam(value = "userId") Long userId,
-                                      @RequestParam(value = "scholarshipId") Long scholarshipId,
+    public ResponseEntity addFavorite(@RequestParam(value = "scholarshipId") Long scholarshipId,
                                       @RequestParam(value = "isFavorite") Boolean isFavorite){
         LOGGER.info("add-favorite");
-        service.addFavorite(userId,scholarshipId,isFavorite);
-        return ResponseEntity.ok("OK");
+        service.addFavorite(scholarshipId,isFavorite);
+        return ResponseEntity.ok(true);
     }
     @GetMapping("/like")
     public ResponseEntity like(@RequestParam(value = "userId") Long userId,

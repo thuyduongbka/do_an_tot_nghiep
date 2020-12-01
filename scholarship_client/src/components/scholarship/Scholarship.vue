@@ -16,11 +16,8 @@
           <el-button circle icon="el-icon-close"></el-button>
         </div>
         <div class="card-react--item">
-          <el-button circle style="color: #FF275A" >&#10084;</el-button>
-        </div>
-        <div class="card-react--item">
           <a :href="'/detail?id=' + scholarship.id">
-            <el-button style="color: #6637EB" circle icon="el-icon-s-promotion"></el-button>
+            <el-button style="color: #FF275A" circle icon="el-icon-s-promotion"></el-button>
           </a>
 
         </div>
@@ -31,17 +28,35 @@
 <script>
 import utils from "@/utils";
 import Pages from "@/router/Pages";
+import Auth from "@/security/Authentication";
+import ScholarshipInteractiveApi from "@/api/ScholarshipInteractiveApi";
+import AlertService from "@/services/AlertService";
 
 export default {
   name: "Scholarship",
   props: ["scholarship", "showImage", "showInteractive"],
+  data(){
+    return {
+      isFavorite: false
+    }
+  },
   methods: {
     formatDate(date) {
       return utils.formatDate(date);
     },
     detail() {
       this.$router.push({name: Pages.detailScholarship.name, query: {id: this.scholarship.id}});
-    }
+    },
+    async addFavorite(){
+      try {
+        let id = this.scholarship.id;
+        await ScholarshipInteractiveApi.addFavorite(id,true).then(result=>{
+          if (result === true) this.isFavorite = true;
+        });
+      } catch (e) {
+        AlertService.error(e)
+      }
+    },
   }
   }
 </script>

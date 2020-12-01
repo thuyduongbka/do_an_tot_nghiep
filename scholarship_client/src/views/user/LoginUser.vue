@@ -82,11 +82,11 @@
               this.$router.push({path: Pages.homeUser.path});
               location.reload();
             } else if (response.status.code == 400) {
-              AlertService.error("Error");
+              AlertService.error("Username or Password is wrong!");
             }
           });
         } catch (e) {
-          AlertService.error("Error");
+          AlertService.error("Username or Password is wrong!!");
           Auth.logout();
         } finally {
           this.loading = false;

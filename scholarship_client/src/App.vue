@@ -56,6 +56,11 @@
     padding: 10px 20px 10px 20px;
     border-radius: 20px;
     font-size: 16px;
+    transition: all .2s ease-in-out;
+    cursor: pointer;
+  }
+  .btn:hover {
+    transform: scale(1.1);
   }
 
   .btn-white {

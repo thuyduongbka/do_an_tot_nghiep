@@ -85,6 +85,8 @@
         </tr>
       </table>
     </el-card>
+    <list-recommend-carousel :list-scholarship="Array.from(listRecommend, ([name, value]) => (value))"></list-recommend-carousel>
+<!--    <list-recommend :list-scholarship="Array.from(listRecommend, ([name, value]) => (value))"></list-recommend>-->
   </div>
 </template>
 <script>
@@ -94,23 +96,26 @@ import AlertService from "@/services/AlertService";
 import ScholarshipInteractiveApi from "@/api/ScholarshipInteractiveApi";
 import utils from "@/utils";
 import Pages from "@/router/Pages";
+import ListRecommend from "@/components/scholarship/ListRecommend";
+import ListRecommendCarousel from "@/components/scholarship/ListRecommendCarousel";
 
 export default {
   name: "Compare",
+  components: {ListRecommend, ListRecommendCarousel},
   data() {
     return {
       scholarshipId1: null,
       scholarshipId2: null,
       scholarship1: null,
       scholarship2: null,
-      allScholarship: []
+      allScholarship: [],
+      listRecommend: new Map()
     }
   },
   created() {
     this.getListScholarship();
     if (this.$route.query.scholarshipId1 === undefined) return;
     this.scholarshipId1 = parseInt(this.$route.query.scholarshipId1);
-    this.getData1();
 
   },
   watch: {
@@ -128,11 +133,15 @@ export default {
       return utils.formatDate(date);
     },
     async getData1() {
+      console.log("o")
       try {
         let userId = Auth.getCurrentUser().endUserId;
         await ScholarshipApi.get(userId, this.scholarshipId1).then(result => {
           this.scholarship1 = result.scholarshipEntity;
           this.countCompare(this.scholarshipId1);
+          for (let r of result.listRecommend){
+            this.listRecommend.set(r.id,r);
+          }
         })
       } catch (e) {
         AlertService.error(e)
@@ -144,6 +153,9 @@ export default {
         await ScholarshipApi.get(userId, this.scholarshipId2).then(result => {
           this.scholarship2 = result.scholarshipEntity;
           this.countCompare(this.scholarshipId2);
+          for (let r of result.listRecommend){
+            this.listRecommend.set(r.id,r);
+          }
         })
       } catch (e) {
         AlertService.error(e)

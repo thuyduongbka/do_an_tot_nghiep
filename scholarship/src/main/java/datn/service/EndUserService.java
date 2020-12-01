@@ -6,9 +6,7 @@ import datn.custom.dto.ChangePasswordDTO;
 import datn.custom.dto.LoginSuccessResponse;
 import datn.custom.exception.LoginFailureException;
 import datn.custom.exception.OldPasswordNotEqualException;
-import datn.entity.CountryEntity;
-import datn.entity.MajorEntity;
-import datn.entity.SchoolEntity;
+import datn.entity.*;
 import datn.entity.user.AccountEntity;
 import datn.entity.user.EndUserEntity;
 import datn.enums.Role;
@@ -22,7 +20,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,6 +41,9 @@ public class EndUserService extends BaseService<EndUserEntity, EndUserRepository
     
     @Autowired
     private MajorService majorService;
+
+    @Autowired
+    private ScholarshipService scholarshipService;
     
     @Autowired
     private CustomAuthenticationProvider authenticationProvider;
@@ -75,6 +78,31 @@ public class EndUserService extends BaseService<EndUserEntity, EndUserRepository
         userEntity.setBirthday(dto.getBirthday());
         userEntity.setLevel(dto.getLevel());
         userEntity.setGraduationDate(dto.getGraduationDate());
+        return update(userEntity);
+    }
+    @Transactional
+    public EndUserEntity updateUserByScholarship(Long scholarshipId){
+        ScholarshipEntity scholarship = scholarshipService.findById(scholarshipId);
+
+        Long userId = getCurrentUser().getEndUserId();
+        EndUserEntity userEntity = findById(userId);
+
+        List<String> listNameLevel = scholarship.getLevelEntities().stream().map(LevelEntity::getName).collect(Collectors.toList());
+        if (!userEntity.getLevel().equals("")) listNameLevel.add(userEntity.getLevel());
+        userEntity.setLevel(String.join(",",listNameLevel));
+
+        Set<CountryEntity> countryEntitySet = new HashSet<>(userEntity.getCountryEntities());
+        countryEntitySet.add(scholarship.getCountryEntity());
+        userEntity.setCountryEntities(countryEntitySet);
+
+        Set<SchoolEntity> schoolEntitySet = new HashSet<>(userEntity.getSchoolEntities());
+        schoolEntitySet.add(scholarship.getSchoolEntity());
+        userEntity.setSchoolEntities(schoolEntitySet);
+
+        Set<MajorEntity> majorEntitySet = new HashSet<>(userEntity.getMajorEntities());
+        majorEntitySet.addAll(new HashSet<>(scholarship.getMajorEntities()));
+        userEntity.setMajorEntities(majorEntitySet);
+
         return update(userEntity);
     }
     @Transactional

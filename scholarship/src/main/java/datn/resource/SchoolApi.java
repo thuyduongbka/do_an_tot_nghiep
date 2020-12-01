@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,6 +24,11 @@ public class SchoolApi {
     public ResponseEntity<List<SchoolEntity>> getAll(){
         LOGGER.info("get all school");
         return ResponseEntity.ok(schoolService.findAll());
+    }
+    @GetMapping("/list-by-country")
+    public ResponseEntity<List<SchoolEntity>> getAll(@RequestParam(value = "listCountryId") List<Long> listCountryId){
+        LOGGER.info("get all school");
+        return ResponseEntity.ok(schoolService.findByCountryId(listCountryId));
     }
     
 }

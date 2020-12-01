@@ -12,8 +12,8 @@
             <el-option
               v-for="item in listCountry"
               :key="item.id"
-              :label="item.name"
-              :value="item.id">
+              :label="item[1].name"
+              :value="item[1].id">
             </el-option>
           </el-select>
         </el-form-item>
@@ -48,39 +48,79 @@
   </el-row>
 </template>
 <script>
-  import AlertService from "@/services/AlertService";
-  import AdminApi from "@/api/AdminApi";
-  import CountryApi from "@/api/CountryApi";
-  import SchoolApi from "@/api/SchoolApi";
-  import MajorApi from "@/api/MajorApi";
+import AlertService from "@/services/AlertService";
+import CountryApi from "@/api/CountryApi";
+import SchoolApi from "@/api/SchoolApi";
+import MajorApi from "@/api/MajorApi";
 
-  export default {
-    name: "RegisterOne",
-    props: ["formData"],
-    created() {
-      this.getData();
-    },
-    data() {
-      return {
-        listSchool: [],
-        listCountry: [],
-        listMajor: [],
+export default {
+  name: "RegisterOne",
+  props: ["formData"],
+  created() {
+    this.getData();
+  },
+  data() {
+    return {
+      listSchool: [],
+      listCountry: new Map(),
+      listMajor: [],
+    }
+  },
+  watch: {
+    'formData.listCountryId'(val) {
+      if (val.length != 0) {
+        this.listSchool = [];
+        let listSchoolId = []
+        for (let countryId of val) {
+          this.listSchool = this.listSchool.concat(this.listCountry.get(countryId).schoolEntities);
+          this.formData.listSchoolId.forEach(id => {
+            if (this.findCountryFromSchoolId(id) === countryId){
+              listSchoolId.push(id);
+            }
+          });
+        }
+        this.formData.listSchoolId = listSchoolId;
+      } else {
+        this.getData();
       }
     },
-    methods: {
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      },
-      back(){
-        this.$emit("changeTab",2);
-      },
-      async submitForm(formName) {
-        this.$emit("submit");
-      },
+    'formData.listSchoolId'(val) {
+      if (val.length != 0) {
+        if (this.formData.listCountryId.length == 0) {
+          for (let schoolId of val) {
+            for (let school of this.listSchool) {
+              if (school.id === schoolId) {
+                this.formData.listCountryId.push(school.countryId);
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  methods: {
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
+    back() {
+      this.$emit("changeTab", 2);
+    },
+    findCountryFromSchoolId(schoolId){
+      for (let school of this.listSchool) {
+        if (school.id === schoolId) {
+          return school.countryId;
+        }
+      }
+    },
+    async submitForm(formName) {
+      this.$emit("submit");
+    },
       async getData(){
         try {
           await CountryApi.getAll().then(result => {
-            this.listCountry = result;
+            for (let r of result) {
+              this.listCountry.set(r.id, r)
+            }
           })
         } catch (e) {
           AlertService.error(e)

@@ -72,13 +72,15 @@ export default {
       this.formData.username = result.accountEntity.username;
       this.formData.name = result.name;
       this.formData.birthday = new Date(result.birthday);
-      this.formData.level = result.level.split(",");
+      this.formData.level = result.level!=''?result.level.split(","):null;
       this.formData.phone = result.phone;
       this.formData.graduationDate = new Date(result.graduationDate);
       this.formData.gender = result.gender;
     },
     formToData(){
-      this.formData.level = this.formData.level.join(',');
+      if (this.formData.level)
+        this.formData.level = this.formData.level.join(',');
+      else this.formData.level = ''
     },
     changeFavorite(result) {
       this.favorite.countryFavorite = result.countryEntities;

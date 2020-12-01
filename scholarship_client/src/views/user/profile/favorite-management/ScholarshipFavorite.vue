@@ -32,8 +32,7 @@ export default {
       console.log("create")
     },
     async remove(scholarshipId){
-      let userId = Auth.getCurrentUser().endUserId;
-      await ScholarshipInteractiveApi.addFavorite(scholarshipId, userId, false).then(r => {
+      await ScholarshipInteractiveApi.addFavorite(scholarshipId, false).then(r => {
         this.getData();
         AlertService.success("Remove Success")
       }).catch(e => {
