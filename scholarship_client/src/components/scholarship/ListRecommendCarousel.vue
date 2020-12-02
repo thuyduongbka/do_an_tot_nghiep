@@ -1,5 +1,5 @@
 <template>
-  <el-carousel style="margin-top: 20px;" :interval="4000" type="card" height="300px" >
+  <el-carousel style="margin-top: 20px;" :interval="4000" type="card" height="370px" >
     <el-carousel-item v-for="s in listScholarship" :key="s.id" >
       <scholarship :scholarship="s"
                    :show-image="true"></scholarship>

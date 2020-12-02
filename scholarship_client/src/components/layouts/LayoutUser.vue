@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-container>
-      <el-header>
+      <el-header height="auto">
         <Header></Header>
       </el-header>
       <el-main style="margin-top: 30px;">

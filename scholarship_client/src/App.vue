@@ -1,25 +1,40 @@
 <template>
   <div id="app" v-loading="loading">
     <router-view/>
+    <div v-if="backTop" style="position: fixed; bottom: 20px; right: 20px; ">
+      <el-button circle style="background-color: #b69de5; color: white" icon="el-icon-top" @click="scrollToTop"></el-button>
+    </div>
   </div>
 </template>
 
 <script>
-  import LoginApi from "@/api/LoginApi";
-  import Auth from "@/security/Authentication";
 
-  export default {
-    name: 'App',
-    data(){
-      return {
-        loading: false,
-      }
+export default {
+  name: 'App',
+  data() {
+    return {
+      loading: false,
+      backTop: false,
+    }
+  },
+  created() {
+    this.checkAuth();
+    window.addEventListener("scroll", this.changeTop);
+  },
+  methods: {
+    changeTop(){
+      if (window.document.documentElement.scrollTop > 0)
+        this.backTop = true
+      else this.backTop = false;
     },
-    created() {
-      this.checkAuth();
+    scrollToTop(){
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
     },
-    methods : {
-      async checkAuth() {
+    async checkAuth() {
       //   console.log(this.$route.meta)
       //   debugger
       //   this.loading = true;
@@ -66,10 +81,10 @@
   .btn-white {
     border: 2px solid #6637EB;
     color: #6637EB;
-    background-color: white;
+    background-color: transparent;
   }
   .btn-blue {
-    border: 2px solid #6637EB;
+    border: 2px solid #beaaef;
     color: white;
     background-color: #6637EB;
   }

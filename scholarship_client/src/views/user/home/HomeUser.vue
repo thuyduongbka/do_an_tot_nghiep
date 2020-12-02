@@ -1,12 +1,13 @@
 <template>
   <div class="home">
     <div class="home-title">xin chào, dưới đây là học bổng dành cho bạn...</div>
-    <div class="home-scholarships" v-loading="loading">
-      <div style="display:flex; flex-wrap: wrap; justify-content: center;">
-        <scholarship v-for="scholarship in listScholarship" :key="scholarship.id" :scholarship="scholarship"
+    <div class="home-scholarships"v-loading="loading">
+      <div style="display:flex; flex-wrap: wrap; justify-content: center;"  v-if="listScholarship" >
+        <scholarship  v-for="scholarship in listScholarship.slice(0,6*numberMore)" :key="scholarship.id" :scholarship="scholarship"
                      :show-image="true" :show-interactive="true"></scholarship>
       </div>
-      <el-button style="background-color: #6637EB; color: #FFFFFF" icon="el-icon-arrow-down">Xem thêm</el-button>
+      <el-button style="background-color: #6637EB; color: #FFFFFF" icon="el-icon-arrow-down"
+                 @click="numberMore+=1">Xem thêm</el-button>
     </div>
   </div>
 </template>
@@ -24,6 +25,7 @@ export default {
     return {
       listScholarship: null,
       loading: false,
+      numberMore: 1,
     }
   },
   created() {
@@ -41,7 +43,7 @@ export default {
       }
       this.loading = false;
     },
-  }
+  },
 }
 </script>
 <style>

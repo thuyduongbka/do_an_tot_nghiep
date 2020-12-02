@@ -1,7 +1,7 @@
 <template>
   <div class="card" :style="showInteractive?'':'margin: auto; margin-bottom: 20px;'">
-    <div class="card-image" v-if="showImage">
-      <img :src="scholarship.urlImage"/>
+    <div class="card-image" v-if="showImage" :style="!showInteractive?'':'height: 200px;'">
+      <img :src="scholarship.urlImage" />
       <img v-if="!scholarship.urlImage" src="@/assets/example.png"/>
     </div>
     <div class="card-content">
@@ -63,7 +63,7 @@ export default {
 <style>
   .card {
     margin: 20px;
-    width: 90%;
+    width: 60%;
     max-width: 300px;
     height: 100%;
     border-radius: 10px;
@@ -76,7 +76,7 @@ export default {
   }
   .card-image {
     position: relative;
-    height: 200px;
+    /*height: 200px;*/
   }
   .card-image img {
     object-fit: cover;
@@ -140,6 +140,12 @@ export default {
     .card{
       margin: 10px;
 
+    }
+  }
+  @media only screen and (max-width: 500px) {
+    .card{
+      margin: 10px;
+      width: 90%;
     }
   }
 
