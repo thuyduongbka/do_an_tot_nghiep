@@ -13,5 +13,5 @@ weight_level: 0.2
 weight_money: 0.05
 weight_time: 0.05
 
-num_scholarship_recommned: 6
+num_scholarship_recommned: 60
 min_similarity: 0.
