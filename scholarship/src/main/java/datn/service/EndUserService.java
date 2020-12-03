@@ -88,8 +88,15 @@ public class EndUserService extends BaseService<EndUserEntity, EndUserRepository
         EndUserEntity userEntity = findById(userId);
 
         List<String> listNameLevel = scholarship.getLevelEntities().stream().map(LevelEntity::getName).collect(Collectors.toList());
-        if (!userEntity.getLevel().equals("")) listNameLevel.add(userEntity.getLevel());
-        userEntity.setLevel(String.join(",",listNameLevel));
+        if (userEntity.getLevel().equals("")) {
+            userEntity.setLevel(String.join(",",listNameLevel));
+        } else {
+            for (String level : listNameLevel){
+                if (!userEntity.getLevel().contains(level)){
+                    userEntity.setLevel(userEntity.getLevel() + ',' + level );
+                }
+            }
+        }
 
         Set<CountryEntity> countryEntitySet = new HashSet<>(userEntity.getCountryEntities());
         countryEntitySet.add(scholarship.getCountryEntity());
