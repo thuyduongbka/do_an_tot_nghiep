@@ -79,7 +79,7 @@
             if (response.status.code == 200) {
               Auth.setToken(response.data.accessToken);
               Auth.setCurrentUser(response.data.userDetails);
-              this.$router.push({path: Pages.homeUser.path});
+              this.$router.push({path: Auth.getCurrentPage()});
               location.reload();
             } else if (response.status.code == 400) {
               AlertService.error("Username or Password is wrong!");

@@ -35,4 +35,8 @@ public class MajorService extends BaseService<MajorEntity, MajorRepository> {
     public List<MajorEntity> findByParent(Long parentId){
         return repository.findByParentId(parentId);
     }
+
+    public List<MajorEntity> findAll(){
+        return repository.findByOrderByNameAsc();
+    }
 }

@@ -10,6 +10,7 @@ import java.util.List;
 public interface MajorRepository extends BaseRepository<MajorEntity> {
     List<MajorEntity> findByParentIdNotNull();
     List<MajorEntity> findByParentIdNull();
+    List<MajorEntity> findByOrderByNameAsc();
 
     @Query(value = "select m from MajorEntity m where m.parentId is null ")
     List<MajorEntity> findAllChild(Long level);

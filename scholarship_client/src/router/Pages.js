@@ -15,6 +15,9 @@ let Pages = {
   search: {name: "search", path: "search"},
   compare: {name: "compare", path: "compare"},
   profile: {name: "profile", path: "profile"},
+  country: {name: "country", path: "country"},
+  level: {name: "level", path: "level"},
+  major: {name: "major", path: "major"},
 
   /** admin page **/
   homeAdmin: {name: "home-admin", path: ""},

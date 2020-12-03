@@ -31,18 +31,9 @@
       </el-menu-item>
       <el-submenu v-if="isUser" index="4">
         <template slot="title">Feature</template>
-        <el-submenu index="6-4">
-          <template slot="title">Country</template>
-          <el-menu-item index="6-4-1">US</el-menu-item>
-          <el-menu-item index="6-4-2">UK</el-menu-item>
-          <el-menu-item index="6-4-3">Canada</el-menu-item>
-        </el-submenu>
-        <el-submenu index="6-4">
-          <template slot="title">Major</template>
-          <el-menu-item index="6-4-1">Science</el-menu-item>
-          <el-menu-item index="6-4-2">Law</el-menu-item>
-          <el-menu-item index="6-4-3">Arts</el-menu-item>
-        </el-submenu>
+        <el-menu-item route="/country" index="4-1">Country</el-menu-item>
+        <el-menu-item route="/level" index="4-2">Level</el-menu-item>
+        <el-menu-item route="/major" index="4-3">Major</el-menu-item>
       </el-submenu>
 
       <el-menu-item index="5" style="float: right">

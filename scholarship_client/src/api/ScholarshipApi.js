@@ -19,4 +19,7 @@ export default {
   getAllName(){
     return userRequest.get(baseUrl + "/getAllName" );
   },
+  findAllBy(param) {
+    return userRequest.get(baseUrl + "/find-all-by" +utils.createParam(param) );
+  },
 }

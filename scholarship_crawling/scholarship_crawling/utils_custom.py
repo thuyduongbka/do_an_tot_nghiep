@@ -67,7 +67,7 @@ def getListMajor(major):
     return re
 
 def getMajor(name):
-    of = name.rfind("of")
+    of = name.rfind("of ")
     if of == -1: return name.strip()
     return name[of + 3:].strip()
 

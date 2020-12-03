@@ -3,6 +3,7 @@ import auth from '@/security/Authentication';
 import router from '@/router';
 import Pages from '@/router/Pages';
 import AlertService from "@/services/AlertService";
+import ro from "element-ui/src/locale/lang/ro";
 
 let createRequest = (baseURL, loginURL) => {
 
@@ -17,20 +18,23 @@ let createRequest = (baseURL, loginURL) => {
         return response.data;
     }, error => {
 
-        /**
-         * perform redirect to login page when server response with status 401 ( un authorization )
-         *
-         */
-        if (error && error.response && (error.response.status == 401 || error.response.status == 403)) {
-          auth.logout(); // call logout to remove current user & token
-          if (router.currentRoute.fullPath != "/" + loginURL) {
-            router.push({path: loginURL})
-          } else {
-            throw new Error("Error")
-          }
-          AlertService.setDisabled(true);
+      /**
+       * perform redirect to login page when server response with status 401 ( un authorization )
+       *
+       */
+      // if (error && error.response && (error.response.status == 500)) {
+      //   router.push({path: "/forbidden"})
+      // }
+      if (error && error.response && (error.response.status == 401 || error.response.status == 403)) {
+        auth.logout(); // call logout to remove current user & token
+        if (router.currentRoute.fullPath != "/" + loginURL) {
+          router.push({path: loginURL})
+        } else {
+          throw new Error("Error")
         }
-        return Promise.reject(error);
+        AlertService.setDisabled(true);
+      }
+      return Promise.reject(error);
     });
 
     request.interceptors.request.use(function (config) {

@@ -91,31 +91,18 @@ export default {
   name: "RegisterOne",
   props: ["formData"],
   data() {
-    const checkEmail = (rule, value, callback) => {
+    const checkExist = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('Please input the email'));
+        return callback(new Error('Please input data'));
       }
       callback();
     };
-    const validatePass = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('Please input the password'));
-        } else {
-          if (this.formData.checkPassword !== '') {
-            this.$refs.formData.validateField('checkPassword');
-          }
-          callback();
-        }
-      };
-      const validatePass2 = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('Please input the password again'));
-        } else if (value !== this.formData.password) {
-          callback(new Error('Two inputs don\'t match!'));
-        } else {
-          callback();
-        }
-      };
+    const checkExistArray = (rule, value, callback) => {
+      if (value.length == 0) {
+        return callback(new Error('Please input data'));
+      }
+      callback();
+    };
       return {
         optionsGender: ["Male", "Female", "Other"],
         optionsLevel: ["Bachelor",
@@ -126,15 +113,12 @@ export default {
           "Postgraduate",
           "Research"],
         rules: {
-          password: [
-            {validator: validatePass, trigger: 'blur'}
+          name: [
+            {validator: checkExist, trigger: 'blur'}
           ],
-          checkPassword: [
-            {validator: validatePass2, trigger: 'blur'}
+          level: [
+            {validator: checkExistArray, trigger: 'blur'}
           ],
-          email: [
-            {validator: checkEmail, trigger: 'blur'}
-          ]
         }
       }
     },

@@ -8,7 +8,6 @@ let enableSecurity = true;
 
 if (enableSecurity) {
   Router.beforeEach((to, from, next) => {
-    // debugger
     let needAuthoritiesToViewPage = to.meta && to.meta.authorities;
 
     if (Auth.isAuthenticated()) {
@@ -18,22 +17,16 @@ if (enableSecurity) {
         next();
         return;
       }
-
-      if (currentUser.firstLogin && !currentUser.hasRole(Roles.ROLE_ADMIN)) {
-        // redirect to change password first time login.
-        next("/login?step=CHANGE_PASSWORD");
-        return;
-      }
     }
 
     if (needAuthoritiesToViewPage) {
       console.log("Authorize " + to.fullPath);
       if (Auth.hasAnyRoles(to.meta.authorities)) {
-        /* has permission to access page */
         next();
       } else {
         if (to.meta.functionScope === "USER"){
-          next(Pages.search.path);
+          localStorage.setItem("requestUrl", to.fullPath)
+          next(Pages.loginUser.path);
         } else {
           next(Pages.loginAdmin.path)
         }
@@ -50,7 +43,6 @@ if (enableSecurity) {
         // }
       }
     } else {
-
       if (Auth.isAuthenticated() && to.path == Pages.loginUser.path)
         next(Pages.redirect.path);
       next();

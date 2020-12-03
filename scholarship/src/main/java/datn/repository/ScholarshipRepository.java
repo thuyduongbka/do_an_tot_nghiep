@@ -22,7 +22,7 @@ public interface ScholarshipRepository extends BaseRepository<ScholarshipEntity>
             " and ( s.countryEntity.id in :listCountryId ) " +
             " and (:majorId is null or :majorId = major.id ) " +
             " and (:levelName is null or level.name like concat('%',:levelName,'%') ) " +
-            " and (:dueDate is null or :dueDate BETWEEN CURRENT_DATE AND s.time ) ")
+            " and (:dueDate is null or (s.time >= NOW() and s.time <= :dueDate ) ) ")
     Page<ScholarshipEntity> findAll(@Param("listSchoolId") List<Long> listSchoolId,
                                     @Param("listCountryId") List<Long> listCountryId,
                                     @Param("majorId") Long majorId,
@@ -33,7 +33,7 @@ public interface ScholarshipRepository extends BaseRepository<ScholarshipEntity>
             " where ( s.schoolEntity.id in :listSchoolId ) " +
             " and (:majorId is null or :majorId = major.id ) " +
             " and (:levelName is null or level.name like concat('%',:levelName,'%') ) " +
-            " and (:dueDate is null or :dueDate BETWEEN CURRENT_DATE AND s.time ) ")
+            " and (:dueDate is null or (s.time >= NOW() and s.time <= :dueDate ) ) ")
     Page<ScholarshipEntity> findAllByListSchool(@Param("listSchoolId") List<Long> listSchoolId,
                                     @Param("majorId") Long majorId,
                                     @Param("levelName") String levelName,
@@ -42,7 +42,7 @@ public interface ScholarshipRepository extends BaseRepository<ScholarshipEntity>
             " where ( s.countryEntity.id in :listCountryId ) " +
             " and (:majorId is null or :majorId = major.id ) " +
             " and (:levelName is null or level.name like concat('%',:levelName,'%') ) " +
-            " and (:dueDate is null or :dueDate BETWEEN CURRENT_DATE AND s.time ) ")
+            " and (:dueDate is null or (s.time >= NOW() and s.time <= :dueDate ) ) ")
     Page<ScholarshipEntity> findAllByListCountry(@Param("listCountryId") List<Long> listCountryId,
                                     @Param("majorId") Long majorId,
                                     @Param("levelName") String levelName,
@@ -51,7 +51,7 @@ public interface ScholarshipRepository extends BaseRepository<ScholarshipEntity>
     @Query(value = "select distinct s from ScholarshipEntity as s , in(s.majorEntities) as major, in(s.levelEntities) as level " +
             " where (:majorId is null or :majorId = major.id ) " +
             " and (:levelName is null or level.name like concat('%',:levelName,'%') ) " +
-            " and (:dueDate is null or :dueDate BETWEEN CURRENT_DATE AND s.time ) ")
+            " and (:dueDate is null or (s.time >= NOW() and s.time <= :dueDate )) ")
     Page<ScholarshipEntity> findAll(@Param("majorId") Long majorId,
                                     @Param("levelName") String levelName,
                                     @Param("dueDate")Date dueDate, Pageable pageable);
@@ -74,4 +74,16 @@ public interface ScholarshipRepository extends BaseRepository<ScholarshipEntity>
     @Modifying
     @Query(value = "UPDATE scholarship SET number_share = number_share + 1 WHERE id = ?1 ", nativeQuery = true)
     int increaseNumberShare(Long scholarshipId);
+
+    @Query(value = "select distinct s from ScholarshipEntity as s , in(s.countryEntity) as country " +
+            " where country.id = ?1 and s.time >= current_date ")
+    List<ScholarshipEntity> findByCountryId(Long countryId);
+
+    @Query(value = "select distinct s from ScholarshipEntity as s , in(s.majorEntities) as major " +
+            " where major.id = ?1 and s.time >= current_date ")
+    List<ScholarshipEntity> findByMajorId(Long majorId);
+
+    @Query(value = "select distinct s from ScholarshipEntity as s , in(s.levelEntities) as level " +
+            " where level.name = ?1 and s.time >= current_date ")
+    List<ScholarshipEntity> findByLevelName(String levelName);
 }

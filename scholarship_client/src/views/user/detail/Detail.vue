@@ -1,6 +1,6 @@
 <template>
-  <el-container v-loading="loading" v-if="scholarship != null" style="margin: 50px" class="container">
-    <el-container>
+  <el-container v-if="scholarship != null" class="container" style="margin: 50px">
+    <el-container v-loading="loading">
       <el-header class="header">
         <h2> {{ scholarship.name }} </h2>
         <p v-if="scholarship.schoolEntity">{{ scholarship.schoolEntity.name }}</p>
@@ -20,20 +20,32 @@
             <div v-if="scholarship.countryEntity" class="content-field">
               <i class="icon el-icon-location"></i>
               <span class="label">Quốc gia: </span>
-              <span class="value">{{ scholarship.countryEntity.name }}</span>
+              <span class="value">
+                <router-link :to="'/country?id='+scholarship.countryEntity.id">
+                  {{ scholarship.countryEntity.name }}
+                </router-link>
+              </span>
             </div>
             <div class="content-field">
               <i class="icon el-icon-school"></i>
               <span class="label">Ngành học: </span>
               <ul>
-                <li v-for="major in scholarship.majorEntities" :key="major.id">{{ major.name }}</li>
+                <li v-for="major in scholarship.majorEntities" :key="major.id">
+                  <router-link :to="'/major?id='+major.id">
+                    {{ major.name }}
+                  </router-link>
+                </li>
               </ul>
             </div>
             <div class="content-field">
               <i class="icon el-icon-trophy"></i>
               <span class="label">Bằng cấp: </span>
               <ul>
-                <li v-for="level in scholarship.levelEntities" :key="level.id">{{ level.name }}</li>
+                <li v-for="level in scholarship.levelEntities" :key="level.id">
+                  <router-link :to="'/level?id='+level.name">
+                  {{ level.name }}
+                  </router-link>
+                </li>
               </ul>
             </div>
             <div class="content-field">
@@ -53,12 +65,6 @@
         </div>
         <div class="content recommend">
           <list-recommend-carousel :list-scholarship="listRecommend"></list-recommend-carousel>
-<!--          <el-carousel :interval="2000" type="card" height="350px" >-->
-<!--            <el-carousel-item v-for="s in listRecommend" :key="s.id" >-->
-<!--              <scholarship :scholarship="s"-->
-<!--                           :show-image="true"></scholarship>-->
-<!--            </el-carousel-item>-->
-<!--          </el-carousel>-->
         </div>
         <div class="content" v-html="scholarship.content"></div>
       </el-main>
@@ -142,9 +148,11 @@ export default {
       loading: false
     }
   },
-  created() {
+  async created() {
+    this.loading = true;
     this.getData();
     this.countView();
+    this.loading = false;
   },
   watch: {
     'rating'(value) {
@@ -154,7 +162,6 @@ export default {
   },
     methods: {
       async getData() {
-        this.loading = true;
         try {
           let id = this.$route.query.id;
           let userId = Auth.getCurrentUser().endUserId;
@@ -167,7 +174,6 @@ export default {
         } catch (e) {
           AlertService.error(e)
         }
-        this.loading = false;
       },
       async countView() {
         try {
@@ -179,7 +185,7 @@ export default {
         }
       },
       async countClickContact(){
-        // window.location.href = this.scholarship.url;
+        window.location.href = this.scholarship.url;
         try {
           let id = this.$route.query.id;
           let userId = Auth.getCurrentUser().endUserId;
@@ -189,7 +195,6 @@ export default {
         }
       },
       async createComment(){
-        console.log("comment")
         if (this.newComment != ""){
           try {
             let id = this.$route.query.id;

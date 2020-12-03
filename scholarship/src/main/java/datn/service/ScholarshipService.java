@@ -83,4 +83,14 @@ public class ScholarshipService extends BaseService<ScholarshipEntity, Scholarsh
     public void increaseNumberShare(Long scholarshipId){
         repository.increaseNumberShare(scholarshipId);
     }
+
+    public List<ScholarshipEntity> findByCountryId(Long countryId){
+        return repository.findByCountryId(countryId);
+    }
+    public List<ScholarshipEntity> findByMajorId(Long majorId){
+        return repository.findByMajorId(majorId);
+    }
+    public List<ScholarshipEntity> findByLevelName(String name){
+        return repository.findByLevelName(name);
+    }
 }

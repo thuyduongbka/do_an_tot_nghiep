@@ -2,6 +2,7 @@ import Roles from "@/security/Roles";
 
 const accessKey = 'access-token';
 const currentUserKey = "current-user";
+const requestUrl = "requestUrl";
 let accessTokenInMemory = null;
 let userCodeJson = localStorage.getItem(currentUserKey);
 let userInMemory = userCodeJson != null ? JSON.parse(userCodeJson) : null;
@@ -45,7 +46,13 @@ function getCurrentUser() {
   };
   return currentUser;
 }
-
+function getCurrentPage(){
+  return localStorage.getItem(requestUrl);
+}
+function removeCurrentPage(){
+  //localStorage.removeItem(requestUrl);
+  localStorage.setItem("requestUrl",'/');
+}
 function isAuthenticated() {
   return getToken() != undefined && getToken() != null && getCurrentUser() != null && getCurrentUser() != undefined;
 }
@@ -95,6 +102,8 @@ let Auth = {
   isAuthenticated: isAuthenticated,
   hasAnyRoles: hasAnyRoles,
   getCurrentRole: getCurrentRole,
+  getCurrentPage: getCurrentPage,
+  removeCurrentPage : removeCurrentPage,
   setUserFirstLoginFalse: function(){
     let user  = JSON.parse(localStorage.getItem(currentUserKey));
     user.firstLogin = false;

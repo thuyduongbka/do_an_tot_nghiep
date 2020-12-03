@@ -48,7 +48,7 @@
             router.push({path: Pages.loginUser.path});
           })
         } catch (e) {
-          AlertService.error("Thất bại :  " + e)
+          AlertService.error("Lỗi: Email bị trùng!")
         }
       }
     }

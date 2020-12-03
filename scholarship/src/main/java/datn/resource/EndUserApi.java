@@ -36,7 +36,7 @@ public class EndUserApi {
                                                           @RequestParam(value = "page", defaultValue = "1") int page,
                                                           @RequestParam(value = "pageSize", defaultValue = "20") int pageSize,
                                                           @RequestParam(value = "sortDirection", defaultValue = "DESC") String sortDirection,
-                                                          @RequestParam(value = "sortField", defaultValue = "createdTime") String sortField){
+                                                          @RequestParam(value = "sortField", defaultValue = "time") String sortField){
         LOGGER.info("call /api/scholarship/find-scholarship");
         Sort sort = Sort.by(Sort.Direction.valueOf(sortDirection), sortField);
         PageRequest request = PageRequest.of(page - 1, pageSize, sort);

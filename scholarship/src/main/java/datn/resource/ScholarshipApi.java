@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -48,4 +49,19 @@ public class ScholarshipApi {
         LOGGER.info("call /api/scholarship/getAllName");
         return ResponseEntity.ok(service.findAllName());
     }
+
+    @GetMapping("/find-all-by")
+    public ResponseEntity<List<ScholarshipEntity>> get(@RequestParam(value = "countryId", required = false) Long countryId,
+                                                 @RequestParam(value = "majorId", required = false) Long majorId,
+                                                 @RequestParam(value = "levelName", required = false ) String levelName){
+        LOGGER.info("call /api/scholarship/get/{id}");
+        if (countryId != null)
+            return ResponseEntity.ok(service.findByCountryId(countryId));
+        if (majorId != null)
+            return ResponseEntity.ok(service.findByMajorId(majorId));
+        if (levelName != null)
+            return ResponseEntity.ok(service.findByLevelName(levelName));
+        return ResponseEntity.ok(new ArrayList<>());
+    }
+
 }
