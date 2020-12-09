@@ -30,10 +30,16 @@
       <el-table-column
         prop="updatedTime"
         label="Action">
-        <template slot-scope="scope">
-          <el-button @click="handleEdit(scope.row)" type="text" size="small">Edit</el-button>
+        <template slot-scope="scope" >
+          <span v-if="scope.row.id != currentAdminId">
+             <el-button @click="handleEdit(scope.row)" type="text" size="small">Edit</el-button>
           <el-button @click="handleDelete(scope.row)" type="text" size="small">Delete</el-button>
+          </span>
+          <div v-else>
+            Current Admin
+          </div>
         </template>
+
       </el-table-column>
     </el-table>
     <EditDialog :data="currentData" :show.sync="editDialog" @update="update"></EditDialog>
@@ -44,6 +50,7 @@
   import AlertService from "@/services/AlertService";
   import AdminApi from "@/api/AdminApi";
   import EditDialog from "@/views/admin/admin-management/EditDialog";
+  import Auth from "@/security/Authentication";
 
   export default {
     name: "AdminManagement",
@@ -59,6 +66,7 @@
         editDialog: false,
         currentData: null,
         loading: false,
+        currentAdminId : Auth.getCurrentUser().adminId
       }
     },
     created() {

@@ -8,7 +8,7 @@
         <el-input v-model="form.password" type="password" ></el-input>
       </el-form-item>
       <el-form-item label="Active" :label-width="formLabelWidth">
-        <el-switch v-model="form.isActive"></el-switch>
+        <el-switch v-model="form.active"></el-switch>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -29,7 +29,7 @@
           username: "",
           password: "",
           id : null,
-          isActive: null
+          active: null
         },
         formLabelWidth: '120px'
       }
@@ -53,7 +53,7 @@
         if (this.data != null) {
           this.form.username = this.data.accountEntity.username;
           this.form.id = this.data.accountEntity.id;
-          this.form.isActive = this.data.accountEntity.active;
+          this.form.active = this.data.accountEntity.active;
         }
       },
       update(){
