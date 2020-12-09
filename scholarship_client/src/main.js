@@ -7,10 +7,12 @@ import HighChartsVue from 'highcharts-vue';
 import VueMoment from 'vue-moment';
 import Auth from "@/security/Authentication";
 import locale from 'element-ui/lib/locale/lang/vi'
+import AOS from "aos"
+import 'aos/dist/aos.css'
 
 import 'element-ui/lib/theme-chalk/index.css';
 
-Vue.use(ElementUI, { locale })
+Vue.use(ElementUI, {locale})
 Vue.use(HighChartsVue);
 Vue.use(VueMoment);
 
@@ -20,7 +22,11 @@ Vue.prototype.$auth = Auth;
 let vm = new Vue({
   el: '#app',
   router,
-  components: { App },
-  template: '<App/>'
+  components: {App},
+  template: '<App/>',
+  created() {
+    AOS.init()
+  }
 })
- export default vm;
+
+export default vm;

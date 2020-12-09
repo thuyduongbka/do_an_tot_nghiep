@@ -19,7 +19,6 @@
           <a :href="'/detail?id=' + scholarship.id">
             <el-button style="color: #FF275A" circle icon="el-icon-s-promotion"></el-button>
           </a>
-
         </div>
       </div>
     </div>
@@ -28,7 +27,6 @@
 <script>
 import utils from "@/utils";
 import Pages from "@/router/Pages";
-import Auth from "@/security/Authentication";
 import ScholarshipInteractiveApi from "@/api/ScholarshipInteractiveApi";
 import AlertService from "@/services/AlertService";
 
@@ -64,11 +62,10 @@ export default {
   .card {
     margin: 20px;
     width: 60%;
-    max-width: 300px;
+    max-width: 290px;
     height: 100%;
     border-radius: 10px;
-    /*border: 1px solid var(--primary-color);*/
-    box-shadow: rgba(148, 149, 174, 0.2) 8px 10px 8px 0px, rgba(148, 149, 174, 0.14) 0px 3px 4px 0px, rgba(148, 149, 174, 0.12) 0px 3px 3px -2px;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
     display: block;
     position: relative;
     font-size: 12px;

@@ -78,7 +78,7 @@ class SqlScholarshipAdsSpider(scrapy.Spider):
                 else:
                     major = liValue;
 
-                if major == "All Subjects" : major = "N/A"
+                if "all subjects" in major.lower(): major = "All Subjects"
                 item["major"] = getListMajor(major)
 
         if 'time' not in locals() or 'money' not in locals() : return

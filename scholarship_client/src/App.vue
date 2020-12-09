@@ -65,6 +65,7 @@ export default {
     text-align: center;
     color: #6637EB;
     font-size: 16px;
+    scroll-behavior: smooth;
   }
 
   .btn {

@@ -65,7 +65,7 @@
     name: "HomeAdmin",
     data() {
       return {
-        timeTypes: ['HOUR','DAY', 'MONTH'],
+        timeTypes: ['DAY', 'MONTH'],
         data: [],
         checkChange: false,
         loading: false,

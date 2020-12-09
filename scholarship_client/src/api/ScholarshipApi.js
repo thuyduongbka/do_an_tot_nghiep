@@ -22,4 +22,13 @@ export default {
   findAllBy(param) {
     return userRequest.get(baseUrl + "/find-all-by" +utils.createParam(param) );
   },
+  findMostViews() {
+    return userRequest.get(baseUrl + "/find-most-view");
+  },
+  reportByCountry() {
+    return userRequest.get(baseUrl + "/report-by-country");
+  },
+  reportByMonth() {
+    return userRequest.get(baseUrl + "/report-by-month");
+  },
 }

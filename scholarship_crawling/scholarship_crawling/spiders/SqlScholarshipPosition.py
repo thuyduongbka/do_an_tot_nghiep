@@ -63,7 +63,7 @@ class SqlScholarshipPositionSpider(scrapy.Spider):
                 level = response.xpath("//li[contains(strong/text(),'Course Level')]/a/strong/text()").get()
             if level is None:
                 level = response.xpath("//li[contains(strong/text(),'Course Level')]/text()").get()
-            item["level"] = getListLevel(re.split(',|and ', level.replace(':', '').strip()))
+            item["level"] = getListLevel(re.split(',| and ', level.replace(':', '').strip()))
 
             money = response.xpath("//li[contains(strong/text(),'Award')]/text()").get()
             item["money"] = money.replace(':', '').strip().split('+');

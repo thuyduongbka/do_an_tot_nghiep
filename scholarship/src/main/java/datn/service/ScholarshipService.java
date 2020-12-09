@@ -5,6 +5,10 @@ import datn.custom.domain.Scholarship;
 import datn.custom.dto.ScholarshipFilterDto;
 import datn.custom.dto.ScholarshipNameDto;
 import datn.custom.dto.UserScholarshipDto;
+import datn.custom.dto.report.CountryReportDto;
+import datn.custom.dto.report.CountryReportInterface;
+import datn.custom.dto.report.MonthReportDto;
+import datn.custom.dto.report.MonthReportInterface;
 import datn.entity.*;
 import datn.repository.ScholarshipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,5 +96,16 @@ public class ScholarshipService extends BaseService<ScholarshipEntity, Scholarsh
     }
     public List<ScholarshipEntity> findByLevelName(String name){
         return repository.findByLevelName(name);
+    }
+
+    public List<ScholarshipEntity> findScholarshipMostViews(){
+        return repository.findMostViews();
+    }
+
+    public List<MonthReportInterface> getTotalEveryMonth(){
+        return repository.getTotalEveryMonth();
+    }
+    public List<CountryReportInterface> getTotalByCountry(){
+        return repository.getTotalByCountry();
     }
 }

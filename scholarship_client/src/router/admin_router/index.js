@@ -4,6 +4,7 @@ import Pages from "@/router/Pages";
 import HomeAdmin from "@/views/admin/HomeAdmin";
 import AdminManagement from "../../views/admin/admin-management/AdminManagement";
 import MajorManagement from "@/views/admin/major-management/MajorManagement";
+import Report from "@/views/admin/report/Report";
 
 let meta = {
   authorities : [Roles.ROLE_ADMIN],
@@ -31,6 +32,14 @@ let AdminRouter = [
     component : MajorManagement,
     meta: {
       title: "Major Management",
+      ...meta
+    }
+  },
+  {
+    ...Pages.report,
+    component : Report,
+    meta: {
+      title: "Report",
       ...meta
     }
   },

@@ -1,6 +1,10 @@
 package datn.repository;
 
 import datn.base.BaseRepository;
+import datn.custom.dto.report.CountryReportDto;
+import datn.custom.dto.report.CountryReportInterface;
+import datn.custom.dto.report.MonthReportDto;
+import datn.custom.dto.report.MonthReportInterface;
 import datn.entity.LevelEntity;
 import datn.entity.MajorEntity;
 import datn.entity.ScholarshipEntity;
@@ -86,4 +90,12 @@ public interface ScholarshipRepository extends BaseRepository<ScholarshipEntity>
     @Query(value = "select distinct s from ScholarshipEntity as s , in(s.levelEntities) as level " +
             " where level.name = ?1 and s.time >= current_date ")
     List<ScholarshipEntity> findByLevelName(String levelName);
+
+    @Query(value = "select * from scholarship as s order by number_seen desc limit 6", nativeQuery = true)
+    List<ScholarshipEntity> findMostViews();
+
+    @Query(value = "SELECT Year(`time`) as year, Month(`time`) as month, Count(*) As total FROM scholarship WHERE time >= now() GROUP BY Year(`time`), Month(`time`)", nativeQuery = true)
+    List<MonthReportInterface> getTotalEveryMonth();
+    @Query(value = "SELECT c.name as name, COUNT(*) AS total FROM scholarship s join country c on c.id=s.country_id WHERE TIME >= NOW() GROUP BY country_id", nativeQuery = true)
+    List<CountryReportInterface> getTotalByCountry();
 }

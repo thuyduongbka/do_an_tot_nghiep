@@ -4,6 +4,10 @@ import datn.custom.domain.Scholarship;
 import datn.custom.dto.ScholarshipFilterDto;
 import datn.custom.dto.ScholarshipNameDto;
 import datn.custom.dto.UserScholarshipDto;
+import datn.custom.dto.report.CountryReportDto;
+import datn.custom.dto.report.CountryReportInterface;
+import datn.custom.dto.report.MonthReportDto;
+import datn.custom.dto.report.MonthReportInterface;
 import datn.entity.ScholarshipEntity;
 import datn.service.ScholarshipService;
 import org.slf4j.Logger;
@@ -63,5 +67,19 @@ public class ScholarshipApi {
             return ResponseEntity.ok(service.findByLevelName(levelName));
         return ResponseEntity.ok(new ArrayList<>());
     }
+    @GetMapping("/find-most-view")
+    public ResponseEntity<List<ScholarshipEntity>> findMostViews(){
+        return ResponseEntity.ok(service.findScholarshipMostViews());
+    }
+
+    @GetMapping("/report-by-month")
+    public ResponseEntity<List<MonthReportInterface>> reportByMonth(){
+        return ResponseEntity.ok(service.getTotalEveryMonth());
+    }
+    @GetMapping("report-by-country")
+    public ResponseEntity<List<CountryReportInterface>> reportByCountry(){
+        return ResponseEntity.ok(service.getTotalByCountry());
+    }
+
 
 }
