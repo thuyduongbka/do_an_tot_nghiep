@@ -1,7 +1,9 @@
 <template>
   <div class="home">
     <el-card style="">
-      <div style="font-weight: bold; color: #6637EB">Xin chào, dưới đây là học bổng dành cho bạn...</div>
+      <div style="font-weight: bold; color: #6637EB">
+        Hello, these are scholarships for you ...
+      </div>
       <div v-loading="loading" class="home-scholarships" >
         <div v-if="listScholarship" style="display:flex; flex-wrap: wrap; justify-content: center;">
           <scholarship data-aos="fade-up" v-for="scholarship in listScholarship.slice(0,6*numberMore)" :key="scholarship.id"
@@ -10,12 +12,12 @@
           ></scholarship>
         </div>
         <el-button icon="el-icon-arrow-down" style="background-color: #6637EB; color: #FFFFFF"
-                   @click="numberMore+=1">Xem thêm
+                   @click="numberMore+=1">More
         </el-button>
       </div>
     </el-card>
     <el-card style="margin-top: 10px; " data-aos="fade-up">
-      <p style="font-weight: bold; color: #6637EB">Danh sách Học bổng được nhiều người xem</p>
+      <p style="font-weight: bold; color: #6637EB">Most viewed scholarships list</p>
       <list-recommend-carousel :list-scholarship="listMostViews"></list-recommend-carousel>
     </el-card>
 

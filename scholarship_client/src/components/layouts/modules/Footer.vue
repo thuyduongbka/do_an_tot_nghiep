@@ -2,7 +2,7 @@
   <div class="footer">
     <hr>
     <div>
-      <p>Đây là đồ án tốt nghiệp của Dương</p>
+      <p>This is Duong's graduation project</p>
       <p class="copyright-text">Copyright &copy; 2020-2021 All Rights Reserved by
         <a href="https://github.com/thuyduongbka">thuyduongbka</a>.
       </p>

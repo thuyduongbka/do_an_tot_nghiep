@@ -6,7 +6,7 @@ import ElementUI from 'element-ui';
 import HighChartsVue from 'highcharts-vue';
 import VueMoment from 'vue-moment';
 import Auth from "@/security/Authentication";
-import locale from 'element-ui/lib/locale/lang/vi'
+import locale from 'element-ui/lib/locale/lang/en'
 import AOS from "aos"
 import 'aos/dist/aos.css'
 

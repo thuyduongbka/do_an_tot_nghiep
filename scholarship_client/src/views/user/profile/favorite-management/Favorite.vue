@@ -2,25 +2,25 @@
     <el-card class="favorite box-card" shadow="always">
       <el-tabs>
         <el-tab-pane>
-          <span slot="label"> Học bổng yêu thích</span>
+          <span slot="label"> Favorite scholarships</span>
           <div class="content">
             <scholarship-favorite></scholarship-favorite>
           </div>
         </el-tab-pane>
         <el-tab-pane>
-          <span slot="label"> Quốc gia yêu thích</span>
+          <span slot="label"> Favorite Countrys</span>
           <div class="content">
             <country-favorite :list-favorite="favoriteList.countryFavorite" @reset="reset"></country-favorite>
           </div>
         </el-tab-pane>
         <el-tab-pane>
-          <span slot="label"> Trường học yêu thích</span>
+          <span slot="label"> Favorite Schools</span>
           <div class="content">
             <school-favorite :list-favorite="favoriteList.schoolFavorite" @reset="reset"></school-favorite>
           </div>
         </el-tab-pane>
         <el-tab-pane>
-          <span slot="label">Ngành học yêu thích</span>
+          <span slot="label">Favorite Majors</span>
           <div class="content">
             <major-favorite :list-favorite="favoriteList.majorFavorite" @reset="reset"></major-favorite>
           </div>

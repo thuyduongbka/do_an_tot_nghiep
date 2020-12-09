@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="Thêm ngành học cha" :visible.sync="dialogVisible">
+  <el-dialog title="Thêm Major cha" :visible.sync="dialogVisible">
     <el-form>
       <el-form-item label="Name" :label-width="formLabelWidth">
         <el-input v-model="newMajor" autocomplete="off"></el-input>

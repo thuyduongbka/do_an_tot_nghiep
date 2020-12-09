@@ -1,6 +1,7 @@
 <template>
   <div>
-    <p style="color: #36474F; font-weight: bold" v-if="loaded">Tổng số học bổng có sẵn: {{total}}</p>
+    <p style="color: #36474F; font-weight: bold" v-if="loaded">
+      Total scholarships available: {{total}}</p>
     <div class="container">
       <bar-chart
         v-if="loaded"
@@ -55,7 +56,7 @@ export default {
             labels: label,
             datasets: [
               {
-                label: "Số Học Bổng",
+                label: "scholarship number",
                 backgroundColor: "#f87979",
                 data: data
               }
@@ -81,8 +82,8 @@ export default {
             labels: label,
             datasets: [
               {
-                label: "Số Học Bổng",
-                backgroundColor: "#f87979",
+                label: "scholarship number",
+                backgroundColor: "#7f6af5",
                 data: data
               }
             ]

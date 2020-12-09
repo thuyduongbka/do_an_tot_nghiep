@@ -6,7 +6,7 @@
         <el-card class="box-card">
           <el-form ref="formData" :model="formData" class="form" status-icon>
             <el-form-item prop="listCountryId">
-              <div>Quốc gia</div>
+              <div>Country</div>
               <el-select v-model="formData.listCountryId" clearable filterable multiple placeholder="Select">
                 <el-option
                   v-for="item in listCountry"
@@ -17,7 +17,7 @@
               </el-select>
             </el-form-item>
             <el-form-item v-if="isUser" prop="listMajorId">
-              <div>Ngành học</div>
+              <div>Major</div>
               <el-select v-model="formData.majorId" clearable filterable placeholder="Khoa học máy tính">
                 <el-option
                   v-for="item in listMajor"
@@ -28,7 +28,7 @@
               </el-select>
             </el-form-item>
             <el-form-item v-if="isUser" prop="listSchoolId">
-              <div>Trường học</div>
+              <div>School</div>
               <el-select v-model="formData.listSchoolId" clearable filterable multiple placeholder="Select">
                 <el-option
                   v-for="item in listSchool"
@@ -39,7 +39,7 @@
               </el-select>
             </el-form-item>
             <el-form-item prop="listMajorId">
-              <div>Bậc học</div>
+              <div>Level</div>
               <el-select v-model="formData.levelName" clearable filterable placeholder="Thạc sỹ">
                 <el-option
                   v-for="item in listLevel"
@@ -50,7 +50,7 @@
               </el-select>
             </el-form-item>
             <el-form-item v-if="isUser" prop="dueDate">
-              <div>Thời hạn</div>
+              <div>Deadline</div>
               <el-date-picker
                 v-model="formData.dueDate"
                 format="dd/MM/yyyy"
@@ -58,7 +58,7 @@
                 type="date">
               </el-date-picker>
             </el-form-item>
-            <el-button class="btn btn-blue" round @click="search()">Tìm kiếm</el-button>
+            <el-button class="btn btn-blue" round @click="search()">Find All</el-button>
           </el-form>
         </el-card>
       </el-aside>

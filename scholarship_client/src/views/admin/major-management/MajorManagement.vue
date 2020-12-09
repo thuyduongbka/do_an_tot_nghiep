@@ -96,7 +96,7 @@ export default {
     },
     handleChange(value, direction, movedKeys) {
       if (this.majorParent == null) {
-        AlertService.info("cần chọn Ngành học cha trước");
+        AlertService.info("cần chọn Major cha trước");
         this.majorChild = [];
         return
       }

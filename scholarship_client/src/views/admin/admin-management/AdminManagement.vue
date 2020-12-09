@@ -1,7 +1,7 @@
 <template>
   <div v-loading="loading">
     <div style="margin-bottom: 30px; text-align: center">
-      <el-input style="margin-right:20px; max-width: 200px" placeholder="nhập email muốn thêm" v-model="newData.email"></el-input>
+      <el-input style="margin-right:20px; max-width: 200px" placeholder="enter the email to add" v-model="newData.email"></el-input>
       <el-button type="success" icon="el-icon-plus" circle @click="create"></el-button>
     </div>
     <el-table
@@ -17,7 +17,7 @@
       </el-table-column>
       <el-table-column
         prop="status"
-        label="Trạng thái"
+        label="Status"
         width="100">
         <template slot-scope="scope">
           <el-switch disabled v-model="scope.row.accountEntity.active"></el-switch>
@@ -25,11 +25,11 @@
       </el-table-column>
       <el-table-column
         prop="lastLogin"
-        label="Đăng nhập lần cuối">
+        label="Last login">
       </el-table-column>
       <el-table-column
         prop="updatedTime"
-        label="Hành động">
+        label="Action">
         <template slot-scope="scope">
           <el-button @click="handleEdit(scope.row)" type="text" size="small">Edit</el-button>
           <el-button @click="handleDelete(scope.row)" type="text" size="small">Delete</el-button>

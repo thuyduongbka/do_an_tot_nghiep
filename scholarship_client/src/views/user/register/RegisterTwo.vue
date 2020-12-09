@@ -1,19 +1,19 @@
 <template>
   <el-row :gutter="60" style="width: 100%">
     <el-col :span="12" :xs="24">
-      <h1>XIN CHÀO</h1>
-      <h4>hãy cho chúng tôi biết thêm về bạn ...</h4>
+      <h1>Welcome! </h1>
+      <h4>Tell us a bit about yourself.</h4>
       <el-form :model="formData" status-icon :rules="rules" ref="formData" class="register-form">
         <el-row :gutter="20">
           <el-col :span="12" :xs="24">
             <el-form-item prop="name">
-              <span>Họ và tên</span>
+              <span>Name</span>
               <el-input v-model="formData.name"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12" :xs="24">
             <el-form-item prop="gender">
-              <span>Giới tính</span>
+              <span>Gender</span>
               <el-select v-model="formData.gender" placeholder="Select">
                 <el-option
                   v-for="item in optionsGender"
@@ -28,13 +28,13 @@
         <el-row :gutter="20">
           <el-col :span="12" :xs="24">
             <el-form-item prop="phone">
-              <span>Số điện thoại</span>
+              <span>Phone</span>
               <el-input v-model="formData.phone"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12" :xs="24">
             <el-form-item prop="level">
-              <span>Học bổng mong muốn</span>
+              <span>Desired education level</span>
               <el-select multiple v-model="formData.level" placeholder="Select">
                 <el-option
                   v-for="item in optionsLevel"
@@ -50,7 +50,7 @@
         <el-row :gutter="20">
           <el-col :span="12" :xs="24">
             <el-form-item prop="graduationDate">
-              <span>Ngày tốt nghiệp</span>
+              <span>Graduation Date</span>
               <el-date-picker
                 v-model="formData.graduationDate"
                 format="dd/MM/yyyy"
@@ -61,7 +61,7 @@
           </el-col>
           <el-col :span="12" :xs="24">
             <el-form-item prop="birthday">
-              <span>Ngày sinh</span>
+              <span>Birthday</span>
               <el-date-picker
                 v-model="formData.birthday"
                 type="date"

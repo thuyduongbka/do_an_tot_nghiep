@@ -2,14 +2,14 @@
   <div>
     <el-tabs class="profile" style="min-height: 500px;" tab-position="left" type="card">
       <el-tab-pane>
-        <span slot="label"> Thông tin cá nhân</span>
+        <span slot="label">Profile</span>
         <div class="content">
           <profile-management :form-data="formData" @reset="reset" @submitForm="submitForm"></profile-management>
           <change-password :change-password="changePassword"></change-password>
         </div>
       </el-tab-pane>
       <el-tab-pane>
-        <span slot="label"> Sở thích của tôi</span>
+        <span slot="label"> My Favorites</span>
         <div class="content">
           <favorite :favorite-list="favorite" @reset="reset"></favorite>
         </div>

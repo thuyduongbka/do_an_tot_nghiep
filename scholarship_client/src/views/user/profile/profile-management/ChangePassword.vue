@@ -1,27 +1,27 @@
 <template>
   <el-card v-loading="loading" v-if="changePassword" class="box-card" shadow="always">
     <div slot="header" class="clearfix">
-      <span>Thay đổi mật khẩu</span>
-      <el-button style="float: right; padding: 3px 0" type="text" @click="open=!open">Thay đổi</el-button>
+      <span>Change Password</span>
+      <el-button style="float: right; padding: 3px 0" type="text" @click="open=!open">Change</el-button>
     </div>
     <el-form v-if="open" ref="formData" :model="changePassword" :rules="rules" class="form" status-icon>
       <el-form-item prop="oldPassword">
-        <div>Nhập password hiện tại</div>
+        <div>Enter your current password</div>
         <el-input v-model="changePassword.oldPassword" type="password"></el-input>
       </el-form-item>
 
       <el-form-item prop="newPassword">
-        <div>Nhập password mới</div>
+        <div>Enter a new password</div>
         <el-input v-model="changePassword.newPassword" type="password"></el-input>
       </el-form-item>
       <el-form-item prop="checkPassword">
-        <div>Nhập lại password mới</div>
+        <div>Re-enter a new password</div>
         <el-input v-model="changePassword.checkPassword" type="password"></el-input>
       </el-form-item>
 
       <el-form-item style="text-align: center; margin-top: 60px;">
         <el-button class="btn btn-white" round @click="reset">Reset</el-button>
-        <el-button class="btn btn-blue" round @click="submitForm('formData')">Đổi password</el-button>
+        <el-button class="btn btn-blue" round @click="submitForm('formData')">Change password</el-button>
       </el-form-item>
     </el-form>
   </el-card>

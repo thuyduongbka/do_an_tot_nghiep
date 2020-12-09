@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="Thay đổi thông tin" :visible.sync="dialogVisible">
+  <el-dialog title="Change Infor" :visible.sync="dialogVisible">
     <el-form v-if="data!= null" :model="form">
       <el-form-item label="Username" :label-width="formLabelWidth">
         <el-input v-model="form.username" autocomplete="off"></el-input>
@@ -13,7 +13,7 @@
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="dialogVisible = false">Cancel</el-button>
-      <el-button type="primary" @click="update">Cập nhật</el-button>
+      <el-button type="primary" @click="update">Submit</el-button>
     </span>
   </el-dialog>
 </template>

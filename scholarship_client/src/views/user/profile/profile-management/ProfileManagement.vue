@@ -2,17 +2,17 @@
   <el-card v-if="formData" class="box-card" shadow="always">
     <el-form ref="formData" :model="formData" :rules="rules" class="form" status-icon>
       <el-form-item prop="email">
-        <div>Địa chỉ email</div>
+        <div>Email Address</div>
         <el-input v-model="formData.username"></el-input>
       </el-form-item>
 
       <el-form-item prop="name">
-        <div>Họ và tên</div>
+        <div>Name</div>
         <el-input v-model="formData.name"></el-input>
       </el-form-item>
 
       <el-form-item prop="gender">
-        <div>Giới tính</div>
+        <div>Gender</div>
         <el-select v-model="formData.gender" placeholder="Select">
           <el-option
             v-for="item in optionsGender"
@@ -24,7 +24,7 @@
       </el-form-item>
 
       <el-form-item prop="birthday">
-        <div>Ngày sinh</div>
+        <div>Birthday</div>
         <el-date-picker
           v-model="formData.birthday"
           format="dd/MM/yyyy"
@@ -34,12 +34,12 @@
       </el-form-item>
 
       <el-form-item prop="phone">
-        <div>Số điện thoại</div>
+        <div>Phone</div>
         <el-input v-model="formData.phone"></el-input>
       </el-form-item>
 
       <el-form-item prop="level">
-        <div>Cấp học bổng mong muốn</div>
+        <div>Desired education level</div>
         <el-select multiple v-model="formData.level" placeholder="Select">
           <el-option
             v-for="item in optionsLevel"
@@ -51,7 +51,7 @@
       </el-form-item>
 
       <el-form-item prop="graduationDate">
-        <div>Ngày tốt nghiệp</div>
+        <div>Graduation Date</div>
         <el-date-picker
           v-model="formData.graduationDate"
           format="dd/MM/yyyy"
@@ -62,7 +62,7 @@
 
       <el-form-item style="text-align: center; margin-top: 60px;">
         <el-button class="btn btn-white" round @click="reset">Reset</el-button>
-        <el-button class="btn btn-blue" round @click="submitForm()">Sửa đổi</el-button>
+        <el-button class="btn btn-blue" round @click="submitForm()">Change</el-button>
       </el-form-item>
     </el-form>
   </el-card>

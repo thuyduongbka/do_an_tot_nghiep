@@ -4,22 +4,23 @@
       <img width="80%" src="@/assets/register-1.svg" alt="register">
     </el-col>
     <el-col :span="12" :xs="24">
-      <h1>ĐĂNG KÝ TÀI KHOẢN</h1>
+      <h1>Create Account </h1>
+      <h3>Find colleges and scholarships that are right for you</h3>
       <el-form :model="formData" status-icon :rules="rules" ref="formData" class="register-form">
         <el-form-item prop="username">
-          <span>Địa chỉ Email</span>
+          <span>Email Address</span>
           <el-input v-model="formData.username"></el-input>
         </el-form-item>
         <el-form-item label="" prop="password">
-          <span>Mật khẩu</span>
+          <span>Password</span>
           <el-input type="password" v-model="formData.password" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="" prop="checkPassword">
-          Nhập lại Mật khẩu
+          Re-password
           <el-input type="password" v-model="formData.checkPassword" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item style="text-align: center">
-          <el-button class="btn btn-blue" round @click="submitForm('formData')">Tiếp theo</el-button>
+          <el-button class="btn btn-blue" round @click="submitForm('formData')">Next</el-button>
         </el-form-item>
       </el-form>
     </el-col>

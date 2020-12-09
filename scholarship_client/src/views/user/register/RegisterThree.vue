@@ -4,10 +4,10 @@
       <img width="80%" src="@/assets/register-3.svg" alt="register">
     </el-col>
     <el-col  :span="12" :xs="24">
-      <h4>... và sở thích của bạn</h4>
+      <h4>... and your preferences</h4>
       <el-form :model="formData" status-icon ref="formData" class="register-form">
         <el-form-item prop="listCountryId">
-          <div>đất nước bạn muốn tới là: </div>
+          <div>Which country are you considering? </div>
           <el-select multiple v-model="formData.listCountryId" filterable placeholder="Select">
             <el-option
               v-for="item in listCountry"
@@ -18,7 +18,7 @@
           </el-select>
         </el-form-item>
         <el-form-item prop="listSchoolId">
-          <div>trường bạn muốn học là: </div>
+          <div>Which school are you considering? </div>
           <el-select multiple v-model="formData.listSchoolId" filterable placeholder="Select">
             <el-option
               v-for="item in listSchool"
@@ -29,7 +29,7 @@
           </el-select>
         </el-form-item>
         <el-form-item prop="listMajorId">
-          <div>ngành bạn muốn theo đuổi là: </div>
+          <div>Which major are you considering? </div>
           <el-select multiple v-model="formData.listMajorId" filterable placeholder="Select">
             <el-option
               v-for="item in listMajor"
@@ -40,8 +40,8 @@
           </el-select>
         </el-form-item>
         <el-form-item style="text-align: center">
-          <el-button class="btn btn-white" round @click="back">Trở lại</el-button>
-          <el-button class="btn btn-blue" round @click="submitForm('formData')">Hoàn thành</el-button>
+          <el-button class="btn btn-white" round @click="back">Back</el-button>
+          <el-button class="btn btn-blue" round @click="submitForm('formData')">Finish</el-button>
         </el-form-item>
       </el-form>
     </el-col>

@@ -19,7 +19,7 @@
             </div>
             <div v-if="scholarship.countryEntity" class="content-field">
               <i class="icon el-icon-location"></i>
-              <span class="label">Quốc gia: </span>
+              <span class="label">Country: </span>
               <span class="value">
                 <router-link :to="'/country?id='+scholarship.countryEntity.id">
                   {{ scholarship.countryEntity.name }}
@@ -28,7 +28,7 @@
             </div>
             <div class="content-field">
               <i class="icon el-icon-school"></i>
-              <span class="label">Ngành học: </span>
+              <span class="label">Major: </span>
               <ul>
                 <li v-for="major in scholarship.majorEntities" :key="major.id">
                   <router-link :to="'/major?id='+major.id">
@@ -39,7 +39,7 @@
             </div>
             <div class="content-field">
               <i class="icon el-icon-trophy"></i>
-              <span class="label">Bằng cấp: </span>
+              <span class="label">Level: </span>
               <ul>
                 <li v-for="level in scholarship.levelEntities" :key="level.id">
                   <router-link :to="'/level?id='+level.name">
@@ -50,7 +50,7 @@
             </div>
             <div class="content-field">
               <i class="icon el-icon-time"></i>
-              <span class="label">Thời hạn: </span>
+              <span class="label">Deadline: </span>
               <span class="value">{{ scholarship.time }}</span>
             </div>
             <div v-if="scholarship.requirementEntities.length > 0" class="content-field">
@@ -74,37 +74,37 @@
         <h2> {{ scholarship.moneyEntities[0].value }}</h2>
         <button v-if="!interactive || !interactive.isInListFavorite" class="btn btn-pink" @click="addFavorite()">
           <span class="icon">&#10084;</span>
-          <span>Thêm vào danh sách</span>
+          <span>Add To Favorites List</span>
         </button>
         <button v-if="interactive && interactive.isInListFavorite" class="btn btn-white-pink">
           <span class="icon">&#10084;</span>
-          <span>Đã thêm vào danh sách</span>
+          <span>Added To Favorites List</span>
         </button>
         <button class="btn btn-pink" @click="countClickContact()">
           &#9742;
-          <span>Liên hệ</span>
+          <span>Apply</span>
         </button>
         <button class="btn btn-pink" @click="countCompare()">
           &#8651;
-          <span>So sánh</span>
+          <span>Compare</span>
         </button>
         <div style="text-align: left; margin: 20px;">
           <div class="react">
             <span class="icon">&#128065;</span>
-            <span class="value">{{ scholarship ? scholarship.numberSeen : 0 }} Lượt xem</span>
+            <span class="value">{{ scholarship ? scholarship.numberSeen : 0 }} views</span>
           </div>
           <div class="react">
             <span class="icon">&#9734;</span>
             <span
-              class="value">{{ scholarship ? scholarship.rating + "/" + scholarship.numberRating : 0 }} Đánh giá</span>
+              class="value">{{ scholarship ? scholarship.rating + "/" + scholarship.numberRating : 0 }} rating</span>
           </div>
           <div class="react">
             <span class="icon"><i class="el-icon-share"></i></span>
-            <span class="value">{{ scholarship ? scholarship.numberShare : 0 }} Lượt chia sẻ</span>
+            <span class="value">{{ scholarship ? scholarship.numberShare : 0 }} shares</span>
           </div>
           <div class="react">
             <span class="icon"><i class="el-icon-chat-square"></i> </span>
-            <span class="value">{{ scholarship ? scholarship.numberComment : 0 }} Lượt bình luận</span>
+            <span class="value">{{ scholarship ? scholarship.numberComment : 0 }} commends</span>
           </div>
           <div class="content-field">
             <div v-for="mess in scholarship.commentEntities" :key="mess.id" style="margin: 10px">

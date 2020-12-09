@@ -6,11 +6,11 @@
     <el-container>
       <el-aside style="margin-top: 20px; border-right: 1px solid #36474F; min-height: 500px;" width="250px">
         <div class="menu">
-          <div><a href="/admin"><p>Cài đặt trích rút</p></a></div>
-          <div><a href="/admin/report"><p>Báo cáo</p></a></div>
-          <div><a href="/admin/admin-management"><p>Phân quyền</p></a></div>
-          <div><a href="/admin/major-management"><p>Ngành học</p></a></div>
-          <div><a @click="logout" style="text-decoration: underline">Đăng xuất</a></div>
+          <div><a href="/admin"><p>Setting the Crawl source</p></a></div>
+          <div><a href="/admin/report"><p>Report</p></a></div>
+          <div><a href="/admin/admin-management"><p>Manage admin account</p></a></div>
+          <div><a href="/admin/major-management"><p>Classification of Major</p></a></div>
+          <div><a @click="logout" style="text-decoration: underline">Logout</a></div>
         </div>
       </el-aside>
       <el-main>

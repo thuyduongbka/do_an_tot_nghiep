@@ -8,7 +8,7 @@
       <span>{{formatDate(scholarship.time)}}</span>
       <p style="font-weight: bold;"><a :href="'/detail?id=' + scholarship.id">{{scholarship.name}}</a></p>
       <span>{{scholarship.schoolEntity? scholarship.schoolEntity.name : ""}}</span>
-      <p>Quốc gia: {{scholarship.countryEntity.name}}</p>
+      <p>Country: {{scholarship.countryEntity.name}}</p>
     </div>
     <div class="card-footer">
       <div class="card-react" v-if="showInteractive">

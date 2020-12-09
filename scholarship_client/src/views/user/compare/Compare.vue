@@ -1,6 +1,6 @@
 <template>
   <div style="height: 100%; min-height: 500px;">
-    <h1>So sánh học bổng</h1>
+    <h1>Compare scholarships</h1>
     <el-card class="card-compare" style="height: 100%; min-height: 500px;">
       <table style="width:100%">
         <tr class="first">
@@ -32,7 +32,7 @@
           </td>
         </tr>
         <tr v-if="scholarshipId1 || scholarshipId2">
-          <th>Tên</th>
+          <th>Name</th>
           <td v-if="scholarship1"><span style="text-decoration: underline; cursor: pointer"
                                         @click="detail(scholarshipId1)">{{
               scholarship1.name
@@ -43,17 +43,17 @@
             }}</span></td>
         </tr>
         <tr v-if="scholarshipId1 || scholarshipId2">
-          <th>Quốc gia</th>
+          <th>Country</th>
           <td v-if="scholarship1">{{ scholarship1.countryEntity.name }}</td>
           <td v-if="scholarship2">{{ scholarship2.countryEntity.name }}</td>
         </tr>
         <tr v-if="scholarshipId1 || scholarshipId2">
-          <th>Trường</th>
+          <th>School</th>
           <td v-if="scholarship1">{{ scholarship1.schoolEntity ? scholarship1.schoolEntity.name : "" }}</td>
           <td v-if="scholarship2">{{ scholarship2.schoolEntity ? scholarship2.schoolEntity.name : "" }}</td>
         </tr>
         <tr v-if="scholarshipId1 || scholarshipId2">
-          <th>Cấp học</th>
+          <th>Level</th>
           <td v-if="scholarship1">
             <ul>
               <li v-for="level in scholarship1.levelEntities" :key="level.id">{{ level.name }}</li>
@@ -66,7 +66,7 @@
           </td>
         </tr>
         <tr v-if="scholarshipId1 || scholarshipId2">
-          <th>Ngành học</th>
+          <th>Major</th>
           <td v-if="scholarship1">
             <ul>
               <li v-for="major in scholarship1.majorEntities" :key="major.id">{{ major.name }}</li>
@@ -79,7 +79,7 @@
           </td>
         </tr>
         <tr v-if="scholarshipId1 || scholarshipId2">
-          <th>Thời hạn</th>
+          <th>Deadline</th>
           <td v-if="scholarship1">{{ formatDate(scholarship1.time) }}</td>
           <td v-if="scholarship2">{{ formatDate(scholarship2.time) }}</td>
         </tr>
