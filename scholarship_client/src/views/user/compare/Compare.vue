@@ -114,9 +114,10 @@ export default {
   },
   created() {
     this.getListScholarship();
-    if (this.$route.query.scholarshipId1 === undefined) return;
-    this.scholarshipId1 = parseInt(this.$route.query.scholarshipId1);
-
+    this.scholarshipId1 = localStorage.getItem("scholarshipId1")
+    if (this.$route.query.scholarshipId2 === undefined) return;
+    this.scholarshipId2 = parseInt(this.$route.query.scholarshipId2);
+    // localStorage.removeItem("scholarshipId1");
   },
   watch: {
     "scholarshipId1"(val) {
@@ -133,7 +134,6 @@ export default {
       return utils.formatDate(date);
     },
     async getData1() {
-      console.log("o")
       try {
         let userId = Auth.getCurrentUser().endUserId;
         await ScholarshipApi.get(userId, this.scholarshipId1).then(result => {

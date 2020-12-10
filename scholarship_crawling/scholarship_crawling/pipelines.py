@@ -13,7 +13,7 @@ class ScholarshipCrawlingPipeline(object):
 
     def __init__(self):
         self.create_connection()
-        #self.dropTable()
+        self.dropTable()
         self.create_common()
         self.create_table_scholarship()
         self.create_table_major_scholarship()
@@ -67,6 +67,7 @@ class ScholarshipCrawlingPipeline(object):
                                     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                                     user_id int NOT NULL,
                                     country_id int NOT NULL ,
+                                    is_implicit bit(1) DEFAULT b'0',
                                     created_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
                                     updated_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
                                     updated_by_user_id int(11) DEFAULT NULL,
@@ -77,6 +78,7 @@ class ScholarshipCrawlingPipeline(object):
                                             id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                                             user_id int NOT NULL,
                                             school_id int NOT NULL ,
+                                            is_implicit bit(1) DEFAULT b'0',
                                             created_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
                                             updated_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
                                             updated_by_user_id int(11) DEFAULT NULL,
@@ -87,6 +89,7 @@ class ScholarshipCrawlingPipeline(object):
                                             id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                                             user_id int NOT NULL,
                                             major_id int NOT NULL ,
+                                            is_implicit bit(1) DEFAULT b'0',
                                             created_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
                                             updated_time timestamp NULL DEFAULT CURRENT_TIMESTAMP,
                                             updated_by_user_id int(11) DEFAULT NULL,
@@ -134,6 +137,7 @@ class ScholarshipCrawlingPipeline(object):
             time date CHECK (time >= CURDATE()),
             content text,
             url text,
+            apply_link text,
             url_image text,
             rating float(5) NOT NULL DEFAULT '0',
             number_rating int DEFAULT 0,

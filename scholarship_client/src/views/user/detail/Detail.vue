@@ -84,9 +84,16 @@
           &#9742;
           <span>Apply</span>
         </button>
-        <button class="btn btn-pink" @click="countCompare()">
+        <button v-if="addToCompare" class="btn btn-white-pink">
           &#8651;
-          <span>Compare</span>
+          <span @click="removeToCompare()">Added To Compare</span>
+        </button>
+        <button v-else class="btn btn-pink" >
+          &#8651;
+          <span @click="countCompare()">Compare</span>
+          <span v-if="getIdToCompare">
+            with <a :href="'/detail?id='+ getIdToCompare" target="_blank">...</a>
+          </span>
         </button>
         <div style="text-align: left; margin: 20px;">
           <div class="react">
@@ -145,7 +152,8 @@ export default {
       newComment: "",
       interactive: null,
       listRecommend: [],
-      loading: false
+      loading: false,
+      addToCompare: false
     }
   },
   async created() {
@@ -160,16 +168,22 @@ export default {
         this.changeRating();
     }
   },
-    methods: {
-      async getData() {
-        try {
-          let id = this.$route.query.id;
-          let userId = Auth.getCurrentUser().endUserId;
-          await ScholarshipApi.get(userId,id).then(result => {
-            this.scholarship = result.scholarshipEntity;
-            this.interactive = result.interactiveEntity;
-            this.rating = this.interactive ? this.interactive.rating :0
-            this.listRecommend = result.listRecommend;
+  computed: {
+    getIdToCompare(){
+      return localStorage.getItem('scholarshipId1');
+    }
+  },
+  methods: {
+    async getData() {
+      try {
+        let id = this.$route.query.id;
+        let userId = Auth.getCurrentUser().endUserId;
+        await ScholarshipApi.get(userId, id).then(result => {
+          this.scholarship = result.scholarshipEntity;
+          this.interactive = result.interactiveEntity;
+          this.rating = this.interactive ? this.interactive.rating : 0
+          this.listRecommend = result.listRecommend;
+          this.addToCompare = localStorage.getItem("scholarshipId1") == result.scholarshipEntity.id;
           })
         } catch (e) {
           AlertService.error(e)
@@ -185,7 +199,7 @@ export default {
         }
       },
       async countClickContact(){
-        window.location.href = this.scholarship.url;
+        window.open(this.scholarship.url, '_blank');
         try {
           let id = this.$route.query.id;
           let userId = Auth.getCurrentUser().endUserId;
@@ -223,17 +237,26 @@ export default {
         try {
           let id = this.$route.query.id;
           let userId = Auth.getCurrentUser().endUserId;
-          await ScholarshipInteractiveApi.rating(id, userId, this.rating).then(result=>{
+          await ScholarshipInteractiveApi.rating(id, userId, this.rating).then(result => {
             this.getData();
           });
         } catch (e) {
           AlertService.error(e)
         }
       },
-      countCompare(){
-        this.$router.push({path: Pages.compare.path, query: {scholarshipId1: this.scholarship.id}});
+    countCompare() {
+      if (localStorage.getItem("scholarshipId1") != undefined) {
+        this.$router.push({path: Pages.compare.path, query: {scholarshipId2: this.scholarship.id}});
+      } else {
+        localStorage.setItem("scholarshipId1", this.scholarship.id);
+        this.addToCompare = true;
       }
+    },
+    removeToCompare(){
+      localStorage.removeItem("scholarshipId1");
+      this.addToCompare = false;
     }
+  }
   }
 </script>
 <style scoped>

@@ -12,7 +12,7 @@
         prop="name"
         label="Name">
         <template slot-scope="scope">
-          <a :href="scope.row.url" target="_blank">{{scope.row.url}}</a>
+          <a @click="openSource(scope.row.url)" >{{scope.row.url}}</a>
         </template>
       </el-table-column>
       <el-table-column
@@ -86,6 +86,9 @@
       },
     },
     methods: {
+      openSource(url){
+        window.open("https://" + url,'_blank');
+      },
       async getData() {
         try {
           await WebApi.getAll().then(result => {

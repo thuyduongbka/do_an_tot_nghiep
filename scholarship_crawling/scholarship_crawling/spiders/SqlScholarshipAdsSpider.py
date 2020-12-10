@@ -18,6 +18,7 @@ class SqlScholarshipAdsSpider(scrapy.Spider):
             yield scrapy.Request(url=url, callback=self.getPage)
 
     def getPage(self, response):
+        print(response.text)
         numOfPages = 20
         linkPageDemo = "https://www.scholarshipsads.com/category/tags/vietnam/"
         for index in range(numOfPages):

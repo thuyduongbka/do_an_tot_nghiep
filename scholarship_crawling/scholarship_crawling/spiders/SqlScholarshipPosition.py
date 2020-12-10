@@ -47,7 +47,7 @@ class SqlScholarshipPositionSpider(scrapy.Spider):
         try:
             item["url"] = response.url;
             item["name"] = response.xpath("//h1[@class='entry-title']/text()").get()
-            item["urlImage"] = response.xpath("//figure/img/@src").get()
+            item["urlImage"] = response.xpath("//figure/img/@data-src").get()
             time = response.xpath("//p[contains(strong/text(),'Application Deadline')]/text()").get()
             item["time"] = datetime.strptime(time.replace(':', '').strip(), '%B %d, %Y').date()
             school = response.xpath("//li[contains(strong/text(),'University or Organization')]/a/text()").get()
