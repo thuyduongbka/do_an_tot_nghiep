@@ -19,6 +19,7 @@ public class ScholarshipEntity extends BaseEntity {
     private Date time;
     private String content;
     private String url;
+    private String applyLink;
     private String urlImage;
     private Boolean isExpired;
     private Float rating;

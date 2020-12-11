@@ -1,7 +1,7 @@
 <template>
   <div class="card" :style="showInteractive?'':'margin: auto; margin-bottom: 20px;'">
     <div class="card-image" v-if="showImage" :style="!showInteractive?'':'height: 200px;'">
-      <img :src="scholarship.urlImage" />
+      <img :src="scholarship.urlImage" @error="scholarship.urlImage=null"/>
       <img v-if="!scholarship.urlImage" src="@/assets/example.png"/>
     </div>
     <div class="card-content">

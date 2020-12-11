@@ -22,4 +22,5 @@ class ScholarshipItem(scrapy.Item):
     web = scrapy.Field()
     newMajor = scrapy.Field()
     content = scrapy.Field()
+    applyLink = scrapy.Field()
     pass

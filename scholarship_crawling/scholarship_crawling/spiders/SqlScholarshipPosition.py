@@ -75,6 +75,12 @@ class SqlScholarshipPositionSpider(scrapy.Spider):
                 country = response.xpath("//li[contains(strong/text(),'The award can be taken in')]/text()").get()
             item["country"] = getCountry(country.replace(':', '').strip())
 
+            applyLink = response.xpath("//a[contains(text(),'Apply Now')]/@href").get()
+            if applyLink is None:
+                applyLink = response.xpath("//a[contains(strong/text(),'Apply Now')]/@href").get()
+
+            item["applyLink"] = applyLink
+
             content = response.xpath("//div[@class='entry-content']").get()
             item["content"] = content
             item["web"] = 5

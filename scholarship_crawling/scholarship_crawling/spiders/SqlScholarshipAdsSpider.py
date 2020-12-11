@@ -12,13 +12,24 @@ class SqlScholarshipAdsSpider(scrapy.Spider):
     ]
     listScholarship = {}
     listImage = {}
+    headers = {
+        'Cookie' : 'SPSI=69f2d085a1870ed99d933f5665504c56; PHPSESSID=8kkholpr7veq3sm27qlt2i4qes; _fbp=fb.1.1607591880183.1505267378; 2z3u_unique_user=1; __gads=ID=514128484ab0cacc-226a408f21c50085:T=1607591879:RT=1607591879:S=ALNI_MZgEln4SBvnLjyep8rd-oxRy8ewYA; SPSE=YLZXmZ5jBMgtWA3g9K4djloZ+OIKCu50y3c1E6Swe20gKfnMIlHPK8bzeyF7weP82Qt+CGiGcj7hN+6r0jkrzw==; sp_lit=+ddKE0Z+R5VHXtvv1NE7pw==; spcsrf=b49698531cefc80b331aaf8cbf9d88aa; sbtsck=javE6WUH/QCukH4+OYIvxhKmBkQqFewr73dvJEHIHGb1Sk=; PRLST=NL; UTGv2=h4fc6b45bdbb3be6de3955e59d7dd06e8458; adOtr=dX9Y65fa881',
+        'Accept' : '*/*',
+        'Connection': 'keep-alive',
+        'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36 Edg/87.0.664.57'
+    }
 
     def start_requests(self):
         for url in self.startUrls:
-            yield scrapy.Request(url=url, callback=self.getPage)
+            yield scrapy.Request(url=url,
+                                 callback=self.getPage,
+                                 headers={
+                                    'Cookie': 'SPSI=69f2d085a1870ed99d933f5665504c56; PHPSESSID=8kkholpr7veq3sm27qlt2i4qes; _fbp=fb.1.1607591880183.1505267378; 2z3u_unique_user=1; __gads=ID=514128484ab0cacc-226a408f21c50085:T=1607591879:RT=1607591879:S=ALNI_MZgEln4SBvnLjyep8rd-oxRy8ewYA; SPSE=YLZXmZ5jBMgtWA3g9K4djloZ+OIKCu50y3c1E6Swe20gKfnMIlHPK8bzeyF7weP82Qt+CGiGcj7hN+6r0jkrzw==; sp_lit=+ddKE0Z+R5VHXtvv1NE7pw==; spcsrf=b49698531cefc80b331aaf8cbf9d88aa; sbtsck=javE6WUH/QCukH4+OYIvxhKmBkQqFewr73dvJEHIHGb1Sk=; PRLST=NL; UTGv2=h4fc6b45bdbb3be6de3955e59d7dd06e8458; adOtr=dX9Y65fa881',
+                                    'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36 Edg/87.0.664.57'
+                                 })
 
     def getPage(self, response):
-        print(response.text)
+        print(response.request.headers)
         numOfPages = 20
         linkPageDemo = "https://www.scholarshipsads.com/category/tags/vietnam/"
         for index in range(numOfPages):
@@ -26,7 +37,7 @@ class SqlScholarshipAdsSpider(scrapy.Spider):
                 url = linkPageDemo
             else:
                 url = linkPageDemo + "page/" + str(index + 1) + "/"
-            yield scrapy.Request(url=url, callback=self.getScholarship, dont_filter=True)
+            yield scrapy.Request(url=url, callback=self.getScholarship, dont_filter=True, headers=self.headers)
 
     def getScholarship(self, response):
         listPosts = response.xpath("//div[@class='scholarship-card']")
@@ -40,7 +51,7 @@ class SqlScholarshipAdsSpider(scrapy.Spider):
             urlImage = post.xpath("./div[@class='card-warp']/div[contains(@class, 'card-img')]/img/@src").get()
             urlPost = post.xpath("./div[@class='card-more']/a/@href").get()
             self.listImage[urlPost] = urlImage;
-            yield scrapy.Request(url=urlPost, callback=self.getDetailScholarship)
+            yield scrapy.Request(url=urlPost, callback=self.getDetailScholarship, headers=self.headers)
 
     def getDetailScholarship(self, response):
         item = ScholarshipItem()
@@ -86,6 +97,7 @@ class SqlScholarshipAdsSpider(scrapy.Spider):
         content = ' '.join(response.xpath("///div[@class='scholarship-item']").getall())
         url = response.url
         item["url"] = url.encode("utf-8")
+        item["applyLink"] = url.encode("utf-8")
         item["content"] = content
         item["web"] = 4
         item["newMajor"] = False

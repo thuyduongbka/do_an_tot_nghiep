@@ -199,7 +199,7 @@ export default {
         }
       },
       async countClickContact(){
-        window.open(this.scholarship.url, '_blank');
+        window.open(this.scholarship.applyLink, '_blank');
         try {
           let id = this.$route.query.id;
           let userId = Auth.getCurrentUser().endUserId;

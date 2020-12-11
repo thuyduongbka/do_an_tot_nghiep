@@ -13,7 +13,7 @@ class ScholarshipCrawlingPipeline(object):
 
     def __init__(self):
         self.create_connection()
-        self.dropTable()
+        #self.dropTable()
         self.create_common()
         self.create_table_scholarship()
         self.create_table_major_scholarship()
@@ -266,7 +266,7 @@ class ScholarshipCrawlingPipeline(object):
             return
 
         self.curr.execute(
-            """Insert into scholarship(name, time, url, web_id, content, country_id, school_id, url_image) values (%s, %s, %s, %s, %s, %s, %s, %s)""",
+            """Insert into scholarship(name, time, url, web_id, content, country_id, school_id, url_image,apply_link) values (%s, %s, %s, %s, %s, %s, %s, %s, %s)""",
             (
                 item['name'],
                 item['time'],
@@ -275,7 +275,8 @@ class ScholarshipCrawlingPipeline(object):
                 item['content'],
                 country_id,
                 school_id,
-                item['urlImage']
+                item['urlImage'],
+                item['applyLink']
             ))
         self.curr.execute("UPDATE web SET last_crawled=now() WHERE id = %s", (item["web"],))
         self.conn.commit()
