@@ -11,7 +11,8 @@ class ConnectDB:
             host='192.168.1.3',
             user='root_son',
             passwd='empty258',
-            database='scholarship_english'
+            database='scholarship_englis'
+                     'h'
         )
         self.curr = self.conn.cursor(buffered=True)
 
@@ -69,14 +70,19 @@ class ConnectDB:
         result = self.curr.fetchone();
         return self.toEntity(result)
 
-    def getListScholarship(self):
+    def getListScholarship(self, userId, scholarshipId):
         self.curr.execute(
-            "SELECT id, country_id, school_id, time FROM `scholarship` WHERE time >= now() ORDER BY `scholarship`.`time` ASC")
+            "SELECT id, country_id, school_id, time "
+            "FROM `scholarship` "
+            "WHERE time >= now() "
+            "AND id NOT IN (SELECT si.scholarship_id FROM scholarship_interactive si WHERE si.user_id = %s ) "
+            "ORDER BY `scholarship`.`time` ASC", (userId,))
         results = self.curr.fetchall();
         listScholarship = []
         for s in results:
             scholarship = self.toEntity(s)
-            listScholarship.append(scholarship)
+            if (scholarshipId != scholarship.id):
+                listScholarship.append(scholarship)
         return listScholarship
 
     def toEntity(self,s):

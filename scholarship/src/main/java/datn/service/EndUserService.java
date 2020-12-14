@@ -7,6 +7,9 @@ import datn.custom.dto.LoginSuccessResponse;
 import datn.custom.exception.LoginFailureException;
 import datn.custom.exception.OldPasswordNotEqualException;
 import datn.entity.*;
+import datn.entity.favorite.CountryFavoriteEntity;
+import datn.entity.favorite.MajorFavoriteEntity;
+import datn.entity.favorite.SchoolFavoriteEntity;
 import datn.entity.user.AccountEntity;
 import datn.entity.user.EndUserEntity;
 import datn.enums.Role;
@@ -20,9 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,6 +51,13 @@ public class EndUserService extends BaseService<EndUserEntity, EndUserRepository
     
     @Autowired
     private AuthenticationTokenService authenticationTokenService;
+
+    @Autowired
+    private CountryFavoriteService countryFavoriteService;
+    @Autowired
+    private SchoolFavoriteService schoolFavoriteService;
+    @Autowired
+    private MajorFavoriteService majorFavoriteService;
     
     @Transactional
     public EndUserEntity save(EndUser dto) throws Exception {
@@ -98,17 +106,32 @@ public class EndUserService extends BaseService<EndUserEntity, EndUserRepository
             }
         }
 
-        Set<CountryEntity> countryEntitySet = new HashSet<>(userEntity.getCountryEntities());
-        countryEntitySet.add(scholarship.getCountryEntity());
-        userEntity.setCountryEntities(countryEntitySet);
+        Long countryId = scholarship.getCountryEntity().getId();
+        CountryFavoriteEntity countryFavorite = countryFavoriteService.findByUserIdAndCountryId(userId, countryId);
+        if (countryFavorite == null) {
+            countryFavorite = new CountryFavoriteEntity(userId, countryId, true);
+            countryFavoriteService.save(countryFavorite);
+        }
 
-        Set<SchoolEntity> schoolEntitySet = new HashSet<>(userEntity.getSchoolEntities());
-        schoolEntitySet.add(scholarship.getSchoolEntity());
-        userEntity.setSchoolEntities(schoolEntitySet);
+        if (scholarship.getSchoolEntity() != null){
+            Long schoolId = scholarship.getSchoolEntity().getId();
+            SchoolFavoriteEntity schoolFavorite = schoolFavoriteService.findByUserIdAndCountryId(userId, schoolId);
+            if (schoolFavorite == null){
+                schoolFavorite = new SchoolFavoriteEntity(userId, schoolId, true);
+                schoolFavoriteService.save(schoolFavorite);
+            }
+        }
 
-        Set<MajorEntity> majorEntitySet = new HashSet<>(userEntity.getMajorEntities());
-        majorEntitySet.addAll(new HashSet<>(scholarship.getMajorEntities()));
-        userEntity.setMajorEntities(majorEntitySet);
+        if (scholarship.getMajorEntities().size() != 0){
+            for (MajorEntity major : scholarship.getMajorEntities()){
+                Long majorId = major.getId();
+                MajorFavoriteEntity majorFavorite =majorFavoriteService.findByUserIdAndCountryId(userId,majorId);
+                if (majorFavorite == null) {
+                    majorFavorite = new MajorFavoriteEntity(userId, majorId, true);
+                    majorFavoriteService.save(majorFavorite);
+                }
+            }
+        }
 
         return update(userEntity);
     }
@@ -152,26 +175,52 @@ public class EndUserService extends BaseService<EndUserEntity, EndUserRepository
         return repository.findByAccountEntity_id(accountId);
     }
 
+    @Transactional
     public EndUserEntity addCountryFavorite(Long countryId){
         Long currentUserId = getCurrentUser().getEndUserId();
+        CountryFavoriteEntity countryFavoriteEntity = countryFavoriteService.findByUserIdAndCountryId(currentUserId, countryId);
+        if (countryFavoriteEntity != null){
+            if (countryFavoriteEntity.getIsImplicit()){
+                countryFavoriteEntity.setIsImplicit(false);
+                countryFavoriteService.update(countryFavoriteEntity);
+            }
+        } else {
+            countryFavoriteEntity = new CountryFavoriteEntity(currentUserId, countryId, false);
+            countryFavoriteService.save(countryFavoriteEntity);
+        }
         EndUserEntity userEntity = findById(currentUserId);
-        CountryEntity countryEntity = countryService.findById(countryId);
-        userEntity.getCountryEntities().add(countryEntity);
-        return update(userEntity);
+        return userEntity;
     }
     public EndUserEntity addSchoolFavorite(Long schoolId){
         Long currentUserId = getCurrentUser().getEndUserId();
+        SchoolFavoriteEntity schoolFavoriteEntity = schoolFavoriteService.findByUserIdAndCountryId(currentUserId,schoolId);
+        if (schoolFavoriteEntity != null){
+            if (schoolFavoriteEntity.getIsImplicit()){
+                schoolFavoriteEntity.setIsImplicit(false);
+                schoolFavoriteService.update(schoolFavoriteEntity);
+            }
+        } else {
+            schoolFavoriteEntity = new SchoolFavoriteEntity(currentUserId, schoolId, false);
+            schoolFavoriteService.save(schoolFavoriteEntity);
+        }
         EndUserEntity userEntity = findById(currentUserId);
-        SchoolEntity schoolEntity = schoolService.findById(schoolId);
-        userEntity.getSchoolEntities().add(schoolEntity);
-        return update(userEntity);
+        return userEntity;
     }
     public EndUserEntity addMajorFavorite(Long majorID){
         Long currentUserId = getCurrentUser().getEndUserId();
+        MajorFavoriteEntity majorFavoriteEntity = majorFavoriteService.findByUserIdAndCountryId(currentUserId, majorID);
+        if (majorFavoriteEntity != null){
+            if (majorFavoriteEntity.getIsImplicit()){
+                majorFavoriteEntity.setIsImplicit(false);
+                majorFavoriteService.update(majorFavoriteEntity);
+            }
+        } else {
+            majorFavoriteEntity = new MajorFavoriteEntity(currentUserId, majorID, false);
+            majorFavoriteService.save(majorFavoriteEntity);
+        }
+
         EndUserEntity userEntity = findById(currentUserId);
-        MajorEntity majorEntity = majorService.findById(majorID);
-        userEntity.getMajorEntities().add(majorEntity);
-        return update(userEntity);
+        return userEntity;
     }
 
     public void deleteCountryFavorite(Long countryId){
@@ -185,5 +234,12 @@ public class EndUserService extends BaseService<EndUserEntity, EndUserRepository
     public void deleteMajorFavorite(Long majorId){
         Long currentUserId = getCurrentUser().getEndUserId();
         repository.deleteMajorFavorite(majorId,currentUserId);
+    }
+
+    public Collection<String> changeStringToSet(String listImplicit, Long id ){
+        List<String> list = Arrays.asList(listImplicit.split(","));
+        Set<String> set = new HashSet<>(list);
+        set.add(String.valueOf(id));
+        return set;
     }
 }

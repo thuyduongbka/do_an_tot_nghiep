@@ -9,6 +9,7 @@
       <p style="font-weight: bold;"><a :href="'/detail?id=' + scholarship.id">{{scholarship.name}}</a></p>
       <span>{{scholarship.schoolEntity? scholarship.schoolEntity.name : ""}}</span>
       <p>Country: {{scholarship.countryEntity.name}}</p>
+      <p>Level: <span v-for="(level, index) in scholarship.levelEntities" :key="level" > <span v-if="index !=0">, </span>{{level.name }}</span></p>
     </div>
     <div class="card-footer">
       <div class="card-react" v-if="showInteractive">
@@ -70,7 +71,14 @@ export default {
     position: relative;
     font-size: 12px;
     background-color: white;
+    transition: all .2s ease-in-out;
   }
+
+  .card:hover,.card:focus {
+    box-shadow: 0 2px 12px 0 #b69de5;
+    transform: scale(0.9);
+  }
+
   .card-image {
     position: relative;
     /*height: 200px;*/
@@ -84,7 +92,7 @@ export default {
   .card-content {
     text-align: left;
     padding: 10px;
-    height: 160px;
+    height: 195px;
   }
 
   .card-footer {

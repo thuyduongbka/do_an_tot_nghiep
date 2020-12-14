@@ -5,6 +5,7 @@ import datn.custom.domain.EndUser;
 import datn.entity.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.WhereJoinTable;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -27,17 +28,23 @@ public class EndUserEntity extends BaseEntity {
     private String gender;
     private String level;
     private Date birthday;
-    private String country;
     private Date graduationDate;
     private String phone;
-    
+    private String levelImplicit;
+    private String countryImplicit;
+    private String schoolImplicit;
+    private String majorImplicit;
+
+    @WhereJoinTable(clause = "is_implicit=false")
     @ManyToMany
-            @JoinTable(
-                    name = "country_favorite",
-                    joinColumns = @JoinColumn(name = "user_id"),
-                    inverseJoinColumns = @JoinColumn(name = "country_id")
-            )
+    @JoinTable(
+            name = "country_favorite",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "country_id")
+    )
     private Collection<CountryEntity> countryEntities;
+
+    @WhereJoinTable(clause = "is_implicit=false")
     @ManyToMany
     @JoinTable(
             name = "school_favorite",
@@ -45,6 +52,8 @@ public class EndUserEntity extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "school_id")
     )
     private Collection<SchoolEntity> schoolEntities;
+
+    @WhereJoinTable(clause = "is_implicit=false")
     @ManyToMany
     @JoinTable(
             name = "major_favorite",
@@ -63,7 +72,6 @@ public class EndUserEntity extends BaseEntity {
         this.gender = dto.getGender();
         this.level = dto.getLevel();
         this.birthday = dto.getBirthday();
-        this.country = dto.getCountry();
         this.graduationDate = dto.getGraduationDate();
         this.phone = dto.getPhone();
     }

@@ -4,7 +4,7 @@
       <el-header height="auto">
         <Header></Header>
       </el-header>
-      <el-main style="margin-top: 30px;">
+      <el-main style="margin-top: 30px; overflow: hidden">
         <router-view></router-view>
       </el-main>
       <el-footer>

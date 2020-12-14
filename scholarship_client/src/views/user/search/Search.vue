@@ -18,7 +18,7 @@
             </el-form-item>
             <el-form-item v-if="isUser" prop="listMajorId">
               <div>Major</div>
-              <el-select v-model="formData.majorId" clearable filterable placeholder="Khoa học máy tính">
+              <el-select v-model="formData.majorId" clearable filterable placeholder="Technology">
                 <el-option
                   v-for="item in listMajor"
                   :key="item.id"
@@ -40,7 +40,7 @@
             </el-form-item>
             <el-form-item prop="listMajorId">
               <div>Level</div>
-              <el-select v-model="formData.levelName" clearable filterable placeholder="Thạc sỹ">
+              <el-select v-model="formData.levelName" clearable filterable placeholder="Master">
                 <el-option
                   v-for="item in listLevel"
                   :key="item"

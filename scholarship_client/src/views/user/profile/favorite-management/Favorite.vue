@@ -8,7 +8,7 @@
           </div>
         </el-tab-pane>
         <el-tab-pane>
-          <span slot="label"> Favorite Countrys</span>
+          <span slot="label"> Favorite Countries</span>
           <div class="content">
             <country-favorite :list-favorite="favoriteList.countryFavorite" @reset="reset"></country-favorite>
           </div>
