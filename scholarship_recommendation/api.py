@@ -32,7 +32,7 @@ async def read_crawl(url: Optional[str] = None):
 @app.get("/get-recommend")
 def get_recommend(userId: Optional[str] = None, scholarshipId: Optional[str] = None):
     service = ConnectDB()
-    listScholarship = service.getListScholarship()
+    listScholarship = service.getListScholarship(userId, scholarshipId)
     user = service.getUserInfor(userId, scholarshipId)
 
     # print('country {}, school {} , major {}, user {} , money {}, time {}'.format(uers.country, user.school, user.major, user.level, user.money, user.time))
