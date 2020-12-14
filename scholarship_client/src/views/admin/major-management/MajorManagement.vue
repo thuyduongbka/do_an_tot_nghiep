@@ -127,7 +127,7 @@ export default {
       try {
         await MajorApi.create(name).then(result => {
           this.reset();
-          AlertService.success("Tạo thành công")
+          AlertService.success("Success")
         })
       } catch (e) {
         AlertService.error(e)

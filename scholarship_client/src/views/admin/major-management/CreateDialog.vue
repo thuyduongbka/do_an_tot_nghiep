@@ -7,7 +7,7 @@
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="dialogVisible = false">Cancel</el-button>
-      <el-button type="primary" @click="create">Cập nhật</el-button>
+      <el-button type="primary" @click="create">Update</el-button>
     </span>
   </el-dialog>
 </template>

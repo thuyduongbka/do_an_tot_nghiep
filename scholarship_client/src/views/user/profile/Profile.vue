@@ -91,11 +91,11 @@ export default {
       this.formToData();
       try {
         await EndUserApi.update(this.formData).then(result => {
-          AlertService.success("Cập nhật thành công");
+          AlertService.success("Success");
           this.toForm(result);
         })
       } catch (e) {
-        AlertService.error("Thất bại :  " + e)
+        AlertService.error("Error:" + e)
       }
     },
     reset() {

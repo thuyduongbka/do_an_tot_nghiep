@@ -50,7 +50,7 @@
         v-if="checkChange"
         width="100">
         <template slot-scope="scope">
-          <el-button @click="handleEdit(scope.$index)" type="text" size="small">Cập nhật</el-button>
+          <el-button @click="handleEdit(scope.$index)" type="text" size="small">Update</el-button>
         </template>
       </el-table-column>
     </el-table>

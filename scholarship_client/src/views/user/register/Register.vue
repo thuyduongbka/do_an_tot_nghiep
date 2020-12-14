@@ -44,11 +44,11 @@
       async submit(){
         try {
           await EndUserApi.save(this.formData).then(result => {
-            AlertService.success("Tạo thành công");
+            AlertService.success("Success");
             router.push({path: Pages.loginUser.path});
           })
         } catch (e) {
-          AlertService.error("Lỗi: Email bị trùng!")
+          AlertService.error("Error: Duplicate Email!!")
         }
       }
     }
