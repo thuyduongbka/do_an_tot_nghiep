@@ -11,10 +11,10 @@ class User():
 
         # country [(4,), (5,)], school [(1,), (4,), (13,)], major {'4', '22', '14'}, level Bachelor, time 1970-01-01 07:00:00
         self.id = userId
-        self.country = [c[0] for c in country]
-        self.school = [s[0] for s in  school]
-        self.major = [int(m) for m in major]
-        self.level = [config['list_level'].index(l) for l in level]
+        self.country = list(set([c[0] for c in country]))
+        self.school = list(set([s[0] for s in  school]))
+        self.major = list(set([int(m) for m in major]))
+        self.level = list(set([config['list_level'].index(l) for l in level]))
         self.money = []
 
         self.time = self.create_time(time_)

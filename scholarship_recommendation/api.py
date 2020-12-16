@@ -37,7 +37,8 @@ def get_recommend(userId: Optional[str] = None, scholarshipId: Optional[str] = N
 
 
 @app.get("/get-recommend-conversation")
-def get_recommend_conversation(scholarshipId: Optional[str] = None,
+def get_recommend_conversation(userId: Optional[str] = None,
+                                scholarshipId: Optional[str] = None,
                                countryDislike: Optional[str] = None,
                                countryLikeId: Optional[str] = None,
                                schoolDislike: Optional[str] = None,
@@ -58,7 +59,25 @@ def get_recommend_conversation(scholarshipId: Optional[str] = None,
     print("listLevelDislike: ", listLevelDislike)
     print("listMajorLike: ", listMajorLike)
     print("listMajorDislike: ", listMajorDislike)
-    user = service.getUserInforFromConversation(scholarshipId,countryDislike,countryLikeId,
-                                     schoolDislike, schoolLikeId,appropriateTime,listLevelLike,
-                                     listLevelDislike,listMajorLike,listMajorDislike)
-    return []
+    user = service.getUserInforFromConversation(userId,
+                                        scholarshipId,
+                                        countryDislike,
+                                        countryLikeId,
+                                        schoolDislike, 
+                                        schoolLikeId,
+                                        appropriateTime,
+                                        listLevelLike,
+                                        listLevelDislike,
+                                        listMajorLike,
+                                        listMajorDislike)
+
+    listScholarship = service.getListScholarshipFromConversation(userId, 
+                                                                scholarshipId,
+                                                                countryDislike,
+                                                                schoolDislike, 
+                                                                listLevelDislike,
+                                                                listMajorDislike)
+    list_scholarship_recommend = recommend(user, listScholarship)
+    print(list_scholarship_recommend)
+
+    return list_scholarship_recommend

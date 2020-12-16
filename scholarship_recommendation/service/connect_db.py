@@ -105,24 +105,129 @@ class ConnectDB:
 
         return Scholarship(id, country, school, major, level, money, time)
 
-    def getUserInforFromConversation(self, scholarshipId,countryDislike,countryLikeId,
+    def getUserInforFromConversation(self, userId, scholarshipId,countryDislike,countryLikeId,
                                      schoolDislike, schoolLikeId,appropriateTime,listLevelLike,
                                      listLevelDislike,listMajorLike,listMajorDislike):
-        scholarship = self.getScholarship(scholarshipId)
-        countryDislikeId = None
-        if countryDislike :
-            countryDislikeId = scholarship.country
-            scholarship.country = countryLikeId
-        schoolDislikeId = None
-        if schoolDislike :
-            schoolDislikeId = scholarship.school
-            scholarship.school = schoolLikeId
-        listLevelLike = self.stringToArr(listLevelLike)
-        print(listLevelLike)
-        listLevelDislike = self.stringToArr(listLevelDislike)
-        print([config['list_level'].index(listLevelDislike)])
-        print(scholarship.level)
+        with open('config.yaml', 'r',  encoding="utf8") as f:
+            config = yaml.load(f, Loader=yaml.FullLoader)
 
+        scholarship = self.getScholarship(scholarshipId)
+        # user = self.getUserInfor(userId, None)
+        user = self.getScholarship(scholarshipId)
+
+        print('country ', user.country)
+        print('school ', user.school)
+        print('major ', user.major)
+        print('level ', user.level)
+        print('time ', user.time)
+
+
+        if countryDislike  == 'true':
+            for country in scholarship.country:
+                while country in user.country:
+                    user.country.remove(country)
+        
+        print(countryLikeId)
+            if countryLikeId:
+                countryLikeId = int(countryLikeId)
+                user.country.append(countryLikeId)
+
+        if schoolDislike == 'true':
+            print('dadsdd ', scholarship.school)
+            for school in scholarship.school:
+                while school in user.school:
+                    user.school.remove(school)
+
+            if schoolLikeId:
+                schoolLikeId = int(schoolLikeId)
+                user.school.append(schoolLikeId)
+
+        if listLevelLike:
+            for level in listLevelLike.split(','):
+                user.level.append(config['list_level'].index(level))
+
+        if listLevelDislike:
+            for level in listLevelDislike.split(','):
+                index = config['list_level'].index(level)
+                while index in user.level:
+                    user.level.remove(index)
+
+        if listMajorLike:
+            for major in listMajorLike.split(','):
+                major = int(major)
+                user.major.append(major)
+            
+        if listMajorDislike: 
+            for major in listMajorDislike.split(','):
+                major = int(major)
+                while major in user.major:
+                    user.major.remove(major)
+
+        if appropriateTime: 
+            user.time = user.create_time(appropriateTime)
+        
+
+        print('after')
+        print('country ', user.country)
+        print('school ', user.school)
+        print('major ', user.major)
+        print('level ', user.level)
+        print('time ', user.time)
+        return user
+    
+    def getListScholarshipFromConversation(self, userId, scholarshipId,
+                                        countryDislike,
+                                        schoolDislike, 
+                                        listLevelDislike,
+                                        listMajorDislike):
+
+        listScholarship = self.getListScholarship(userId, None)
+        scholarship_dislike = self.getScholarship(scholarshipId)
+
+        black_list = []
+
+
+        if countryDislike == 'true':
+            scholarship_dislike.country.sort()
+
+            for i, scholarship in enumerate(listScholarship):
+                scholarship.country.sort()
+                if scholarship.country == scholarship_dislike.country:
+                    black_list.append(i)
+            
+        if schoolDislike == 'true':
+            scholarship_dislike.school.sort()
+            for i, scholarship in enumerate(listScholarship):
+                if i not in black_list:
+                    scholarship.school.sort()
+                    if scholarship.school == scholarship_dislike.school:
+                        black_list.append(i)
+
+        if listLevelDislike:
+            listLevelDislike = listLevelDislike.split(',')
+            for i, scholarship in enumerate(listScholarship):
+                if i not in black_list:
+                    scholarship.level.sort()
+                    if scholarship.level == listLevelDislike:
+                        black_list.append(i)
+                        
+        if listMajorDislike:
+            listMajorDislike = listMajorDislike.split(',')
+            for i, scholarship in enumerate(listScholarship):
+                if i not in black_list:
+                    scholarship.major.sort()
+                    if scholarship.major == listMajorDislike:
+                        black_list.append(i)
+
+        black_list.sort()
+        black_list = black_list[::-1] # dao nguoc list
+
+        for i in black_list:
+
+            listScholarship.pop(i)
+        return listScholarship
+
+                                
     def stringToArr(self, str):
         if str == "": return []
         return str.split(",")

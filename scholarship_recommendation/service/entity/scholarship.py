@@ -9,20 +9,15 @@ class Scholarship:
     def __init__(self, id, country, school, major, level, money, time):
         #ountry 3, school 14, major {'12', '5', '8'}, level [('PHD',)], money [('$15,000',)], time 2020-11-29
         self.id = id
-        self.country = [country]
+        self.country = list(set([country]))
         self.school = [school]
-        self.major = [int(m) for m in major]
-
-        level = level[0][0]
-        if level:
-            self.level = [config['list_level'].index(level)]
-        else:
-            self.level = []
+        self.major = list(set([int(m) for m in major]))
 
 
+        self.level = list(set([config['list_level'].index(l[0]) for l in level]))
 
         if money in config['list_money']:
-            self.money = [config['list_money'].index(money[0][0])]
+            self.money = list(set([config['list_money'].index(money[0][0])]))
         else:
             self.money = [0]
         self.time = self.create_time(str(time))
