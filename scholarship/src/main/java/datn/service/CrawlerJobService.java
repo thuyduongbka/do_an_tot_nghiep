@@ -18,7 +18,7 @@ public class CrawlerJobService {
     
     @Autowired
     private WebService webService;
-    
+
     public void crawler(){
         List<WebEntity> listWeb = webService.getAll();
         for (WebEntity web : listWeb){

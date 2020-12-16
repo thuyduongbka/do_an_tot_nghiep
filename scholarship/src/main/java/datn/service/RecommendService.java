@@ -1,12 +1,14 @@
 package datn.service;
 
 import datn.crawler.HttpService;
+import datn.custom.dto.ConversationDto;
 import datn.entity.ScholarshipEntity;
 import datn.security.CurrentUserDetailsContainer;
 import datn.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,6 +37,13 @@ public class RecommendService {
     public List<ScholarshipEntity> getRecommendByScholarship(Long scholarshipId){
         Long userId = getCurrentUser().getEndUserId();
         List<Integer> listScholarshipIdRecommend = httpService.getRecommend(userId, scholarshipId);
+        listScholarshipIdRecommend = listScholarshipIdRecommend.subList(0,6);
+        List<ScholarshipEntity> listScholarshipRecommend = listScholarshipIdRecommend.stream().map(id ->
+                scholarshipService.findById(Long.valueOf(id))).collect(Collectors.toList());
+        return listScholarshipRecommend;
+    }
+    public List<ScholarshipEntity> getRecommendConversation(ConversationDto dto){
+        List<Integer> listScholarshipIdRecommend = httpService.getRecommendConversation(dto);
         listScholarshipIdRecommend = listScholarshipIdRecommend.subList(0,6);
         List<ScholarshipEntity> listScholarshipRecommend = listScholarshipIdRecommend.stream().map(id ->
                 scholarshipService.findById(Long.valueOf(id))).collect(Collectors.toList());

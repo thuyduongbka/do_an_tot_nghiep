@@ -6,15 +6,24 @@
     </div>
     <div class="card-content">
       <span>{{formatDate(scholarship.time)}}</span>
-      <p style="font-weight: bold;"><a :href="'/detail?id=' + scholarship.id">{{scholarship.name}}</a></p>
+      <el-tooltip v-if="showImage" placement="top" effect="light">
+        <div slot="content" style="color: #6637EB">
+          <h4>Major</h4>
+          <div v-for="(major, index) in scholarship.majorEntities" :key="major.id">
+            {{ major.name }}
+          </div>
+        </div>
+        <p style="font-weight: bold;"><a :href="'/detail?id=' + scholarship.id" target="_blank">{{scholarship.name}}</a></p>
+      </el-tooltip>
+      <p v-else style="font-weight: bold;"><a :href="'/detail?id=' + scholarship.id" target="_blank">{{scholarship.name}}</a></p>
       <span>{{scholarship.schoolEntity? scholarship.schoolEntity.name : ""}}</span>
       <p>Country: {{scholarship.countryEntity.name}}</p>
-      <p>Level: <span v-for="(level, index) in scholarship.levelEntities" :key="level" > <span v-if="index !=0">, </span>{{level.name }}</span></p>
+      <p>Level: <span v-for="(level, index) in scholarship.levelEntities" :key="level.id" > <span v-if="index !=0">, </span>{{level.name }}</span></p>
     </div>
     <div class="card-footer">
       <div class="card-react" v-if="showInteractive">
         <div class="card-react--item">
-          <el-button circle icon="el-icon-close"></el-button>
+          <el-button circle icon="el-icon-close" @click="close()"></el-button>
         </div>
         <div class="card-react--item">
           <a :href="'/detail?id=' + scholarship.id">
@@ -36,10 +45,13 @@ export default {
   props: ["scholarship", "showImage", "showInteractive"],
   data(){
     return {
-      isFavorite: false
+      isFavorite: false,
     }
   },
   methods: {
+    close(){
+      this.$emit("close", this.scholarship);
+    },
     formatDate(date) {
       return utils.formatDate(date);
     },
@@ -59,7 +71,7 @@ export default {
   }
   }
 </script>
-<style>
+<style scoped>
   .card {
     margin: 20px;
     width: 60%;
@@ -152,6 +164,10 @@ export default {
       margin: 10px;
       width: 90%;
     }
+  }
+  /deep/
+  .el-tooltip__popper.is-light {
+    border: 1px solid #b69de5;
   }
 
 </style>

@@ -1,5 +1,6 @@
 package datn.resource;
 
+import datn.custom.dto.ConversationDto;
 import datn.custom.dto.UserScholarshipDto;
 import datn.entity.ScholarshipEntity;
 import datn.service.RecommendService;
@@ -7,10 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,5 +24,11 @@ public class RecommendApi {
     public ResponseEntity<List<ScholarshipEntity>> get(){
         LOGGER.info("call get recommend");
         return ResponseEntity.ok(recommendService.getRecommend());
+    }
+
+    @PostMapping("get-recommend-conversation")
+    public ResponseEntity<List<ScholarshipEntity>> getRecommendConversation(@RequestBody ConversationDto dto){
+        LOGGER.info("get recommend conversation");
+        return ResponseEntity.ok(recommendService.getRecommendConversation(dto));
     }
 }

@@ -29,7 +29,6 @@ class SqlScholarshipAdsSpider(scrapy.Spider):
                                  })
 
     def getPage(self, response):
-        print(response.request.headers)
         numOfPages = 20
         linkPageDemo = "https://www.scholarshipsads.com/category/tags/vietnam/"
         for index in range(numOfPages):

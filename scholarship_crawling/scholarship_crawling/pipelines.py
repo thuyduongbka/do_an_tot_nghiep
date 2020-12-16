@@ -278,7 +278,7 @@ class ScholarshipCrawlingPipeline(object):
                 item['urlImage'],
                 item['applyLink']
             ))
-        self.curr.execute("UPDATE web SET last_crawled=now() WHERE id = %s", (item["web"],))
+
         self.conn.commit()
         self.restart()
         self.store_db_attribute(item)

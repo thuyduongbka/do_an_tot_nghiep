@@ -1,6 +1,10 @@
 import mysql.connector
 from service.entity.scholarship import Scholarship
 from service.entity.user import User
+import yaml
+
+with open('config.yaml', 'r',  encoding="utf8") as f:
+    config = yaml.load(f, Loader=yaml.FullLoader)
 
 class ConnectDB:
     def __init__(self):
@@ -15,6 +19,11 @@ class ConnectDB:
                      'h'
         )
         self.curr = self.conn.cursor(buffered=True)
+
+    def updateWebSource(self, web):
+        self.curr.execute("UPDATE web SET last_crawled=now() WHERE id = %s", (web,))
+        self.conn.commit()
+        self.restart()
 
     def restart(self):
         self.curr.close()
@@ -95,3 +104,27 @@ class ConnectDB:
         major = self.majorToArray(self.getMajor(id))
 
         return Scholarship(id, country, school, major, level, money, time)
+
+    def getUserInforFromConversation(self, scholarshipId,countryDislike,countryLikeId,
+                                     schoolDislike, schoolLikeId,appropriateTime,listLevelLike,
+                                     listLevelDislike,listMajorLike,listMajorDislike):
+        scholarship = self.getScholarship(scholarshipId)
+        countryDislikeId = None
+        if countryDislike :
+            countryDislikeId = scholarship.country
+            scholarship.country = countryLikeId
+        schoolDislikeId = None
+        if schoolDislike :
+            schoolDislikeId = scholarship.school
+            scholarship.school = schoolLikeId
+        listLevelLike = self.stringToArr(listLevelLike)
+        print(listLevelLike)
+        listLevelDislike = self.stringToArr(listLevelDislike)
+        print([config['list_level'].index(listLevelDislike)])
+        print(scholarship.level)
+
+    def stringToArr(self, str):
+        if str == "": return []
+        return str.split(",")
+
+
