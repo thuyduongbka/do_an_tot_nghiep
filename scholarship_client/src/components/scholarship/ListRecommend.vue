@@ -1,7 +1,9 @@
 <template>
-  <div class="list">
-    <scholarship v-for="scholarship in listScholarship" :key="scholarship.id" :scholarship="scholarship"
-                 :show-image="true"></scholarship>
+  <div v-if="listScholarship" style="display:flex; flex-wrap: wrap; justify-content: center;">
+    <scholarship v-for="scholarship in listScholarship" :key="scholarship.id"
+                 :scholarship="scholarship"
+                 :show-image="true" :show-interactive="false" style="transform: scale(0.8)"
+    ></scholarship>
   </div>
 </template>
 <script>
@@ -27,9 +29,5 @@ export default {
 }
 </script>
 <style>
-.list {
-  margin-top: 50px;
-  display: flex;
-  flex-wrap: wrap;
-}
+
 </style>

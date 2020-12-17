@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <el-card style="">
+    <el-card v-if="listScholarship.length > 0" style="">
       <div style="font-weight: bold; color: #6637EB">
         Hello, these are scholarships for you ...
       </div>
@@ -81,6 +81,7 @@ export default {
     closeScholarship(scholarship){
       this.currentScholarship = scholarship;
       this.showConversationDialog = true;
+      this.listScholarship = this.listScholarship.filter(s => s.id != scholarship.id)
     }
   },
 }

@@ -30,7 +30,7 @@
       <el-menu-item v-if="isUser" index="3" route="/compare"><span >Compare</span>
       </el-menu-item>
       <el-submenu v-if="isUser" index="4">
-        <template slot="title">Feature</template>
+        <template slot="title">More</template>
         <el-menu-item route="/country" index="4-1">Country</el-menu-item>
         <el-menu-item route="/level" index="4-2">Level</el-menu-item>
         <el-menu-item route="/major" index="4-3">Major</el-menu-item>

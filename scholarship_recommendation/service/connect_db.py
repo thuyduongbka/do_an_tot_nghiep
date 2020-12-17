@@ -126,9 +126,8 @@ class ConnectDB:
             for country in scholarship.country:
                 while country in user.country:
                     user.country.remove(country)
-        
-        print(countryLikeId)
-            if countryLikeId:
+
+            if countryLikeId != 'null':
                 countryLikeId = int(countryLikeId)
                 user.country.append(countryLikeId)
 
@@ -138,7 +137,7 @@ class ConnectDB:
                 while school in user.school:
                     user.school.remove(school)
 
-            if schoolLikeId:
+            if schoolLikeId != 'null':
                 schoolLikeId = int(schoolLikeId)
                 user.school.append(schoolLikeId)
 
@@ -166,13 +165,13 @@ class ConnectDB:
         if appropriateTime: 
             user.time = user.create_time(appropriateTime)
         
-
-        print('after')
-        print('country ', user.country)
-        print('school ', user.school)
-        print('major ', user.major)
-        print('level ', user.level)
-        print('time ', user.time)
+        #
+        # print('after')
+        # print('country ', user.country)
+        # print('school ', user.school)
+        # print('major ', user.major)
+        # print('level ', user.level)
+        # print('time ', user.time)
         return user
     
     def getListScholarshipFromConversation(self, userId, scholarshipId,

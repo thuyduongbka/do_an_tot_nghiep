@@ -43,7 +43,8 @@ public class RecommendService {
         return listScholarshipRecommend;
     }
     public List<ScholarshipEntity> getRecommendConversation(ConversationDto dto){
-        List<Integer> listScholarshipIdRecommend = httpService.getRecommendConversation(dto);
+        Long userId = getCurrentUser().getEndUserId();
+        List<Integer> listScholarshipIdRecommend = httpService.getRecommendConversation(userId,dto);
         listScholarshipIdRecommend = listScholarshipIdRecommend.subList(0,6);
         List<ScholarshipEntity> listScholarshipRecommend = listScholarshipIdRecommend.stream().map(id ->
                 scholarshipService.findById(Long.valueOf(id))).collect(Collectors.toList());

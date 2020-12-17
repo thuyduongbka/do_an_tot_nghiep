@@ -1,13 +1,16 @@
 <template>
   <el-dialog
-    :before-close="handleClose"
     :visible.sync="dialogVisible"
-    class="dialog" width="30%">
-    <div slot="title">
-      <h3>Why don't you like this scholarship?</h3>
-      <span style="color: #fc3737">Press (X) if you don't like anything</span>
+    class="dialog" :width="confirm?'80%':'30%'"
+    top="20px">
+    <div slot="title" style="border-bottom: 1px solid #6637EB; width: 70%; margin: auto">
+      <div v-if="!confirm">
+        <h3>Why don't you like this scholarship?</h3>
+        <span style="color: #fc3737">Press (X) if you don't like anything</span>
+      </div>
+      <p v-else>Maybe you'll like these scholarships</p>
     </div>
-    <div class="feature">
+    <div v-if="!confirm" class="feature">
       <p>Deadline:</p>
       <div class="feature-item">
         {{ formatDate(scholarship.time) }}
@@ -98,10 +101,12 @@
                    @click="feedback.major.like.push(newMajor); newMajor=null;"/>
       </div>
     </div>
-
+    <div v-else>
+      <list-recommend :list-scholarship="listRecommend"></list-recommend>
+    </div>
     <span slot="footer" class="dialog-footer">
       <el-button @click="dialogVisible = false">Cancel</el-button>
-      <el-button style="background-color: #6637EB; color: #FFFFFF" @click="handleSubmit()">Confirm</el-button>
+      <el-button v-if="!confirm" style="background-color: #6637EB; color: #FFFFFF" @click="handleSubmit()">Confirm</el-button>
     </span>
   </el-dialog>
 </template>
@@ -113,11 +118,14 @@ import AlertService from "@/services/AlertService";
 import SchoolApi from "@/api/SchoolApi";
 import MajorApi from "@/api/MajorApi";
 import RecommendApi from "@/api/RecommendApi";
+import ListRecommend from "@/components/scholarship/ListRecommendCarousel";
+import Auth from "@/security/Authentication";
+import ScholarshipInteractiveApi from "@/api/ScholarshipInteractiveApi";
 
 export default {
   name: "ConversationDialog",
   props: ['show', 'scholarship'],
-  components: {ButtonLike},
+  components: {ButtonLike, ListRecommend},
   data() {
     return {
       newLevel: null,
@@ -135,6 +143,7 @@ export default {
       listMajor: new Map(),
       feedback: null,
       listRecommend: [],
+      confirm: false,
     };
   },
   created() {
@@ -142,9 +151,12 @@ export default {
     this.getData();
   },
   watch: {
+    scholarship(){
+      this.reset();
+      this.countView();
+    },
     dialogVisible(val) {
       this.$emit("update:show", val);
-      this.reset();
     },
     show(val) {
       this.dialogVisible = val;
@@ -152,6 +164,7 @@ export default {
   },
   methods: {
     reset(){
+      this.confirm = false;
       this.feedback = {
         deadline: {
           dislike: false,
@@ -194,10 +207,7 @@ export default {
       this.feedback.major.dislike.forEach((value,key)=>{
         if (value) listMajorDislike.push(key);
       })
-
-      console.log(listMajorDislike)
       let deadline = new Date(this.scholarship.time)
-      console.log(deadline)
       let data = {
         scholarshipId : this.scholarship.id,
         countryDislike: this.feedback.country.dislike,
@@ -210,23 +220,31 @@ export default {
         listMajorLike: this.feedback.major.like,
         listMajorDislike: listMajorDislike
       }
-      await RecommendApi.getRecommendConversation(data).then(result => {
-        this.listRecommend = result;
-      })
-    },
-    handleClose(done) {
-      // this.$confirm('Are you sure to close this dialog?')
-      //   .then(_ => {
-      //     done();
-      //   })
-      //   .catch(_ => {
-      //   });
+      try {
+        await RecommendApi.getRecommendConversation(data).then(result => {
+          this.listRecommend = result;
+          this.confirm = true;
+
+        })
+      } catch (e){
+        this.dialogVisible = false;
+      }
+
     },
     changeLevel(name, val) {
       this.feedback.level.dislike.set(name, val);
     },
     changeMajor(name, val) {
       this.feedback.major.dislike.set(name, val);
+    },
+    async countView() {
+      try {
+        let id = this.scholarship.id;
+        let userId = Auth.getCurrentUser().endUserId;
+        await ScholarshipInteractiveApi.countView(id, userId);
+      } catch (e) {
+        console.log(e);
+      }
     },
     async getData() {
       try {

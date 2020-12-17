@@ -49,10 +49,11 @@ public class HttpService {
         return request.send();
     }
 
-    public List<Integer> getRecommendConversation(ConversationDto dto) {
+    public List<Integer> getRecommendConversation(Long userId, ConversationDto dto) {
         String pattern = "yyyy-MM-dd";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         HttpRequest<List> request = new HttpRequest<>(getUrl(GET_RECOMMEND_CONVERSATION), HttpMethod.GET, List.class);
+        request.addParam("userId", String.valueOf(userId));
         request.addParam("scholarshipId", String.valueOf(dto.getScholarshipId()));
         request.addParam("countryDislike", String.valueOf(dto.getCountryDislike()));
         request.addParam("countryLikeId", String.valueOf(dto.getCountryLikeId()));
