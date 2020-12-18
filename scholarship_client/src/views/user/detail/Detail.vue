@@ -17,49 +17,7 @@
                 </el-rate>
               </div>
             </div>
-            <div v-if="scholarship.countryEntity" class="content-field">
-              <i class="icon el-icon-location"></i>
-              <span class="label">Country: </span>
-              <span class="value">
-                <router-link :to="'/country?id='+scholarship.countryEntity.id">
-                  {{ scholarship.countryEntity.name }}
-                </router-link>
-              </span>
-            </div>
-            <div class="content-field">
-              <i class="icon el-icon-school"></i>
-              <span class="label">Major: </span>
-              <ul>
-                <li v-for="major in scholarship.majorEntities" :key="major.id">
-                  <router-link :to="'/major?id='+major.id">
-                    {{ major.name }}
-                  </router-link>
-                </li>
-              </ul>
-            </div>
-            <div class="content-field">
-              <i class="icon el-icon-trophy"></i>
-              <span class="label">Level: </span>
-              <ul>
-                <li v-for="level in scholarship.levelEntities" :key="level.id">
-                  <router-link :to="'/level?id='+level.name">
-                  {{ level.name }}
-                  </router-link>
-                </li>
-              </ul>
-            </div>
-            <div class="content-field">
-              <i class="icon el-icon-time"></i>
-              <span class="label">Deadline: </span>
-              <span class="value">{{ scholarship.time }}</span>
-            </div>
-            <div v-if="scholarship.requirementEntities.length > 0" class="content-field">
-              <i class="icon el-icon-collection-tag"></i>
-              <span class="label">Yêu cầu: </span>
-              <ul>
-                <li v-for="requirement in scholarship.requirementEntities" :key="requirement.id">{{ requirement }}</li>
-              </ul>
-            </div>
+            <detail-conversation :scholarship="scholarship"></detail-conversation>
           </div>
 
         </div>
@@ -141,10 +99,11 @@ import Pages from "@/router/Pages";
 import ListRecommend from "@/components/scholarship/ListRecommend";
 import Scholarship from "@/components/scholarship/Scholarship";
 import ListRecommendCarousel from "@/components/scholarship/ListRecommendCarousel";
+import DetailConversation from "@/views/user/detail/recommend/DetailConversation";
 
 export default {
   name: "Detail",
-  components: {ListRecommend, Scholarship, ListRecommendCarousel},
+  components: {ListRecommend, Scholarship, ListRecommendCarousel, DetailConversation},
   data() {
     return {
       scholarship: null,

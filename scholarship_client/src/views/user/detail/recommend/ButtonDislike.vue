@@ -1,9 +1,7 @@
 <template>
-<span style="float: right">
-  <el-button :type="status? 'default':'success'" circle class="el-icon-check"
-           @click="status=false"/>
+<span style="margin-left: 20px;">
   <el-button :type="status? 'danger':'default'" circle class="el-icon-close"
-           @click="status=true"/>
+             @click="status=!status"/>
 </span>
 </template>
 <script>

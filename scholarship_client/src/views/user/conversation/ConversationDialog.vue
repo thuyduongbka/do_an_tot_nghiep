@@ -161,6 +161,11 @@ export default {
     show(val) {
       this.dialogVisible = val;
     },
+    'feedback.country.dislike'(val){
+      if (val) {
+        this.feedback.school.dislike = true;
+      }
+    }
   },
   methods: {
     reset(){
