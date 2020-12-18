@@ -6,22 +6,6 @@ with open('config.yaml', 'r', encoding="utf8") as f:
     #print(config)
 
 
-# class RecommendSystem():
-#     def __init__(self):
-#         pass 
-
-#     def recommend(user, list_scholarship):
-        
-
-#         list_recommand = []
-
-#         try:
-#             pass
-#         except:
-#             pass 
-
-#         return list_recommand
-
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.neighbors import KNeighborsClassifier
 from collections import deque  

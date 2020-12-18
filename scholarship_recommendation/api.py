@@ -31,7 +31,9 @@ def get_recommend(userId: Optional[str] = None, scholarshipId: Optional[str] = N
     # print('country {}, school {} , major {}, user {} , money {}, time {}'.format(uers.country, user.school, user.major, user.level, user.money, user.time))
 
     list_scholarship_recommend = recommend(user, listScholarship)
-    print(list_scholarship_recommend)
+    # print(list_scholarship_recommend)
+    if scholarshipId in list_scholarship_recommend:
+        list_scholarship_recommend.remove(scholarshipId)
 
     return list_scholarship_recommend
 
@@ -78,6 +80,8 @@ def get_recommend_conversation(userId: Optional[str] = None,
                                                                 listLevelDislike,
                                                                 listMajorDislike)
     list_scholarship_recommend = recommend(user, listScholarship)
-    print(list_scholarship_recommend)
+    # print(list_scholarship_recommend)
+    if scholarshipId in list_scholarship_recommend:
+        list_scholarship_recommend.remove(scholarshipId)
 
     return list_scholarship_recommend
