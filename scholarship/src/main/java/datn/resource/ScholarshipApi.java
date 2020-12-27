@@ -47,6 +47,11 @@ public class ScholarshipApi {
         LOGGER.info("call /api/scholarship/get/{id}");
         return ResponseEntity.ok(service.findScholarshipById(userId, scholarshipId));
     }
+    @GetMapping("/get-recommend-same")
+    public ResponseEntity<List<ScholarshipEntity>> getRecommendSame(@RequestParam(value = "scholarshipId") Long scholarshipId){
+        LOGGER.info("call /api/scholarship/get/{id}");
+        return ResponseEntity.ok(service.getRecommendSame(scholarshipId));
+    }
 
     @GetMapping("/getAllName")
     public ResponseEntity<List<ScholarshipNameDto>> getAllName(){

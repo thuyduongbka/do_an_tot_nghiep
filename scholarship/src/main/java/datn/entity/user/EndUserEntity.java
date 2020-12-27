@@ -31,9 +31,6 @@ public class EndUserEntity extends BaseEntity {
     private Date graduationDate;
     private String phone;
     private String levelImplicit;
-    private String countryImplicit;
-    private String schoolImplicit;
-    private String majorImplicit;
 
     @WhereJoinTable(clause = "is_implicit=false")
     @ManyToMany

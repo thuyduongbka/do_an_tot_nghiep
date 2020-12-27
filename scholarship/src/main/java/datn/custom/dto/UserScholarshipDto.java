@@ -12,13 +12,10 @@ import java.util.List;
 public class UserScholarshipDto {
     private ScholarshipInteractiveEntity interactiveEntity;
     private ScholarshipEntity scholarshipEntity;
-    private List<ScholarshipEntity> listRecommend;
     
     public UserScholarshipDto(ScholarshipInteractiveEntity interactiveEntity,
-                              ScholarshipEntity scholarshipEntity,
-                              List<ScholarshipEntity> listRecommend) {
+                              ScholarshipEntity scholarshipEntity ) {
         this.interactiveEntity = interactiveEntity;
         this.scholarshipEntity = scholarshipEntity;
-        this.listRecommend = listRecommend;
     }
 }

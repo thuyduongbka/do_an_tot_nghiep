@@ -16,6 +16,9 @@ export default {
   get(userId,scholarshipId){
     return userRequest.get(baseUrl + "/get?userId=" + userId + "&scholarshipId=" + scholarshipId );
   },
+  getRecommendSame(scholarshipId){
+    return userRequest.get(baseUrl + "/get-recommend-same?scholarshipId=" + scholarshipId );
+  },
   getAllName(){
     return userRequest.get(baseUrl + "/getAllName" );
   },

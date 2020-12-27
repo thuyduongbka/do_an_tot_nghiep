@@ -84,6 +84,7 @@ export default {
     font-size: 12px;
     background-color: white;
     transition: all .2s ease-in-out;
+    padding: 10px;
   }
 
   .card:hover,.card:focus {

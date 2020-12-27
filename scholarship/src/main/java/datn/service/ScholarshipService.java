@@ -65,8 +65,11 @@ public class ScholarshipService extends BaseService<ScholarshipEntity, Scholarsh
         List<CommentEntity> commentEntities = commentService.getByScholarshipId(scholarshipId);
         scholarshipEntity.setCommentEntities(commentEntities);
         ScholarshipInteractiveEntity interactiveEntity =  interactiveService.findByScholarshipIdAndUserId(scholarshipId,userId);
-        List<ScholarshipEntity> listRecommend = recommendService.getRecommendByScholarship(scholarshipId);
-        return new UserScholarshipDto(interactiveEntity, scholarshipEntity, listRecommend);
+        return new UserScholarshipDto(interactiveEntity, scholarshipEntity);
+    }
+
+    public List<ScholarshipEntity> getRecommendSame(Long scholarshipId){
+        return recommendService.getRecommendByScholarship(scholarshipId);
     }
 
     public List<ScholarshipNameDto> findAllName(){

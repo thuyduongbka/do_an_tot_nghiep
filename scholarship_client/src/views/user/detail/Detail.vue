@@ -21,7 +21,7 @@
           </div>
 
         </div>
-        <div class="content recommend">
+        <div v-if="listRecommend.length>0" class="content recommend">
           <list-recommend-carousel :list-scholarship="listRecommend"></list-recommend-carousel>
         </div>
         <div class="content" v-html="scholarship.content"></div>
@@ -141,12 +141,14 @@ export default {
           this.scholarship = result.scholarshipEntity;
           this.interactive = result.interactiveEntity;
           this.rating = this.interactive ? this.interactive.rating : 0
-          this.listRecommend = result.listRecommend;
           this.addToCompare = localStorage.getItem("scholarshipId1") == result.scholarshipEntity.id;
           })
         } catch (e) {
           AlertService.error(e)
         }
+        await ScholarshipApi.getRecommendSame(id).then(result => {
+          this.listRecommend = result;
+        })
       },
       async countView() {
         try {

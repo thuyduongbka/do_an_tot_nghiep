@@ -152,4 +152,8 @@ export default {
     flex-direction: row;
   }
 }
+/deep/
+.el-submenu__title i {
+  color: white;
+}
 </style>
