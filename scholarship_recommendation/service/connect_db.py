@@ -211,7 +211,8 @@ class ConnectDB:
                         black_list.append(i)
                         
         if listMajorDislike:
-            listMajorDislike = listMajorDislike.split(',')
+            listMajorDislike = [int(i) for i in listMajorDislike.split(',')]
+            listMajorDislike.sort()
             for i, scholarship in enumerate(listScholarship):
                 if i not in black_list:
                     scholarship.major.sort()

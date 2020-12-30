@@ -15,7 +15,11 @@ let createRequest = (baseURL, loginURL) => {
     });
 
     request.interceptors.response.use(response => {
-        return response.data;
+        if (response.data.status && response.data.status.code == 901) {
+          auth.logout();
+          router.push({path: loginURL});
+        } else
+          return response.data;
     }, error => {
 
       /**

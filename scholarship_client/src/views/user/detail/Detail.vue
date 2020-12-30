@@ -134,8 +134,8 @@ export default {
   },
   methods: {
     async getData() {
+      let id = this.$route.query.id;
       try {
-        let id = this.$route.query.id;
         let userId = Auth.getCurrentUser().endUserId;
         await ScholarshipApi.get(userId, id).then(result => {
           this.scholarship = result.scholarshipEntity;

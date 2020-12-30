@@ -139,13 +139,16 @@ export default {
         await ScholarshipApi.get(userId, this.scholarshipId1).then(result => {
           this.scholarship1 = result.scholarshipEntity;
           this.countCompare(this.scholarshipId1);
-          for (let r of result.listRecommend){
-            this.listRecommend.set(r.id,r);
-          }
+
         })
       } catch (e) {
         AlertService.error(e)
       }
+      await ScholarshipApi.getRecommendSame(this.scholarshipId1).then(result => {
+        for (let r of result){
+          this.listRecommend.set(r.id,r);
+        }
+      })
     },
     async getData2() {
       try {
@@ -153,13 +156,15 @@ export default {
         await ScholarshipApi.get(userId, this.scholarshipId2).then(result => {
           this.scholarship2 = result.scholarshipEntity;
           this.countCompare(this.scholarshipId2);
-          for (let r of result.listRecommend){
-            this.listRecommend.set(r.id,r);
-          }
         })
       } catch (e) {
         AlertService.error(e)
       }
+      await ScholarshipApi.getRecommendSame(this.scholarshipId2).then(result => {
+        for (let r of result){
+          this.listRecommend.set(r.id,r);
+        }
+      })
     },
     async getListScholarship() {
       try {
