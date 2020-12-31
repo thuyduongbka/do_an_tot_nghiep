@@ -105,8 +105,8 @@ class ConnectDB:
 
         return Scholarship(id, country, school, major, level, money, time)
 
-    def getUserInforFromConversation(self, userId, scholarshipId,countryDislike,countryLikeId,
-                                     schoolDislike, schoolLikeId,appropriateTime,listLevelLike,
+    def getUserInforFromConversation(self, userId, scholarshipId,countryDislike,listCountryLike,
+                                     schoolDislike, listSchoolLike,appropriateTime,listLevelLike,
                                      listLevelDislike,listMajorLike,listMajorDislike):
         with open('config.yaml', 'r',  encoding="utf8") as f:
             config = yaml.load(f, Loader=yaml.FullLoader)
@@ -127,19 +127,19 @@ class ConnectDB:
                 while country in user.country:
                     user.country.remove(country)
 
-            if countryLikeId != 'null':
-                countryLikeId = int(countryLikeId)
-                user.country.append(countryLikeId)
+        if listCountryLike:
+            for listCountryLike_ in listCountryLike.split(','):
+
+                user.country.append(int(listCountryLike_))
 
         if schoolDislike == 'true':
-            print('dadsdd ', scholarship.school)
             for school in scholarship.school:
                 while school in user.school:
                     user.school.remove(school)
 
-            if schoolLikeId != 'null':
-                schoolLikeId = int(schoolLikeId)
-                user.school.append(schoolLikeId)
+        if listSchoolLike:
+            for listSchoolLike_ in listSchoolLike.split(','):
+                user.school.append(int(listSchoolLike_))
 
         if listLevelLike:
             for level in listLevelLike.split(','):

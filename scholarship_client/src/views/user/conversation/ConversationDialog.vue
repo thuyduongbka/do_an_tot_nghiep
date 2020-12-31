@@ -216,9 +216,9 @@ export default {
       let data = {
         scholarshipId : this.scholarship.id,
         countryDislike: this.feedback.country.dislike,
-        countryLikeId: this.feedback.country.like,
+        listCountryLike: this.feedback.country.like,
         schoolDislike: this.feedback.school.dislike,
-        schoolLikeId: this.feedback.school.like,
+        listSchoolLike: this.feedback.school.like,
         appropriateTime: new Date(deadline.setMonth(deadline.getMonth() + this.feedback.deadline.like)),
         listLevelLike: this.feedback.level.like,
         listLevelDislike: listLevelDislike,

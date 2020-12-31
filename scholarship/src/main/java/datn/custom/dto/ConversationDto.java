@@ -12,9 +12,9 @@ import java.util.List;
 public class ConversationDto {
     private Long scholarshipId;
     private Boolean countryDislike;
-    private Long countryLikeId;
+    private List<String> listCountryLike;
     private Boolean schoolDislike;
-    private Long schoolLikeId;
+    private List<String> listSchoolLike;
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
     private Date appropriateTime;
     private List<String> listLevelLike;

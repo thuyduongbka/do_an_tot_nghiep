@@ -4,7 +4,7 @@
   <div v-else>
     <div class="list">
       <scholarship v-for="scholarship in result.content" :key="scholarship.id" :scholarship="scholarship"
-                   :show-image="false" style="width: 28%; min-width: 180px"></scholarship>
+                   :show-image="false" style="width: 25%; min-width: 180px"></scholarship>
     </div>
     <div class="block">
       <el-pagination

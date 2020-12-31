@@ -42,9 +42,9 @@ def get_recommend(userId: Optional[str] = None, scholarshipId: Optional[str] = N
 def get_recommend_conversation(userId: Optional[str] = None,
                                 scholarshipId: Optional[str] = None,
                                countryDislike: Optional[str] = None,
-                               countryLikeId: Optional[str] = None,
+                               listCountryLike: Optional[str] = None,
                                schoolDislike: Optional[str] = None,
-                               schoolLikeId: Optional[str] = None,
+                               listSchoolLike: Optional[str] = None,
                                appropriateTime: Optional[str] = None,
                                listLevelLike: Optional[str] = None,
                                listLevelDislike: Optional[str] = None,
@@ -53,9 +53,9 @@ def get_recommend_conversation(userId: Optional[str] = None,
     service = ConnectDB()
     print("scholarshipId ", scholarshipId)
     print("countryDislike: ",countryDislike)
-    print("countryLikeId ", countryLikeId)
+    print("listCountryLike ", listCountryLike)
     print("schoolDislike:",schoolDislike)
-    print("schoolLikeID: ", schoolLikeId)
+    print("listSchoolLike: ", listSchoolLike)
     print("appropriateTime: ", appropriateTime)
     print("listLevelLike: ", listLevelLike)
     print("listLevelDislike: ", listLevelDislike)
@@ -64,9 +64,9 @@ def get_recommend_conversation(userId: Optional[str] = None,
     user = service.getUserInforFromConversation(userId,
                                         scholarshipId,
                                         countryDislike,
-                                        countryLikeId,
+                                        listCountryLike,
                                         schoolDislike, 
-                                        schoolLikeId,
+                                        listSchoolLike,
                                         appropriateTime,
                                         listLevelLike,
                                         listLevelDislike,

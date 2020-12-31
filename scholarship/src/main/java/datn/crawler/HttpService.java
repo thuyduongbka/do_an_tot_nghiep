@@ -56,9 +56,9 @@ public class HttpService {
         request.addParam("userId", String.valueOf(userId));
         request.addParam("scholarshipId", String.valueOf(dto.getScholarshipId()));
         request.addParam("countryDislike", String.valueOf(dto.getCountryDislike()));
-        request.addParam("countryLikeId", String.valueOf(dto.getCountryLikeId()));
+        request.addParam("listCountryLike", StringUtils.join(dto.getListCountryLike(), ','));
         request.addParam("schoolDislike", String.valueOf(dto.getSchoolDislike()));
-        request.addParam("schoolLikeId", String.valueOf(dto.getSchoolLikeId()));
+        request.addParam("listSchoolLike", StringUtils.join(dto.getListSchoolLike(), ','));
         request.addParam("appropriateTime", simpleDateFormat.format(dto.getAppropriateTime()));
         request.addParam("listLevelLike", StringUtils.join(dto.getListLevelLike(), ','));
         request.addParam("listLevelDislike", StringUtils.join(dto.getListLevelDislike(), ','));
